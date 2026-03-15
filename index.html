@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Merel Jacobs — Software Engineer</title>
+  <link rel="icon" type="image/x-icon" href="code.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg: #080a0f;
       --surface: #0e1117;
@@ -24,918 +25,178 @@
       --font-mono: 'DM Mono', monospace;
       --font-serif: 'Instrument Serif', serif;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-display);
-      overflow-x: hidden;
-      cursor: none;
-    }
-
-    /* ── Custom Cursor ── */
-    .cursor {
-      width: 12px; height: 12px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s ease, background 0.2s ease;
-      mix-blend-mode: screen;
-    }
-    .cursor-ring {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(126,255,245,0.4);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94), border-color 0.2s;
-    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-display); overflow-x: hidden; cursor: none; }
+    .cursor { width: 12px; height: 12px; background: var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transition: transform 0.15s ease, background 0.2s ease; mix-blend-mode: screen; }
+    .cursor-ring { width: 36px; height: 36px; border: 1px solid rgba(255,105,180,0.4); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94), border-color 0.2s; }
     body:has(a:hover) .cursor, body:has(button:hover) .cursor { transform: scale(2.5); background: var(--accent2); }
     body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { transform: translate(-50%, -50%) scale(1.5); border-color: rgba(255,107,107,0.5); }
-
-    /* ── Noise Overlay ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9000;
-      opacity: 0.6;
-    }
-
-    /* ── Nav ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.5rem 3rem;
-      z-index: 100;
-      background: linear-gradient(to bottom, rgba(8,10,15,0.9), transparent);
-      backdrop-filter: blur(0px);
-    }
-    .nav-logo {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-      text-decoration: none;
-    }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9000; opacity: 0.6; }
+    nav { position: fixed; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; z-index: 100; background: linear-gradient(to bottom, rgba(8,10,15,0.9), transparent); }
+    .nav-logo { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); letter-spacing: 0.05em; text-decoration: none; }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
+    .nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--text); }
-
-    /* ── Hero ── */
-    #hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      justify-content: center;
-      padding: 8rem 3rem 4rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg-grid {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(126,255,245,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(126,255,245,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
-    }
-    .hero-glow {
-      position: absolute;
-      width: 600px; height: 600px;
-      border-radius: 50%;
-      filter: blur(120px);
-      pointer-events: none;
-    }
-    .hero-glow-1 {
-      background: radial-gradient(circle, rgba(126,255,245,0.08) 0%, transparent 70%);
-      top: -100px; right: -100px;
-      animation: floatGlow 8s ease-in-out infinite alternate;
-    }
-    .hero-glow-2 {
-      background: radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 70%);
-      bottom: -100px; left: -100px;
-      animation: floatGlow 10s ease-in-out infinite alternate-reverse;
-    }
-    @keyframes floatGlow {
-      from { transform: translate(0,0) scale(1); }
-      to { transform: translate(40px, 30px) scale(1.1); }
-    }
-
-    .hero-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.2s forwards;
-    }
-    .hero-name {
-      font-size: clamp(4rem, 10vw, 9rem);
-      font-weight: 800;
-      line-height: 0.9;
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.4s forwards;
-    }
-    .hero-name em {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-weight: 400;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-    }
-    .hero-tagline {
-      font-family: var(--font-mono);
-      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
-      color: var(--muted);
-      max-width: 480px;
-      line-height: 1.7;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.6s forwards;
-    }
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 3rem 4rem; position: relative; overflow: hidden; }
+    .hero-bg-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,105,180,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,105,180,0.03) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%); }
+    .hero-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; filter: blur(120px); pointer-events: none; }
+    .hero-glow-1 { background: radial-gradient(circle, rgba(255,105,180,0.08) 0%, transparent 70%); top: -100px; right: -100px; animation: floatGlow 8s ease-in-out infinite alternate; }
+    .hero-glow-2 { background: radial-gradient(circle, rgba(50,205,50,0.06) 0%, transparent 70%); bottom: -100px; left: -100px; animation: floatGlow 10s ease-in-out infinite alternate-reverse; }
+    @keyframes floatGlow { from { transform: translate(0,0) scale(1); } to { transform: translate(40px, 30px) scale(1.1); } }
+    .hero-eyebrow { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
+    .hero-name { font-size: clamp(4rem, 10vw, 9rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; margin-bottom: 1rem; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+    .hero-name em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
+    .hero-tagline { font-family: var(--font-mono); font-size: clamp(0.85rem, 1.5vw, 1.1rem); color: var(--muted); max-width: 480px; line-height: 1.7; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; }
     .hero-tagline span { color: var(--accent); }
-
-    .hero-cta {
-      display: flex; gap: 1rem; flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.8s forwards;
-    }
-    .btn {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.85rem 2rem;
-      border-radius: 2px;
-      text-decoration: none;
-      cursor: none;
-      transition: all 0.2s;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: var(--bg);
-      font-weight: 500;
-    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s ease 0.8s forwards; }
+    .btn { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85rem 2rem; border-radius: 2px; text-decoration: none; cursor: none; transition: all 0.2s; }
+    .btn-primary { background: var(--accent); color: var(--bg); font-weight: 500; }
     .btn-primary:hover { background: #fff; transform: translateY(-2px); }
-    .btn-ghost {
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
+    .btn-ghost { border: 1px solid var(--border); color: var(--muted); }
     .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-
-    .hero-scroll-hint {
-      position: absolute; bottom: 2.5rem; left: 3rem;
-      display: flex; align-items: center; gap: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 1.2s forwards;
-    }
-    .hero-scroll-hint span {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-    }
-    .scroll-line {
-      width: 1px; height: 60px;
-      background: linear-gradient(to bottom, var(--muted), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 1; }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── Section Base ── */
+    .hero-scroll-hint { position: absolute; bottom: 2.5rem; left: 3rem; display: flex; align-items: center; gap: 1rem; opacity: 0; animation: fadeUp 0.8s ease 1.2s forwards; }
+    .hero-scroll-hint span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; writing-mode: vertical-rl; transform: rotate(180deg); }
+    .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--muted), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     section { padding: 7rem 3rem; max-width: 1200px; margin: 0 auto; }
-
-    .section-label {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--accent);
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      margin-bottom: 4rem;
-      display: flex; align-items: center; gap: 1rem;
-    }
-    .section-label::after {
-      content: '';
-      height: 1px;
-      width: 60px;
-      background: var(--accent);
-      opacity: 0.4;
-    }
-
-    /* ── About ── */
+    .section-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 4rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; height: 1px; width: 60px; background: var(--accent); opacity: 0.4; }
     #about { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; max-width: 1200px; margin: 0 auto; padding: 7rem 3rem; }
-    .about-text h2 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 2rem;
-    }
-    .about-text h2 em {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-weight: 400;
-      color: var(--accent3);
-    }
-    .about-text p {
-      font-family: var(--font-mono);
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 1.2rem;
-    }
+    .about-text h2 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; line-height: 1.1; margin-bottom: 2rem; }
+    .about-text h2 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--accent3); }
+    .about-text p { font-family: var(--font-mono); font-size: 0.88rem; color: var(--muted); line-height: 1.9; margin-bottom: 1.2rem; }
     .about-text p strong { color: var(--text); }
-    .about-stats {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-    .stat-card {
-      border: 1px solid var(--border);
-      padding: 1.5rem;
-      background: var(--surface);
-      position: relative;
-      overflow: hidden;
-    }
-    .stat-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0;
-      width: 2px; height: 100%;
-      background: var(--accent);
-    }
-    .stat-number {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1;
-      margin-bottom: 0.3rem;
-    }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .stat-card { border: 1px solid var(--border); padding: 1.5rem; background: var(--surface); position: relative; overflow: hidden; }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--accent); }
+    .stat-number { font-size: 2.5rem; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 0.3rem; }
     .stat-number span { color: var(--accent); }
-    .stat-label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    /* ── Stack ── */
-    .stack-cloud {
-      display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem;
-    }
-    .stack-tag {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 0.4rem 0.9rem;
-      transition: all 0.2s;
-      cursor: default;
-    }
+    .stat-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .stack-cloud { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+    .stack-tag { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); border: 1px solid var(--border); padding: 0.4rem 0.9rem; transition: all 0.2s; cursor: default; }
     .stack-tag:hover { color: var(--accent); border-color: var(--accent); }
-
-    /* ── Projects Section ── */
     #projects { max-width: 1200px; margin: 0 auto; padding: 7rem 3rem; }
-
-    .projects-header {
-      display: flex; align-items: flex-end; justify-content: space-between;
-      margin-bottom: 4rem;
-    }
-    .projects-title {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 800;
-      line-height: 1;
-    }
-
-    /* Project Cards Grid */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 1.5px;
-    }
-
-    .project-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      cursor: none;
-      position: relative;
-      transition: border-color 0.3s;
-    }
+    .projects-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 4rem; }
+    .projects-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1; }
+    .projects-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5px; }
+    .project-card { background: var(--surface); border: 1px solid var(--border); overflow: hidden; cursor: none; position: relative; transition: border-color 0.3s; }
     .project-card:nth-child(1) { grid-column: span 7; }
     .project-card:nth-child(2) { grid-column: span 5; }
     .project-card:nth-child(3) { grid-column: span 4; }
     .project-card:nth-child(4) { grid-column: span 4; }
     .project-card:nth-child(5) { grid-column: span 4; }
-
-    .project-card:hover { border-color: rgba(126,255,245,0.3); }
+    .project-card:hover { border-color: rgba(255,105,180,0.3); }
     .project-card:hover .card-tour-hint { opacity: 1; }
     .project-card:hover .project-accent-line { width: 100%; }
-
-    .project-accent-line {
-      height: 2px;
-      width: 0;
-      background: var(--accent);
-      transition: width 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-      position: absolute; top: 0; left: 0;
-    }
-
-    .project-card-inner {
-      padding: 2rem;
-      height: 100%;
-      display: flex; flex-direction: column;
-    }
-    .project-meta {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
-    .project-year {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-    }
-    .project-tags-mini {
-      display: flex; gap: 0.4rem; flex-wrap: wrap;
-    }
-    .project-tag-mini {
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      color: var(--accent);
-      border: 1px solid rgba(126,255,245,0.2);
-      padding: 0.15rem 0.5rem;
-    }
-
-    .project-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-      line-height: 1.1;
-    }
+    .project-accent-line { height: 2px; width: 0; background: var(--accent); transition: width 0.4s cubic-bezier(0.25,0.46,0.45,0.94); position: absolute; top: 0; left: 0; }
+    .project-card-inner { padding: 2rem; height: 100%; display: flex; flex-direction: column; }
+    .project-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+    .project-year { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; }
+    .project-tags-mini { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .project-tag-mini { font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent); border: 1px solid rgba(255,105,180,0.2); padding: 0.15rem 0.5rem; }
+    .project-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.1; }
     .project-card:nth-child(1) .project-title { font-size: 2rem; }
-
-    .project-desc {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.7;
-      flex: 1;
-    }
-
-    .card-tour-hint {
-      margin-top: 1.5rem;
-      display: flex; align-items: center; gap: 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+    .project-desc { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); line-height: 1.7; flex: 1; }
+    .card-tour-hint { margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.08em; opacity: 0; transition: opacity 0.3s; }
     .card-tour-hint svg { width: 14px; height: 14px; }
-
-    .project-visual {
-      height: 140px;
-      background: var(--surface2);
-      margin: 0 2rem 2rem;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
+    .project-visual { height: 140px; background: var(--surface2); margin: 0 2rem 2rem; position: relative; overflow: hidden; border: 1px solid var(--border); }
     .project-card:nth-child(1) .project-visual { height: 200px; }
-
-    /* Fake browser screenshot aesthetics */
-    .project-visual-bar {
-      height: 24px;
-      background: rgba(255,255,255,0.04);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; padding: 0 0.75rem; gap: 5px;
-    }
+    .project-visual-bar { height: 24px; background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 0.75rem; gap: 5px; }
     .dot { width: 7px; height: 7px; border-radius: 50%; }
     .dot-r { background: rgba(255,107,107,0.6); }
     .dot-y { background: rgba(255,213,79,0.6); }
     .dot-g { background: rgba(126,255,245,0.5); }
-
-    .project-visual-content {
-      position: absolute;
-      inset: 24px 0 0;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-
-    /* Animated project visual backgrounds */
-    .visual-saas {
-      background: linear-gradient(135deg, #0a0e1a 0%, #0d1520 100%);
-      width: 100%; height: 100%;
-      position: relative;
-    }
-    .visual-saas::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(126,255,245,0.04) 20px),
-                        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(126,255,245,0.04) 40px);
-    }
-    .visual-saas-ui {
-      position: absolute;
-      bottom: -10px; left: 50%; transform: translateX(-50%);
-      width: 88%;
-      background: rgba(14,17,23,0.9);
-      border: 1px solid rgba(126,255,245,0.15);
-      border-radius: 4px 4px 0 0;
-      padding: 0.75rem;
-    }
+    .project-visual-content { position: absolute; inset: 24px 0 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .visual-saas { background: linear-gradient(135deg, #0a0e1a 0%, #0d1520 100%); width: 100%; height: 100%; position: relative; }
+    .visual-saas::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,105,180,0.04) 20px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,105,180,0.04) 40px); }
+    .visual-saas-ui { position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 88%; background: rgba(14,17,23,0.9); border: 1px solid rgba(255,105,180,0.15); border-radius: 4px 4px 0 0; padding: 0.75rem; }
     .fake-chart { display: flex; align-items: flex-end; gap: 4px; height: 50px; }
-    .fake-bar {
-      flex: 1;
-      background: rgba(126,255,245,0.25);
-      border-top: 1px solid rgba(126,255,245,0.6);
-      border-radius: 1px 1px 0 0;
-      animation: barPulse 3s ease-in-out infinite;
-    }
+    .fake-bar { flex: 1; background: rgba(255,105,180,0.25); border-top: 1px solid rgba(255,105,180,0.6); border-radius: 1px 1px 0 0; animation: barPulse 3s ease-in-out infinite; }
     .fake-bar:nth-child(2) { animation-delay: 0.2s; }
     .fake-bar:nth-child(3) { animation-delay: 0.4s; }
     .fake-bar:nth-child(4) { animation-delay: 0.6s; }
     .fake-bar:nth-child(5) { animation-delay: 0.8s; }
     .fake-bar:nth-child(6) { animation-delay: 1s; }
-    @keyframes barPulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
-    }
-
-    .visual-api {
-      background: #06080d;
-      width: 100%; height: 100%;
-      display: flex; align-items: center;
-      padding: 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      color: #3a4a5c;
-      line-height: 1.8;
-      overflow: hidden;
-      position: relative;
-    }
-    .visual-api::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 40px;
-      background: linear-gradient(to top, #06080d, transparent);
-    }
-    .api-line-green { color: #7efff5; }
-    .api-line-purple { color: #32CD32; }
-    .api-line-orange { color: #ff9966; }
-    .typing-cursor {
-      display: inline-block;
-      width: 6px; height: 12px;
-      background: var(--accent);
-      animation: blink 1s step-end infinite;
-    }
+    @keyframes barPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .visual-ai { background: radial-gradient(ellipse at center, #0d0620 0%, #080a0f 70%); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .ai-orb { width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, rgba(255,105,180,0.4) 0%, rgba(255,105,180,0.05) 70%); border: 1px solid rgba(255,105,180,0.3); animation: orbPulse 3s ease-in-out infinite; position: relative; }
+    .ai-orb::after { content: ''; position: absolute; inset: -12px; border-radius: 50%; border: 1px solid rgba(255,105,180,0.1); animation: orbPulse 3s ease-in-out infinite reverse; }
+    @keyframes orbPulse { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.1); opacity: 1; } }
+    .typing-cursor { display: inline-block; width: 6px; height: 12px; background: var(--accent); animation: blink 1s step-end infinite; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-    .visual-mobile {
-      background: linear-gradient(160deg, #0a0e1a 0%, #12070f 100%);
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      gap: 1rem;
-    }
-    .phone-mock {
-      width: 55px; height: 95px;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      border-radius: 8px;
-      background: rgba(255,255,255,0.04);
-      position: relative;
-      overflow: hidden;
-    }
-    .phone-mock::before {
-      content: '';
-      position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
-      width: 16px; height: 3px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 2px;
-    }
-    .phone-screen {
-      position: absolute; top: 15px; left: 4px; right: 4px; bottom: 4px;
-      background: rgba(126,255,245,0.05);
-      border-radius: 3px;
-    }
-    .phone-row {
-      height: 4px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 2px;
-      margin: 5px 4px 0;
-    }
-    .phone-row:nth-child(2) { width: 60%; background: rgba(126,255,245,0.3); }
-
-    .visual-devtool {
-      background: #050709;
-      width: 100%; height: 100%;
-      padding: 0.75rem;
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      color: #3a4a5c;
-      line-height: 2;
-      position: relative;
-      overflow: hidden;
-    }
-    .visual-devtool::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 30px;
-      background: linear-gradient(to top, #050709, transparent);
-    }
-
-    .visual-ai {
-      background: radial-gradient(ellipse at center, #0d0620 0%, #080a0f 70%);
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .ai-orb {
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(167,139,250,0.4) 0%, rgba(167,139,250,0.05) 70%);
-      border: 1px solid rgba(167,139,250,0.3);
-      animation: orbPulse 3s ease-in-out infinite;
-      position: relative;
-    }
-    .ai-orb::after {
-      content: '';
-      position: absolute; inset: -12px;
-      border-radius: 50%;
-      border: 1px solid rgba(167,139,250,0.1);
-      animation: orbPulse 3s ease-in-out infinite reverse;
-    }
-    @keyframes orbPulse {
-      0%, 100% { transform: scale(1); opacity: 0.6; }
-      50% { transform: scale(1.1); opacity: 1; }
-    }
-
-    /* ── Tour Modal ── */
-    #tour-modal {
-      position: fixed; inset: 0;
-      background: rgba(5,7,10,0.95);
-      backdrop-filter: blur(20px);
-      z-index: 1000;
-      display: flex; flex-direction: column;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s;
-    }
+    /* Tour Modal */
+    #tour-modal { position: fixed; inset: 0; background: rgba(5,7,10,0.95); backdrop-filter: blur(20px); z-index: 1000; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
     #tour-modal.active { opacity: 1; pointer-events: all; }
-
-    .tour-topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.5rem 3rem;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .tour-title {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-    .tour-project-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-    .tour-close {
-      width: 36px; height: 36px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      cursor: none;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-      transition: all 0.2s;
-    }
+    .tour-topbar { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .tour-title { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; }
+    .tour-project-name { font-size: 1.1rem; font-weight: 700; }
+    .tour-close { width: 36px; height: 36px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: none; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.2s; }
     .tour-close:hover { border-color: var(--accent2); color: var(--accent2); }
-
-    .tour-body {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 360px;
-      overflow: hidden;
-    }
-
-    /* Tour Slideshow */
-    .tour-slideshow {
-      position: relative;
-      background: var(--surface2);
-      border-right: 1px solid var(--border);
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .tour-slide {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0;
-      transform: translateX(30px);
-      transition: opacity 0.5s, transform 0.5s;
-    }
+    .tour-body { flex: 1; display: grid; grid-template-columns: 1fr 360px; overflow: hidden; }
+    .tour-slideshow { position: relative; background: var(--surface2); border-right: 1px solid var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .tour-slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateX(30px); transition: opacity 0.5s, transform 0.5s; }
     .tour-slide.active { opacity: 1; transform: translateX(0); }
     .tour-slide.exit { opacity: 0; transform: translateX(-30px); }
-
-    /* Simulated project screens */
-    .sim-screen {
-      width: 80%; max-width: 560px;
-      background: #0a0d14;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-    }
-    .sim-bar {
-      height: 32px;
-      background: rgba(255,255,255,0.04);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      display: flex; align-items: center;
-      padding: 0 1rem; gap: 6px;
-    }
-    .sim-url {
-      margin-left: 0.75rem;
-      flex: 1;
-      height: 18px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 3px;
-      display: flex; align-items: center;
-      padding: 0 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      color: var(--muted);
-    }
-    .sim-body {
-      padding: 1.5rem;
-      min-height: 320px;
-    }
-
-    /* Various screen designs */
-    .sim-dashboard-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
+    .sim-screen { width: 80%; max-width: 560px; background: #0a0d14; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
+    .sim-bar { height: 32px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; padding: 0 1rem; gap: 6px; }
+    .sim-url { margin-left: 0.75rem; flex: 1; height: 18px; background: rgba(255,255,255,0.04); border-radius: 3px; display: flex; align-items: center; padding: 0 0.5rem; font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted); }
+    .sim-body { padding: 1.5rem; min-height: 320px; }
+    .sim-dashboard-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
     .sim-h1 { font-size: 1.1rem; font-weight: 700; }
-    .sim-badge {
-      font-family: var(--font-mono); font-size: 0.65rem;
-      background: rgba(126,255,245,0.1);
-      color: var(--accent);
-      border: 1px solid rgba(126,255,245,0.2);
-      padding: 0.2rem 0.6rem;
-    }
+    .sim-badge { font-family: var(--font-mono); font-size: 0.65rem; background: rgba(255,105,180,0.1); color: var(--accent); border: 1px solid rgba(255,105,180,0.2); padding: 0.2rem 0.6rem; }
     .sim-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
-    .sim-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      padding: 0.75rem;
-    }
+    .sim-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 0.75rem; }
     .sim-card-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); margin-bottom: 0.3rem; }
     .sim-card-val { font-size: 1.2rem; font-weight: 700; }
-    .sim-card-val.green { color: var(--accent); }
+    .sim-card-val.green { color: var(--accent3); }
     .sim-chart-row { display: flex; align-items: flex-end; gap: 3px; height: 60px; margin-bottom: 0.75rem; }
-    .sim-bar-el {
-      flex: 1;
-      background: rgba(126,255,245,0.15);
-      border-top: 1px solid rgba(126,255,245,0.4);
-      border-radius: 1px 1px 0 0;
-    }
-
-    .sim-terminal {
-      background: #050709;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      padding: 1.5rem;
-      min-height: 320px;
-      color: #5a7a5a;
-      line-height: 1.9;
-    }
-    .t-green { color: #7efff5; }
-    .t-white { color: rgba(255,255,255,0.7); }
-    .t-dim { color: #2a3a2a; }
-    .t-orange { color: #ff9966; }
-    .t-purple { color: #a78bfa; }
-
-    .sim-landing {
-      background: linear-gradient(160deg, #06050f 0%, #0a0814 100%);
-      min-height: 320px;
-      padding: 2rem;
-      display: flex; flex-direction: column; justify-content: center;
-    }
+    .sim-bar-el { flex: 1; background: rgba(255,105,180,0.15); border-top: 1px solid rgba(255,105,180,0.4); border-radius: 1px 1px 0 0; }
+    .sim-landing { background: linear-gradient(160deg, #06050f 0%, #0a0814 100%); min-height: 320px; padding: 2rem; display: flex; flex-direction: column; justify-content: center; }
     .sim-hero-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; }
     .sim-hero-h1 { font-size: 1.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 0.75rem; }
     .sim-hero-sub { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
     .sim-btn { display: inline-block; background: var(--accent); color: #000; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; padding: 0.6rem 1.2rem; }
-
-    .sim-editor {
-      background: #050709;
-      min-height: 320px;
-      display: grid;
-      grid-template-columns: 160px 1fr;
-    }
-    .sim-sidebar {
-      border-right: 1px solid rgba(255,255,255,0.06);
-      padding: 1rem 0;
-    }
+    .sim-editor { background: #050709; min-height: 320px; display: grid; grid-template-columns: 160px 1fr; }
+    .sim-sidebar { border-right: 1px solid rgba(255,255,255,0.06); padding: 1rem 0; }
     .sim-file { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); padding: 0.3rem 1rem; cursor: default; }
     .sim-file.active { color: var(--text); background: rgba(255,255,255,0.04); }
     .sim-file-icon { margin-right: 0.4rem; font-size: 0.6rem; }
     .sim-code { padding: 1rem; font-family: var(--font-mono); font-size: 0.65rem; line-height: 2; color: #3a4a5c; }
-    .c-k { color: #a78bfa; }
-    .c-s { color: #7efff5; }
-    .c-n { color: #e8eaf0; }
-    .c-v { color: #ff9966; }
-    .c-c { color: #3a5c3a; }
-
-    /* Tour sidebar */
-    .tour-sidebar {
-      padding: 2.5rem 2rem;
-      display: flex; flex-direction: column;
-      overflow-y: auto;
-    }
-    .tour-slide-label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-    .tour-slide-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-    .tour-slide-desc {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.8;
-      flex: 1;
-    }
-    .tour-features {
-      margin-top: 1.5rem;
-      display: flex; flex-direction: column; gap: 0.5rem;
-    }
-    .tour-feature {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-      display: flex; align-items: flex-start; gap: 0.75rem;
-    }
-    .tour-feature::before {
-      content: '→';
-      color: var(--accent);
-      flex-shrink: 0;
-    }
-
-    /* Tour navigation */
-    .tour-nav {
-      padding: 1.5rem 3rem;
-      border-top: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-shrink: 0;
-    }
-    .tour-dots {
-      display: flex; gap: 0.5rem; align-items: center;
-    }
-    .tour-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--border);
-      border: 1px solid rgba(255,255,255,0.15);
-      transition: all 0.3s;
-      cursor: none;
-    }
-    .tour-dot.active {
-      width: 24px;
-      border-radius: 3px;
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-    .tour-btn {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      padding: 0.7rem 1.5rem;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      cursor: none;
-      transition: all 0.2s;
-      display: flex; align-items: center; gap: 0.5rem;
-    }
+    .c-k { color: #a78bfa; } .c-s { color: #7efff5; } .c-n { color: #e8eaf0; } .c-v { color: #ff9966; } .c-c { color: #3a5c3a; }
+    .sim-terminal { background: #050709; font-family: var(--font-mono); font-size: 0.7rem; padding: 1.5rem; min-height: 320px; color: #5a7a5a; line-height: 1.9; }
+    .t-green { color: #7efff5; } .t-white { color: rgba(255,255,255,0.7); } .t-dim { color: #2a3a2a; } .t-orange { color: #ff9966; } .t-purple { color: #a78bfa; }
+    .tour-sidebar { padding: 2.5rem 2rem; display: flex; flex-direction: column; overflow-y: auto; }
+    .tour-slide-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .tour-slide-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.2; }
+    .tour-slide-desc { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); line-height: 1.8; flex: 1; }
+    .tour-features { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .tour-feature { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); display: flex; align-items: flex-start; gap: 0.75rem; }
+    .tour-feature::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+    .tour-nav { padding: 1.5rem 3rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .tour-dots { display: flex; gap: 0.5rem; align-items: center; }
+    .tour-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s; cursor: none; }
+    .tour-dot.active { width: 24px; border-radius: 3px; background: var(--accent); border-color: var(--accent); }
+    .tour-btn { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; padding: 0.7rem 1.5rem; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: none; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; }
     .tour-btn:hover { border-color: var(--accent); color: var(--accent); }
     .tour-btn:disabled { opacity: 0.2; pointer-events: none; }
-    .tour-counter {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
+    .tour-counter { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
     .tour-counter em { color: var(--text); font-style: normal; }
-
-    /* ── Contact ── */
     #contact { max-width: 1200px; margin: 0 auto; padding: 7rem 3rem; }
-    .contact-inner {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start;
-    }
-    .contact-left h2 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 1.5rem;
-    }
-    .contact-left h2 em {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-weight: 400;
-      color: var(--accent);
-    }
-    .contact-left p {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    .contact-left h2 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1; margin-bottom: 1.5rem; }
+    .contact-left h2 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--accent); }
+    .contact-left p { font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
     .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
-    .contact-link {
-      display: flex; align-items: center; gap: 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 1rem 1.25rem;
-      border: 1px solid var(--border);
-      transition: all 0.2s;
-    }
-    .contact-link:hover { color: var(--accent); border-color: rgba(126,255,245,0.3); }
+    .contact-link { display: flex; align-items: center; gap: 1rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--muted); text-decoration: none; padding: 1rem 1.25rem; border: 1px solid var(--border); transition: all 0.2s; }
+    .contact-link:hover { color: var(--accent); border-color: rgba(255,105,180,0.3); }
     .contact-link-icon { font-size: 0.9rem; width: 20px; text-align: center; }
-
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .form-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-    .form-input, .form-textarea {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      padding: 0.85rem 1rem;
-      outline: none;
-      transition: border-color 0.2s;
-      resize: none;
-    }
-    .form-input:focus, .form-textarea:focus { border-color: rgba(126,255,245,0.4); }
-    .form-textarea { min-height: 120px; }
-
-    /* ── Footer ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 3rem;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .footer-text {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
+    footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; align-items: center; justify-content: space-between; }
+    .footer-text { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
     .footer-text a { color: var(--accent); text-decoration: none; }
-
-    /* ── Scroll Reveal ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── Responsive ── */
+    /* ── Tablet ── */
     @media (max-width: 900px) {
       nav { padding: 1.25rem 1.5rem; }
       #hero { padding: 7rem 1.5rem 4rem; }
@@ -946,15 +207,104 @@
       .tour-body { grid-template-columns: 1fr; }
       .tour-sidebar { display: none; }
       footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .projects-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .projects-header p { text-align: left !important; max-width: 100% !important; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      /* Hide custom cursor on touch devices */
+      .cursor, .cursor-ring { display: none; }
+      body { cursor: auto; }
+      .btn { cursor: pointer; }
+      .project-card { cursor: pointer; }
+      .tour-close, .tour-btn, .tour-dot { cursor: pointer; }
+
+      /* Nav — compact with hamburger feel */
+      nav { padding: 1rem 1.25rem; background: rgba(8,10,15,0.95); backdrop-filter: blur(12px); }
+      .nav-logo { font-size: 0.8rem; }
+      .nav-links { gap: 1.25rem; }
+      .nav-links a { font-size: 0.7rem; letter-spacing: 0.08em; }
+
+      /* Hero */
+      #hero { padding: 6rem 1.25rem 3rem; min-height: 100svh; }
+      .hero-name { font-size: clamp(3rem, 14vw, 5rem); line-height: 0.88; }
+      .hero-eyebrow { font-size: 0.68rem; letter-spacing: 0.15em; margin-bottom: 1rem; }
+      .hero-tagline { font-size: 0.82rem; margin-bottom: 2rem; max-width: 100%; }
+      .hero-tagline br { display: none; }
+      .hero-cta { flex-direction: column; gap: 0.75rem; }
+      .btn { padding: 0.9rem 1.5rem; font-size: 0.75rem; text-align: center; }
+      .hero-scroll-hint { display: none; }
+
+      /* About */
+      #about { padding: 4rem 1.25rem; gap: 2.5rem; }
+      .section-label { margin-bottom: 2rem; font-size: 0.65rem; }
+      .about-text h2 { font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 1.25rem; }
+      .about-text p { font-size: 0.82rem; }
+      .stack-cloud { gap: 0.5rem; margin-top: 1.5rem; }
+      .stack-tag { font-size: 0.68rem; padding: 0.35rem 0.7rem; }
+      .about-stats { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .stat-card { padding: 1.1rem; }
+      .stat-number { font-size: 2rem; }
+      .stat-label { font-size: 0.62rem; }
+
+      /* Projects */
+      #projects { padding: 4rem 1.25rem; }
+      .projects-title { font-size: clamp(2rem, 8vw, 3rem); }
+      .projects-header { margin-bottom: 2rem; }
+      .projects-header > div > p { display: none; }
+
+      /* Project cards — full width, touch-friendly */
+      .project-card { grid-column: span 12 !important; }
+      .project-card:nth-child(1) .project-visual { height: 160px; }
+      .project-visual { height: 120px; margin: 0 1.25rem 1.25rem; }
+      .project-card-inner { padding: 1.25rem; }
+      .project-title { font-size: 1.3rem !important; }
+      .project-desc { font-size: 0.78rem; }
+      .project-meta { margin-bottom: 1rem; }
+      /* Always show tour hint on mobile (no hover) */
+      .card-tour-hint { opacity: 1 !important; margin-top: 1rem; }
+      .project-accent-line { width: 40px !important; }
+
+      /* Contact */
+      #contact { padding: 4rem 1.25rem; }
+      .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-left h2 { font-size: clamp(2rem, 8vw, 3rem); }
+      .contact-left p { font-size: 0.8rem; }
+      .contact-link { font-size: 0.75rem; padding: 0.875rem 1rem; }
+
+      /* Footer */
+      footer { padding: 1.5rem 1.25rem; flex-direction: column; gap: 0.4rem; text-align: center; }
+      .footer-text { font-size: 0.65rem; }
+
+      /* Tour Modal — full screen on mobile */
+      .tour-topbar { padding: 1rem 1.25rem; }
+      .tour-title { font-size: 0.65rem; }
+      .tour-project-name { font-size: 0.95rem; }
+      .tour-close { width: 40px; height: 40px; font-size: 1.1rem; }
+      .tour-body { grid-template-columns: 1fr; }
+      .tour-sidebar { display: none; }
+      .tour-slideshow { min-height: 55vh; }
+      .sim-screen { width: 92%; max-width: 100%; }
+      .tour-nav { padding: 1rem 1.25rem; }
+      .tour-btn { padding: 0.6rem 1rem; font-size: 0.7rem; cursor: pointer; }
+      .tour-counter { font-size: 0.7rem; }
+      .tour-dots { gap: 0.4rem; }
+    }
+
+    /* ── Very small phones ── */
+    @media (max-width: 380px) {
+      .hero-name { font-size: clamp(2.5rem, 14vw, 4rem); }
+      nav { padding: 0.875rem 1rem; }
+      .nav-links { gap: 1rem; }
+      #hero { padding: 5.5rem 1rem 2.5rem; }
+      #about, #projects, #contact { padding: 3.5rem 1rem; }
     }
   </style>
 </head>
 <body>
-
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursorRing"></div>
-
-  <!-- NAV -->
   <nav>
     <a class="nav-logo" href="#">MJ_DEV</a>
     <ul class="nav-links">
@@ -963,80 +313,36 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
-
-  <!-- HERO -->
   <div id="hero">
     <div class="hero-bg-grid"></div>
     <div class="hero-glow hero-glow-1"></div>
     <div class="hero-glow hero-glow-2"></div>
-
     <p class="hero-eyebrow">Available for opportunities · Based in OR</p>
-    <h1 class="hero-name">
-      Merel<br /><em>SaaS Engineer</em>
-    </h1>
-    <p class="hero-tagline">
-      I build <span>SaaS products</span> that don't suck.<br />
-      Full-stack engineer obsessed with clean architecture<br />
-      and interfaces people actually enjoy using.
-    </p>
+    <h1 class="hero-name">Merel<br /><em>SaaS Engineer</em></h1>
+    <p class="hero-tagline">I build <span>SaaS products</span> that don't suck.<br />Full-stack engineer obsessed with clean architecture<br />and interfaces people actually enjoy using.</p>
     <div class="hero-cta">
       <a href="#projects" class="btn btn-primary">View My Work</a>
       <a href="#contact" class="btn btn-ghost">Let's Talk</a>
     </div>
-
-    <div class="hero-scroll-hint">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
-    </div>
+    <div class="hero-scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
   </div>
-
-  <!-- ABOUT -->
   <div id="about">
     <div class="about-text reveal">
       <div class="section-label">01 — About</div>
-           <h2>I ship things<br /><em>fast</em> &amp; <em>right.</em></h2>
+      <h2>I ship things<br /><em>fast</em> &amp; <em>right.</em></h2>
       <p>I love to code and build things you'll actually use — from early prototypes to <strong>production SaaS</strong> serving real paying customers.</p>
       <p>My sweet spot is the full stack: architecting <strong>scalable backends</strong>, crafting <strong>slick UIs</strong>, and everything in between. Product-driven mindset with quick and quality deliverables.</p>
       <div class="stack-cloud">
-        <span class="stack-tag">TypeScript</span>
-        <span class="stack-tag">React</span>
-        <span class="stack-tag">Next.js</span>
-        <span class="stack-tag">Node.js</span>
-        <span class="stack-tag">Postgres</span>
-        <span class="stack-tag">Prisma</span>
-        <span class="stack-tag">Microsoft</span>
-        <span class="stack-tag">Tailwind</span>
-        <span class="stack-tag">Stripe</span> 
-        <span class="stack-tag">Render</span>
-        <span class="stack-tag">AWS</span>
-        <span class="stack-tag">Docker</span>
-        <span class="stack-tag">Redis</span>
-        <span class="stack-tag">Digital Ocean</span>
-        <span class="stack-tag">Python</span>
-        <span class="stack-tag">AL Lang</span>
+        <span class="stack-tag">TypeScript</span><span class="stack-tag">React</span><span class="stack-tag">Next.js</span><span class="stack-tag">Node.js</span><span class="stack-tag">Ruby on Rails</span><span class="stack-tag">Postgres</span><span class="stack-tag">Prisma</span><span class="stack-tag">Microsoft</span><span class="stack-tag">Tailwind</span><span class="stack-tag">Stripe</span><span class="stack-tag">Render</span><span class="stack-tag">AWS</span><span class="stack-tag">Docker</span><span class="stack-tag">Redis</span><span class="stack-tag">Digital Ocean</span><span class="stack-tag">Python</span><span class="stack-tag">AL Lang</span>
       </div>
     </div>
     <div class="about-stats reveal">
-      <div class="stat-card">
-        <div class="stat-number">4<span>+</span></div>
-        <div class="stat-label">Years Building</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">12<span>k</span></div>
-        <div class="stat-label">Users Across Projects</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">10<span>+</span></div>
-        <div class="stat-label">SaaS Products Shipped</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">0</div>
-        <div class="stat-label">Unfinished Excuses</div>
-      </div>
+      <div class="stat-card"><div class="stat-number">4<span>+</span></div><div class="stat-label">Years Building</div></div>
+      <div class="stat-card"><div class="stat-number">12<span>k</span></div><div class="stat-label">Users Across Projects</div></div>
+      <div class="stat-card"><div class="stat-number">10<span>+</span></div><div class="stat-label">SaaS Products Shipped</div></div>
+      <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Unfinished Excuses</div></div>
     </div>
   </div>
-
-  <!-- PROJECTS -->
   <div id="projects">
     <div class="projects-header reveal">
       <div>
@@ -1045,54 +351,85 @@
       </div>
       <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);max-width:240px;line-height:1.8;text-align:right;">Click any card for an interactive visual tour of the product</p>
     </div>
-
     <div class="projects-grid reveal">
 
-      <!-- Card 1: Large featured -->
+      <!-- Card 1: Intel (large featured) -->
       <div class="project-card" data-project="0">
-        <div class="project-accent-line"></div>
-        <div class="project-visual">
-          <div class="project-visual-bar">
+        <div class="project-accent-line" style="background:#2563eb"></div>
+        <div class="project-visual" style="background:#f1f5f9;">
+          <div class="project-visual-bar" style="background:#1e293b;border-bottom:1px solid #0f172a;">
             <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-            <div class="sim-url" style="font-size:0.55rem;">◉ &nbsp;launchpad.app/dashboard</div>
+            <div style="margin-left:0.5rem;display:flex;gap:1rem;align-items:center;">
+              <span style="font-size:0.55rem;font-weight:800;color:#facc15;letter-spacing:0.05em;">✦ intel</span>
+              <span style="font-size:0.5rem;color:rgba(255,255,255,0.4);">Dashboard</span>
+              <span style="font-size:0.5rem;color:rgba(255,255,255,0.4);">Bulk Ops</span>
+              <span style="font-size:0.5rem;color:rgba(255,255,255,0.4);">Team</span>
+            </div>
           </div>
-          <div class="project-visual-content">
-            <div class="visual-saas">
-              <div class="visual-saas-ui">
-                <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);margin-bottom:6px;">MONTHLY REVENUE</div>
-                <div class="fake-chart">
-                  <div class="fake-bar" style="height:40%"></div>
-                  <div class="fake-bar" style="height:55%"></div>
-                  <div class="fake-bar" style="height:45%"></div>
-                  <div class="fake-bar" style="height:70%"></div>
-                  <div class="fake-bar" style="height:60%"></div>
-                  <div class="fake-bar" style="height:85%"></div>
-                  <div class="fake-bar" style="height:75%"></div>
-                  <div class="fake-bar" style="height:100%"></div>
-                </div>
+          <div class="project-visual-content" style="background:#f1f5f9;padding:0.5rem;flex-direction:column;gap:0.35rem;align-items:stretch;">
+            <div style="background:#1e293b;border-radius:6px;padding:0.5rem 0.75rem;display:flex;align-items:center;justify-content:space-between;">
+              <div style="font-size:0.65rem;font-weight:800;color:#fff;">Brands</div>
+              <div style="display:flex;gap:1rem;">
+                <div style="text-align:center;"><div style="font-size:0.4rem;color:rgba(255,255,255,0.4);text-transform:uppercase;">TOTAL</div><div style="font-size:0.8rem;font-weight:800;color:#fff;">14</div></div>
+                <div style="text-align:center;"><div style="font-size:0.4rem;color:rgba(255,255,255,0.4);text-transform:uppercase;">FOLLOWING</div><div style="font-size:0.8rem;font-weight:800;color:#4ade80;">1</div></div>
+              </div>
+              <div style="background:#2563eb;border-radius:4px;padding:2px 8px;font-size:0.48rem;font-weight:700;color:#fff;">New Brand</div>
+            </div>
+            <div style="background:#fff;border-radius:5px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+              <div style="display:grid;grid-template-columns:1.5fr 1fr 0.8fr 0.8fr 0.8fr 0.6fr;padding:0.3rem 0.6rem;border-bottom:1px solid #f1f5f9;">
+                <span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Brand</span>
+                <span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Last Scanned</span>
+                <span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Products</span>
+                <span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Index Rating</span>
+                <span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Changes</span>
+                <span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Actions</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1.5fr 1fr 0.8fr 0.8fr 0.8fr 0.6fr;padding:0.4rem 0.6rem;align-items:center;border-bottom:1px solid #f8fafc;">
+                <span style="font-size:0.58rem;font-weight:700;color:#111;">Carhartt</span>
+                <span style="font-size:0.52rem;color:#64748b;">Mar 15, 2026</span>
+                <span style="font-size:0.52rem;color:#334155;">112</span>
+                <span style="font-size:0.52rem;color:#334155;">75%</span>
+                <span style="background:#fecaca;color:#991b1b;font-size:0.48rem;font-weight:700;padding:1px 5px;border-radius:3px;display:inline-block;">16757</span>
+                <div style="display:flex;gap:0.2rem;"><div style="border:1px solid #e2e8f0;border-radius:3px;padding:1px 5px;font-size:0.42rem;color:#475569;">View</div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1.5fr 1fr 0.8fr 0.8fr 0.8fr 0.6fr;padding:0.4rem 0.6rem;align-items:center;border-bottom:1px solid #f8fafc;">
+                <span style="font-size:0.58rem;font-weight:600;color:#334155;">Nike</span>
+                <span style="font-size:0.52rem;color:#64748b;">Mar 14, 2026</span>
+                <span style="font-size:0.52rem;color:#334155;">284</span>
+                <span style="font-size:0.52rem;color:#334155;">82%</span>
+                <span style="background:#fef3c7;color:#92400e;font-size:0.48rem;font-weight:700;padding:1px 5px;border-radius:3px;display:inline-block;">4,291</span>
+                <div style="display:flex;gap:0.2rem;"><div style="border:1px solid #e2e8f0;border-radius:3px;padding:1px 5px;font-size:0.42rem;color:#475569;">View</div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1.5fr 1fr 0.8fr 0.8fr 0.8fr 0.6fr;padding:0.4rem 0.6rem;align-items:center;">
+                <span style="font-size:0.58rem;font-weight:600;color:#334155;">Patagonia</span>
+                <span style="font-size:0.52rem;color:#64748b;">Mar 13, 2026</span>
+                <span style="font-size:0.52rem;color:#334155;">97</span>
+                <span style="font-size:0.52rem;color:#334155;">91%</span>
+                <span style="background:#dcfce7;color:#166534;font-size:0.48rem;font-weight:700;padding:1px 5px;border-radius:3px;display:inline-block;">312</span>
+                <div style="display:flex;gap:0.2rem;"><div style="border:1px solid #e2e8f0;border-radius:3px;padding:1px 5px;font-size:0.42rem;color:#475569;">View</div></div>
               </div>
             </div>
           </div>
         </div>
         <div class="project-card-inner">
           <div class="project-meta">
-            <span class="project-year">2024</span>
+            <span class="project-year">2025</span>
             <div class="project-tags-mini">
-              <span class="project-tag-mini">SaaS</span>
-              <span class="project-tag-mini">Next.js</span>
-              <span class="project-tag-mini">Stripe</span>
+              <span class="project-tag-mini" style="color:#2563eb;border-color:rgba(37,99,235,0.3);">Ruby on Rails</span>
+              <span class="project-tag-mini" style="color:#2563eb;border-color:rgba(37,99,235,0.3);">Scraping</span>
+              <span class="project-tag-mini" style="color:#2563eb;border-color:rgba(37,99,235,0.3);">Amazon</span>
             </div>
           </div>
-          <h3 class="project-title">LaunchPad</h3>
-          <p class="project-desc">A B2B analytics SaaS for indie founders. Real-time MRR tracking, churn prediction, and cohort analysis. 400+ active paying customers, $8k MRR.</p>
-          <div class="card-tour-hint">
+          <h3 class="project-title">Intel</h3>
+          <p class="project-desc">Amazon catalog intelligence platform built in Ruby on Rails. Scrapes product data, tracks indexation changes, content scores, and variation diffs — giving marketing teams a live view of their entire catalog.</p>
+          <div class="card-tour-hint" style="color:#2563eb;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             Take a visual tour
           </div>
         </div>
       </div>
 
-           <!-- Card 2 -->
+      <!-- Card 2: Dialed Fitness -->
       <div class="project-card" data-project="1">
         <div class="project-accent-line" style="background:#adff2f"></div>
         <div class="project-visual" style="background:#0a0a0a;">
@@ -1101,7 +438,7 @@
             <div class="sim-url" style="font-size:0.55rem;color:#555;">dialedfitnessclub.com</div>
           </div>
           <div class="project-visual-content" style="background:#0a0a0a;">
-            <div style="width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;padding-bottom:0;overflow:hidden;">
+            <div style="width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;">
               <div style="width:120px;background:#0a0a0a;border-radius:8px 8px 0 0;border:1px solid #1e1e1e;border-bottom:none;padding:0.75rem 0.625rem;display:flex;flex-direction:column;gap:0.4rem;">
                 <div style="font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:800;color:#adff2f;">Dialed Fitness</div>
                 <div style="font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:800;color:#fff;">Hello, <span style="color:#adff2f;">Mimi</span></div>
@@ -1134,7 +471,8 @@
           </div>
         </div>
       </div>
-       <!-- Card 3 -->
+
+      <!-- Card 3: Ignite Appreciation -->
       <div class="project-card" data-project="2">
         <div class="project-accent-line" style="background:#5b6cf9"></div>
         <div class="project-visual" style="background:#f0f2ff;">
@@ -1144,30 +482,15 @@
           </div>
           <div class="project-visual-content" style="background:#f0f2ff;">
             <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:0.75rem;gap:0.5rem;">
-              <!-- Mini feed card -->
               <div style="flex:1;background:#fff;border-radius:8px;padding:0.6rem;box-shadow:0 2px 8px rgba(91,108,249,0.12);">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;">
-                  <div style="font-size:0.6rem;font-weight:700;color:#1a1f3a;">Peggy Z.</div>
-                  <div style="font-size:0.55rem;color:#f5a623;">★ +10</div>
-                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;"><div style="font-size:0.6rem;font-weight:700;color:#1a1f3a;">Peggy Z.</div><div style="font-size:0.55rem;color:#f5a623;">★ +10</div></div>
                 <div style="font-size:0.55rem;color:#666;line-height:1.5;margin-bottom:0.35rem;">recognized by Jeff R.</div>
                 <div style="font-size:0.58rem;color:#333;line-height:1.5;">"Always helping customers — thank you!"</div>
-                <div style="margin-top:0.4rem;display:flex;gap:0.3rem;flex-wrap:wrap;">
-                  <span style="font-size:0.48rem;background:#eef0ff;color:#5b6cf9;padding:1px 5px;border-radius:20px;">🤝 Selfless Service</span>
-                </div>
+                <div style="margin-top:0.4rem;"><span style="font-size:0.48rem;background:#eef0ff;color:#5b6cf9;padding:1px 5px;border-radius:20px;">🤝 Selfless Service</span></div>
               </div>
-              <!-- Stats sidebar -->
               <div style="display:flex;flex-direction:column;gap:0.4rem;width:55px;">
-                <div style="background:#5b6cf9;border-radius:6px;padding:0.4rem;text-align:center;">
-                  <div style="font-size:0.42rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;">TO GIVE</div>
-                  <div style="font-size:0.85rem;font-weight:800;color:#fff;line-height:1.1;">40</div>
-                  <div style="font-size:0.42rem;color:rgba(255,255,255,0.6);">stars</div>
-                </div>
-                <div style="background:#fff;border-radius:6px;padding:0.4rem;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
-                  <div style="font-size:0.42rem;color:#999;text-transform:uppercase;letter-spacing:0.05em;">AVAILABLE</div>
-                  <div style="font-size:0.85rem;font-weight:800;color:#f5a623;line-height:1.1;">70</div>
-                  <div style="font-size:0.42rem;color:#999;">stars</div>
-                </div>
+                <div style="background:#5b6cf9;border-radius:6px;padding:0.4rem;text-align:center;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.6);text-transform:uppercase;">TO GIVE</div><div style="font-size:0.85rem;font-weight:800;color:#fff;line-height:1.1;">40</div><div style="font-size:0.42rem;color:rgba(255,255,255,0.6);">stars</div></div>
+                <div style="background:#fff;border-radius:6px;padding:0.4rem;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.08);"><div style="font-size:0.42rem;color:#999;text-transform:uppercase;">AVAILABLE</div><div style="font-size:0.85rem;font-weight:800;color:#f5a623;line-height:1.1;">70</div><div style="font-size:0.42rem;color:#999;">stars</div></div>
               </div>
             </div>
           </div>
@@ -1190,8 +513,7 @@
         </div>
       </div>
 
-      <!-- Card 4 -->
-    <!-- Card 4 -->
+      <!-- Card 4: Campaign Tracker -->
       <div class="project-card" data-project="3">
         <div class="project-accent-line" style="background:#b91c1c"></div>
         <div class="project-visual" style="background:#f0efec;">
@@ -1201,10 +523,7 @@
           </div>
           <div class="project-visual-content" style="background:#f0efec;padding:0.6rem;align-items:flex-start;">
             <div style="width:100%;background:#0f2033;border-radius:6px;padding:0.6rem;display:flex;align-items:center;justify-content:space-between;">
-              <div>
-                <div style="font-size:0.62rem;font-weight:800;color:#fff;">Campaigns</div>
-                <div style="font-size:0.48rem;color:rgba(255,255,255,0.5);margin-top:1px;">Manage influencer campaigns</div>
-              </div>
+              <div><div style="font-size:0.62rem;font-weight:800;color:#fff;">Campaigns</div><div style="font-size:0.48rem;color:rgba(255,255,255,0.5);margin-top:1px;">Manage influencer campaigns</div></div>
               <div style="display:flex;gap:0.75rem;align-items:center;">
                 <div style="text-align:center;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.5);text-transform:uppercase;">TOTAL</div><div style="font-size:0.85rem;font-weight:800;color:#fff;">3</div></div>
                 <div style="text-align:center;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.5);text-transform:uppercase;">ACTIVE</div><div style="font-size:0.85rem;font-weight:800;color:#4ade80;">1</div></div>
@@ -1214,24 +533,24 @@
             <div style="width:100%;margin-top:0.4rem;display:flex;flex-direction:column;gap:0.25rem;">
               <div style="background:#fff;border-radius:4px;padding:0.35rem 0.5rem;display:flex;align-items:center;gap:0.4rem;">
                 <div style="width:3px;height:24px;border-radius:2px;background:#22c55e;flex-shrink:0;"></div>
-                <div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;">TEA</div></div>
-                <div style="background:#dcfce7;color:#166534;font-size:0.42rem;padding:1px 5px;border-radius:20px;flex-shrink:0;">Live</div>
-                <div style="font-size:0.48rem;color:#888;flex-shrink:0;">1.6K</div>
-                <div style="background:#b91c1c;color:#fff;font-size:0.42rem;font-weight:700;padding:2px 5px;border-radius:3px;flex-shrink:0;">Stats</div>
+                <div style="flex:1;"><div style="font-size:0.6rem;font-weight:700;color:#111;">TEA</div></div>
+                <div style="background:#dcfce7;color:#166534;font-size:0.42rem;padding:1px 5px;border-radius:20px;">Live</div>
+                <div style="font-size:0.48rem;color:#888;">1.6K</div>
+                <div style="background:#b91c1c;color:#fff;font-size:0.42rem;font-weight:700;padding:2px 5px;border-radius:3px;">Stats</div>
               </div>
               <div style="background:#fff;border-radius:4px;padding:0.35rem 0.5rem;display:flex;align-items:center;gap:0.4rem;">
                 <div style="width:3px;height:24px;border-radius:2px;background:#22c55e;flex-shrink:0;"></div>
-                <div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;">OSIW</div></div>
-                <div style="background:#f3f4f6;color:#6b7280;font-size:0.42rem;padding:1px 5px;border-radius:20px;flex-shrink:0;">Archived</div>
-                <div style="font-size:0.48rem;color:#888;flex-shrink:0;">13</div>
-                <div style="background:#b91c1c;color:#fff;font-size:0.42rem;font-weight:700;padding:2px 5px;border-radius:3px;flex-shrink:0;">Stats</div>
+                <div style="flex:1;"><div style="font-size:0.6rem;font-weight:700;color:#111;">OSIW</div></div>
+                <div style="background:#f3f4f6;color:#6b7280;font-size:0.42rem;padding:1px 5px;border-radius:20px;">Archived</div>
+                <div style="font-size:0.48rem;color:#888;">13</div>
+                <div style="background:#b91c1c;color:#fff;font-size:0.42rem;font-weight:700;padding:2px 5px;border-radius:3px;">Stats</div>
               </div>
               <div style="background:#fff;border-radius:4px;padding:0.35rem 0.5rem;display:flex;align-items:center;gap:0.4rem;">
                 <div style="width:3px;height:24px;border-radius:2px;background:#a78bfa;flex-shrink:0;"></div>
-                <div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Mental Health Matters</div></div>
-                <div style="background:#f3f4f6;color:#6b7280;font-size:0.42rem;padding:1px 5px;border-radius:20px;flex-shrink:0;">Archived</div>
-                <div style="font-size:0.48rem;color:#888;flex-shrink:0;">7.59K</div>
-                <div style="background:#b91c1c;color:#fff;font-size:0.42rem;font-weight:700;padding:2px 5px;border-radius:3px;flex-shrink:0;">Stats</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Mental Health Matters</div></div>
+                <div style="background:#f3f4f6;color:#6b7280;font-size:0.42rem;padding:1px 5px;border-radius:20px;">Archived</div>
+                <div style="font-size:0.48rem;color:#888;">7.59K</div>
+                <div style="background:#b91c1c;color:#fff;font-size:0.42rem;font-weight:700;padding:2px 5px;border-radius:3px;">Stats</div>
               </div>
             </div>
           </div>
@@ -1254,16 +573,38 @@
         </div>
       </div>
 
-      <!-- Card 5 -->
+       <!-- Card 5: AV Projects -->
       <div class="project-card" data-project="4">
-        <div class="project-accent-line"></div>
-        <div class="project-visual">
-          <div class="project-visual-bar">
+        <div class="project-accent-line" style="background:#0ea5e9"></div>
+        <div class="project-visual" style="background:#f5f4f0;">
+          <div class="project-visual-bar" style="background:#fff;border-bottom:1px solid #e8e6e0;">
             <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            <div class="sim-url" style="font-size:0.52rem;color:#999;">avprojects.app/dashboard</div>
           </div>
-          <div class="project-visual-content">
-            <div class="visual-ai">
-              <div class="ai-orb"></div>
+          <div class="project-visual-content" style="background:#f5f4f0;padding:0.5rem;align-items:flex-start;flex-direction:column;gap:0.3rem;">
+            <div style="display:flex;gap:0.3rem;width:100%;">
+              <div style="background:#fff;border-radius:6px;padding:0.4rem 0.5rem;flex:1;border:1px solid #e8e6e0;">
+                <div style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">PROJECTS</div>
+                <div style="font-size:0.85rem;font-weight:800;color:#111;line-height:1;">2</div>
+              </div>
+              <div style="background:#fff;border-radius:6px;padding:0.4rem 0.5rem;flex:1;border:1px solid #e8e6e0;">
+                <div style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">INVOICED</div>
+                <div style="font-size:0.85rem;font-weight:800;color:#111;line-height:1;">$12k</div>
+              </div>
+              <div style="background:#fff;border-radius:6px;padding:0.4rem 0.5rem;flex:1;border:1px solid #e8e6e0;">
+                <div style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">MARGIN</div>
+                <div style="font-size:0.85rem;font-weight:800;color:#0ea5e9;line-height:1;">45%</div>
+              </div>
+            </div>
+            <div style="background:#fff;border-radius:6px;padding:0.4rem 0.5rem;width:100%;border:1px solid #e8e6e0;">
+              <div style="font-size:0.42rem;color:#333;font-weight:700;margin-bottom:0.3rem;">Nike HQ Conference Room AV</div>
+              <div style="display:flex;align-items:center;gap:0.3rem;">
+                <div style="flex:1;height:4px;background:#fee2e2;border-radius:2px;overflow:hidden;">
+                  <div style="height:100%;width:80%;background:#ef4444;border-radius:2px;"></div>
+                </div>
+                <span style="font-size:0.4rem;color:#ef4444;font-weight:700;">450%</span>
+              </div>
+              <div style="font-size:0.38rem;color:#999;margin-top:2px;">9.0h / 2h estimated</div>
             </div>
           </div>
         </div>
@@ -1271,23 +612,21 @@
           <div class="project-meta">
             <span class="project-year">2025</span>
             <div class="project-tags-mini">
-              <span class="project-tag-mini">AI</span>
-              <span class="project-tag-mini">Python</span>
+              <span class="project-tag-mini" style="color:#0ea5e9;border-color:rgba(14,165,233,0.3);">SaaS</span>
+              <span class="project-tag-mini" style="color:#0ea5e9;border-color:rgba(14,165,233,0.3);">Next.js</span>
+              <span class="project-tag-mini" style="color:#0ea5e9;border-color:rgba(14,165,233,0.3);">B2B</span>
             </div>
           </div>
-          <h3 class="project-title">Cognify</h3>
-          <p class="project-desc">RAG pipeline for enterprise knowledge bases. Plug in your Notion/Confluence, get a GPT-4 powered Q&amp;A bot.</p>
-          <div class="card-tour-hint">
+          <h3 class="project-title">AV Projects</h3>
+          <p class="project-desc">Project management SaaS for AV integrators. Quotes, purchase orders, time tracking, subscriptions, and margin reporting — all in one clean dashboard.</p>
+          <div class="card-tour-hint" style="color:#0ea5e9;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             Take a visual tour
           </div>
         </div>
       </div>
+  </div>
 
-    </div><!-- /projects-grid -->
-  </div><!-- /projects -->
-
-  <!-- CONTACT -->
   <div id="contact">
     <div class="contact-inner reveal">
       <div class="contact-left">
@@ -1295,60 +634,25 @@
         <h2>Let's build<br />something <em>real.</em></h2>
         <p>Whether it's a full-time role, a contract gig, or just talking shop about tech — my inbox is always open.</p>
         <div class="contact-links">
-          <a href="mailto:merelbjacobs@gmail.com" class="contact-link">
-            <span class="contact-link-icon">✉</span>
-            merelbjacobs@gmail.com
-          </a>
-          <a href="https://github.com/MerelJac" class="contact-link" target="_blank">
-            <span class="contact-link-icon">⌥</span>
-            github.com/MerelJac
-          </a>
-          <a href="https://www.linkedin.com/in/merel-b-jacobs/" class="contact-link" target="_blank">
-            <span class="contact-link-icon">↗</span>
-            linkedin.com/in/merel-b-jacobs
-          </a>
-          <!-- <a href="#" class="contact-link">
-            <span class="contact-link-icon">⬇</span>
-            Download Resume (PDF)
-          </a> -->
+          <a href="mailto:merelbjacobs@gmail.com" class="contact-link"><span class="contact-link-icon">✉</span>merelbjacobs@gmail.com</a>
+          <a href="https://github.com/MerelJac" class="contact-link" target="_blank"><span class="contact-link-icon">⌥</span>github.com/MerelJac</a>
+          <a href="https://www.linkedin.com/in/merel-b-jacobs/" class="contact-link" target="_blank"><span class="contact-link-icon">↗</span>linkedin.com/in/merel-b-jacobs</a>
         </div>
-      </div>`
-      <!-- <div class="contact-form">
-        <div class="form-group">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-input" placeholder="Your name" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" placeholder="your@email.com" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Message</label>
-          <textarea class="form-textarea" placeholder="What's on your mind?"></textarea>
-        </div>
-        <button class="btn btn-primary" style="align-self:flex-start;border:none;">Send Message</button>
       </div>
-    </div> -->
+    </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <p class="footer-text">© 2026 <a href="#">Merel Jacobs</a>. Built with drive, not nonsense.</p>
   </footer>
 
-  <!-- TOUR MODAL -->
   <div id="tour-modal">
     <div class="tour-topbar">
-      <div>
-        <div class="tour-title">Visual Tour</div>
-        <div class="tour-project-name" id="tour-project-name">LaunchPad</div>
-      </div>
+      <div><div class="tour-title">Visual Tour</div><div class="tour-project-name" id="tour-project-name">Intel</div></div>
       <button class="tour-close" id="tour-close">✕</button>
     </div>
     <div class="tour-body">
-      <div class="tour-slideshow" id="tour-slideshow">
-        <!-- Slides injected by JS -->
-      </div>
+      <div class="tour-slideshow" id="tour-slideshow"></div>
       <div class="tour-sidebar">
         <div class="tour-slide-label" id="slide-label">Overview</div>
         <div class="tour-slide-title" id="slide-title">Loading...</div>
@@ -1367,56 +671,35 @@
   </div>
 
   <script>
-    // ── Cursor ──
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
-    });
-    (function animRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
-      requestAnimationFrame(animRing);
-    })();
-
-    // ── Scroll Reveal ──
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.transform = `translate(${mx-6}px,${my-6}px)`; });
+    (function animRing() { rx += (mx-rx)*0.12; ry += (my-ry)*0.12; ring.style.transform = `translate(${rx-18}px,${ry-18}px)`; requestAnimationFrame(animRing); })();
+    const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // ── Tour Data ──
     const projects = [
       {
-        name: "LaunchPad",
+        name: "Intel",
         slides: [
           {
-            label: "01 — Overview",
-            title: "The Dashboard",
-            desc: "The main dashboard gives founders an instant pulse on their business. MRR, churn, and new signups front and center — no digging required.",
-            features: ["Live MRR counter with sparklines", "Churn rate with trend arrows", "New vs. returning customers split"],
-            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">launchpad.app/dashboard</div></div><div class="sim-body"><div class="sim-dashboard-header"><div class="sim-h1">Dashboard</div><div class="sim-badge">↑ 12% this month</div></div><div class="sim-cards"><div class="sim-card"><div class="sim-card-label">MRR</div><div class="sim-card-val green">$8,240</div></div><div class="sim-card"><div class="sim-card-label">Churn</div><div class="sim-card-val">2.1%</div></div><div class="sim-card"><div class="sim-card-label">Users</div><div class="sim-card-val">412</div></div></div><div class="sim-chart-row"><div class="sim-bar-el" style="height:40%"></div><div class="sim-bar-el" style="height:55%"></div><div class="sim-bar-el" style="height:50%"></div><div class="sim-bar-el" style="height:70%"></div><div class="sim-bar-el" style="height:65%"></div><div class="sim-bar-el" style="height:85%"></div><div class="sim-bar-el" style="height:80%"></div><div class="sim-bar-el" style="height:100%"></div></div><div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);margin-top:0.5rem;">Revenue trend — last 8 months</div></div>`
+            label: "01 — Dashboard",
+            title: "Your Brand Intelligence Hub",
+            desc: "The Intel dashboard gives marketing teams a live overview of every brand they track on Amazon — last scraped, product count, indexation rating, content score, and a changes counter that lights up red when something shifts.",
+            features: ["Follow brands to monitor catalog changes daily", "Index & content rating per brand at a glance", "Red badge shows total pending changes for review"],
+            screen: `<div style="background:#f8fafc;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;"><div style="background:#1e293b;padding:0.5rem 0.875rem;display:flex;align-items:center;gap:1.5rem;"><span style="font-size:0.72rem;font-weight:800;color:#facc15;letter-spacing:0.05em;">✦ intel</span><span style="font-size:0.58rem;color:rgba(255,255,255,0.5);">Dashboard</span><span style="font-size:0.58rem;color:rgba(255,255,255,0.5);">Bulk Operations</span><span style="font-size:0.58rem;color:rgba(255,255,255,0.5);">Team</span><div style="margin-left:auto;width:22px;height:22px;border-radius:50%;background:#b91c1c;display:flex;align-items:center;justify-content:center;font-size:0.58rem;color:#fff;font-weight:700;">M</div></div><div style="padding:0.875rem;"><div style="margin-bottom:0.5rem;display:flex;align-items:center;justify-content:space-between;"><div style="font-size:0.62rem;color:#64748b;">Dashboard</div><div style="display:flex;gap:0.4rem;"><div style="border:1px solid #e2e8f0;border-radius:5px;padding:3px 10px;font-size:0.55rem;color:#475569;">View Organizations</div><div style="background:#2563eb;border-radius:5px;padding:3px 10px;font-size:0.55rem;color:#fff;font-weight:600;">+ New Brand</div></div></div><div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:0.75rem;">Dashboard</div><div style="background:#dcfce7;border:1px solid #86efac;border-radius:5px;padding:0.4rem 0.75rem;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:0.6rem;font-weight:600;color:#166534;">Signed in successfully.</span><span style="font-size:0.65rem;color:#166534;">✕</span></div><div style="display:flex;gap:0.4rem;margin-bottom:0.75rem;"><div style="background:#2563eb;color:#fff;border-radius:20px;padding:3px 10px;font-size:0.55rem;font-weight:600;">Following <span style="background:rgba(255,255,255,0.3);border-radius:50%;padding:0 4px;margin-left:2px;">1</span></div><div style="border:1px solid #e2e8f0;border-radius:20px;padding:3px 10px;font-size:0.55rem;color:#475569;">All Brands <span style="background:#e2e8f0;border-radius:50%;padding:0 4px;margin-left:2px;">14</span></div><div style="border:1px solid #e2e8f0;border-radius:20px;padding:3px 10px;font-size:0.55rem;color:#475569;">Prospective <span style="background:#e2e8f0;border-radius:50%;padding:0 4px;margin-left:2px;">0</span></div><div style="margin-left:auto;border:1px solid #e2e8f0;border-radius:5px;padding:3px 10px;font-size:0.55rem;color:#475569;">Filter by brand ▾</div></div><div style="background:#fff;border-radius:6px;border:1px solid #e2e8f0;overflow:hidden;"><div style="display:grid;grid-template-columns:1.5fr 1fr 0.8fr 0.7fr 0.8fr 0.8fr 0.6fr;padding:0.35rem 0.75rem;border-bottom:1px solid #f1f5f9;gap:0;"><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Brand</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Last Scanned</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Products</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Index</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Content</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Changes</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Actions</span></div><div style="display:grid;grid-template-columns:1.5fr 1fr 0.8fr 0.7fr 0.8fr 0.8fr 0.6fr;padding:0.45rem 0.75rem;align-items:center;border-bottom:1px solid #f8fafc;"><span style="font-size:0.6rem;font-weight:700;color:#0f172a;">Carhartt</span><span style="font-size:0.52rem;color:#64748b;">Mar 15, 2026</span><span style="font-size:0.52rem;color:#334155;">112 products</span><span style="font-size:0.52rem;color:#334155;">75%</span><span style="font-size:0.52rem;color:#334155;">76%</span><span style="background:#fecaca;color:#991b1b;font-size:0.5rem;font-weight:700;padding:1px 6px;border-radius:3px;display:inline-block;">16757</span><div style="display:flex;gap:0.2rem;"><div style="border:1px solid #e2e8f0;border-radius:3px;padding:1px 5px;font-size:0.42rem;color:#475569;">View</div><div style="border:1px solid #e2e8f0;border-radius:3px;padding:1px 5px;font-size:0.42rem;color:#475569;">Edit</div></div></div></div></div></div>`
           },
           {
-            label: "02 — Feature",
-            title: "Cohort Analysis",
-            desc: "Visualize how different customer cohorts retain over time. Identify which acquisition channels are producing your stickiest users.",
-            features: ["Monthly cohort retention heatmaps", "Filterable by plan, channel, country", "Export as CSV or PNG"],
-            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">launchpad.app/cohorts</div></div><div class="sim-body"><div class="sim-dashboard-header"><div class="sim-h1">Cohort Retention</div></div><div style="display:grid;grid-template-columns:80px repeat(6,1fr);gap:2px;font-family:var(--font-mono);font-size:0.55rem;color:var(--muted)"><div>Cohort</div><div>M0</div><div>M1</div><div>M2</div><div>M3</div><div>M4</div><div>M5</div><div style="color:var(--text)">Jan '24</div><div style="background:rgba(126,255,245,0.5);color:#000;padding:2px;text-align:center;">100%</div><div style="background:rgba(126,255,245,0.3);padding:2px;text-align:center;color:var(--text)">74%</div><div style="background:rgba(126,255,245,0.22);padding:2px;text-align:center;color:var(--text)">61%</div><div style="background:rgba(126,255,245,0.15);padding:2px;text-align:center;color:var(--text)">55%</div><div style="background:rgba(126,255,245,0.1);padding:2px;text-align:center;color:var(--muted)">48%</div><div style="background:rgba(126,255,245,0.08);padding:2px;text-align:center;color:var(--muted)">43%</div><div style="color:var(--text)">Feb '24</div><div style="background:rgba(126,255,245,0.5);color:#000;padding:2px;text-align:center;">100%</div><div style="background:rgba(126,255,245,0.35);padding:2px;text-align:center;color:var(--text)">78%</div><div style="background:rgba(126,255,245,0.25);padding:2px;text-align:center;color:var(--text)">66%</div><div style="background:rgba(126,255,245,0.18);padding:2px;text-align:center;color:var(--text)">59%</div><div style="background:rgba(126,255,245,0.12);padding:2px;text-align:center;color:var(--muted)">52%</div><div style="color:var(--muted);padding:2px;text-align:center;">—</div><div style="color:var(--text)">Mar '24</div><div style="background:rgba(126,255,245,0.5);color:#000;padding:2px;text-align:center;">100%</div><div style="background:rgba(126,255,245,0.38);padding:2px;text-align:center;color:var(--text)">81%</div><div style="background:rgba(126,255,245,0.28);padding:2px;text-align:center;color:var(--text)">69%</div><div style="color:var(--muted);padding:2px;text-align:center;">—</div><div style="color:var(--muted);padding:2px;text-align:center;">—</div><div style="color:var(--muted);padding:2px;text-align:center;">—</div></div></div>`
-          },
-          {
-            label: "03 — Onboarding",
-            title: "Stripe Integration",
-            desc: "One-click Stripe Connect setup. Customers connect their existing Stripe account and start seeing data within seconds — no manual webhook config.",
-            features: ["OAuth Stripe Connect flow", "Automatic webhook registration", "Historical data sync (up to 2 years)"],
-            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">launchpad.app/onboarding</div></div><div class="sim-landing"><div class="sim-hero-label">Step 2 of 3</div><div class="sim-hero-h1">Connect Your Stripe</div><div class="sim-hero-sub">We'll pull your historical data and start tracking in real-time. Read-only access — we never touch your funds.</div><div class="sim-btn">Connect with Stripe →</div><div style="margin-top:1.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);">🔒 256-bit encrypted · SOC 2 Type II certified</div></div>`
+            label: "02 — Changes",
+            title: "Recent Changes Feed",
+            desc: "Drill into any brand and see every catalog change Intel detected — indexation shifts, content edits, variation updates, and image changes. Each row shows the ASIN, what changed, and when.",
+            features: ["Change types: Indexation, Content, Variation, Image", "For Review / Pending / Activities queue tabs", "Bulk Actions + Export CSV for reporting"],
+            screen: `<div style="background:#f8fafc;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem;"><div style="background:#fff;border-radius:8px;padding:0.75rem;border:1px solid #e2e8f0;"><div style="display:flex;align-items:flex-start;justify-content:space-between;"><div><div style="font-size:1rem;font-weight:800;color:#0f172a;">Carhartt: Recent Changes</div><div style="font-size:0.52rem;color:#94a3b8;margin-top:2px;">Amazon catalog intelligence — live data</div></div><div style="display:flex;gap:0.35rem;"><div style="border:1px solid #e2e8f0;border-radius:4px;padding:2px 7px;font-size:0.5rem;color:#475569;">Charts</div><div style="border:1px solid #e2e8f0;border-radius:4px;padding:2px 7px;font-size:0.5rem;color:#475569;">Catalog Scores</div><div style="border:1px solid #e2e8f0;border-radius:4px;padding:2px 7px;font-size:0.5rem;color:#475569;">Products</div></div></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.4rem;"><div style="background:#fff;border-radius:6px;padding:0.6rem;border:1px solid #e2e8f0;"><div style="font-size:0.42rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">INDEXATION</div><div style="font-size:0.9rem;font-weight:800;color:#0f172a;">13,613</div><div style="font-size:0.45rem;color:#94a3b8;">Changes</div></div><div style="background:#fff;border-radius:6px;padding:0.6rem;border:1px solid #e2e8f0;"><div style="font-size:0.42rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">CONTENT</div><div style="font-size:0.9rem;font-weight:800;color:#0f172a;">0</div><div style="font-size:0.45rem;color:#94a3b8;">Changes</div></div><div style="background:#fff;border-radius:6px;padding:0.6rem;border:1px solid #e2e8f0;"><div style="font-size:0.42rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">VARIATION</div><div style="font-size:0.9rem;font-weight:800;color:#0f172a;">180</div><div style="font-size:0.45rem;color:#94a3b8;">Changes</div></div><div style="background:#fff;border-radius:6px;padding:0.6rem;border:1px solid #e2e8f0;"><div style="font-size:0.42rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">IMAGE</div><div style="font-size:0.9rem;font-weight:800;color:#0f172a;">30</div><div style="font-size:0.45rem;color:#94a3b8;">Changes</div></div></div><div style="background:#fff;border-radius:8px;border:1px solid #e2e8f0;overflow:hidden;"><div style="display:flex;align-items:center;gap:0.4rem;padding:0.5rem 0.75rem;border-bottom:1px solid #f1f5f9;"><div style="background:#2563eb;color:#fff;border-radius:20px;padding:2px 10px;font-size:0.52rem;font-weight:600;">For Review <span style="background:rgba(255,255,255,0.3);border-radius:20px;padding:0 5px;margin-left:2px;">16757</span></div><div style="border:1px solid #e2e8f0;border-radius:20px;padding:2px 8px;font-size:0.52rem;color:#475569;">Pending 1</div><div style="border:1px solid #e2e8f0;border-radius:20px;padding:2px 8px;font-size:0.52rem;color:#475569;">Activities 49</div><div style="margin-left:auto;border:1px solid #e2e8f0;border-radius:4px;padding:2px 7px;font-size:0.48rem;color:#475569;">Export CSV</div></div><div style="display:grid;grid-template-columns:1fr 0.8fr 2fr 1fr 0.8fr 0.6fr;padding:0.3rem 0.75rem;border-bottom:1px solid #f1f5f9;"><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">ASIN</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Parent</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Product</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">What Changed</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Noticed</span><span style="font-size:0.42rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Tags</span></div><div style="display:grid;grid-template-columns:1fr 0.8fr 2fr 1fr 0.8fr 0.6fr;padding:0.4rem 0.75rem;align-items:center;border-bottom:1px solid #f8fafc;"><span style="font-size:0.52rem;color:#2563eb;font-weight:500;">B0BNJWC2FP</span><span style="font-size:0.48rem;color:#64748b;">B0BNK593WQ</span><span style="font-size:0.5rem;color:#334155;">Carhartt Men's Midweight Graphic Sweatshirt...</span><span style="background:#fecaca;color:#991b1b;font-size:0.48rem;padding:1px 5px;border-radius:3px;">Category</span><span style="font-size:0.48rem;color:#64748b;">03/15/2026</span><span></span></div><div style="display:grid;grid-template-columns:1fr 0.8fr 2fr 1fr 0.8fr 0.6fr;padding:0.4rem 0.75rem;align-items:center;"><span style="font-size:0.52rem;color:#2563eb;font-weight:500;">B0BNJWC2FP</span><span style="font-size:0.48rem;color:#64748b;">B0BNK593WQ</span><span style="font-size:0.5rem;color:#334155;">Carhartt Men's Midweight Graphic Sweatshirt...</span><span style="background:#dcfce7;color:#166534;font-size:0.45rem;padding:1px 5px;border-radius:3px;line-height:1.4;">Not indexed → Indexed</span><span style="font-size:0.48rem;color:#64748b;">03/15/2026</span><span></span></div></div></div>`
           }
         ]
       },
-          {
+      {
         name: "Dialed Fitness",
         slides: [
           {
@@ -1424,173 +707,151 @@
             title: "Hello, Mimi 👋",
             desc: "The client dashboard is designed to be glanceable and motivating. Your on-plan streak, weekly workout completion, and next session are front and center — no fluff.",
             features: ["On-plan streak counter with bold visual treatment", "Weekly workout completion (e.g. 3/3 done)", "Recent activity log with date and status badges"],
-            screen: `<div style="background:#0a0a0a;width:100%;height:100%;display:flex;justify-content:center;overflow:hidden"><div style="width:260px;padding:1.25rem 1rem;display:flex;flex-direction:column;gap:0.75rem"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.25rem"><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#adff2f;letter-spacing:-0.01em;">Dialed Fitness</span><div style="width:28px;height:28px;border-radius:50%;background:#adff2f;display:flex;align-items:center;justify-content:center;font-size:0.75rem;">👤</div></div><div style="margin-top:0.25rem"><div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;line-height:1.1;"><span style="color:#fff;">Hello, </span><span style="color:#adff2f;">Mimi</span></div><div style="font-size:0.65rem;color:#666;margin-top:3px;">You are staying consistent — great work.</div></div><div style="background:#ff6b1a;border-radius:10px;padding:0.875rem"><div style="font-size:0.55rem;font-weight:700;letter-spacing:0.12em;color:rgba(0,0,0,0.6);text-transform:uppercase;margin-bottom:4px;">ON-PLAN STREAK</div><div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#fff;line-height:1;"><span>27</span> <span style="color:rgba(255,255,255,0.5);font-size:1.1rem;">days</span></div></div><div style="background:#adff2f;border-radius:10px;padding:0.875rem"><div style="font-size:0.55rem;font-weight:700;letter-spacing:0.12em;color:rgba(0,0,0,0.5);text-transform:uppercase;margin-bottom:4px;">THIS WEEK</div><div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#000;line-height:1;"><span>3</span><span style="color:rgba(0,0,0,0.3);font-size:1.4rem;">/3</span></div><div style="font-size:0.65rem;color:rgba(0,0,0,0.6);margin-top:2px;">workouts completed</div></div><div style="background:#1a1a1a;border-radius:10px;padding:0.875rem"><div style="font-size:0.55rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">NEXT WORKOUT</div><div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:800;color:#fff;">None scheduled</div></div></div></div>`
+            screen: `<div style="background:#0a0a0a;width:100%;height:100%;display:flex;justify-content:center;overflow:hidden"><div style="width:260px;padding:1.25rem 1rem;display:flex;flex-direction:column;gap:0.75rem"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.25rem"><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#adff2f;">Dialed Fitness</span><div style="width:28px;height:28px;border-radius:50%;background:#adff2f;display:flex;align-items:center;justify-content:center;font-size:0.75rem;">👤</div></div><div><div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;line-height:1.1;"><span style="color:#fff;">Hello, </span><span style="color:#adff2f;">Mimi</span></div><div style="font-size:0.65rem;color:#666;margin-top:3px;">You are staying consistent — great work.</div></div><div style="background:#ff6b1a;border-radius:10px;padding:0.875rem"><div style="font-size:0.55rem;font-weight:700;letter-spacing:0.12em;color:rgba(0,0,0,0.6);text-transform:uppercase;margin-bottom:4px;">ON-PLAN STREAK</div><div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#fff;line-height:1;"><span>27</span> <span style="color:rgba(255,255,255,0.5);font-size:1.1rem;">days</span></div></div><div style="background:#adff2f;border-radius:10px;padding:0.875rem"><div style="font-size:0.55rem;font-weight:700;letter-spacing:0.12em;color:rgba(0,0,0,0.5);text-transform:uppercase;margin-bottom:4px;">THIS WEEK</div><div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#000;line-height:1;"><span>3</span><span style="color:rgba(0,0,0,0.3);font-size:1.4rem;">/3</span></div><div style="font-size:0.65rem;color:rgba(0,0,0,0.6);margin-top:2px;">workouts completed</div></div><div style="background:#1a1a1a;border-radius:10px;padding:0.875rem"><div style="font-size:0.55rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">NEXT WORKOUT</div><div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:800;color:#fff;">None scheduled</div></div></div></div>`
           },
           {
             label: "02 — Trainer Dashboard",
             title: "Welcome back",
             desc: "Trainers get a full overview of their roster — aggregate stats across all clients, program progress, and a quick-access client list to jump in anywhere.",
             features: ["Aggregate stats: clients, workouts, adherence %", "Client Program Progress list with quick-view", "Missed workout flagging across the full roster"],
-            screen: `<div style="background:#0a0a0a;width:100%;height:100%;display:flex;justify-content:center;overflow:hidden"><div style="width:280px;padding:1rem;display:flex;flex-direction:column;gap:0.75rem"><div style="display:flex;align-items:center;gap:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid #1e1e1e"><span style="font-size:1.1rem;color:#666;">☰</span><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:0.95rem;color:#adff2f;">Dialed Fitness</span></div><div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;line-height:1.1;">Welcome back</div><div style="font-size:0.62rem;color:#555;margin-top:3px;">Here's an overview of your clients' training activity</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem"><div style="background:#1a1a1a;border-radius:8px;padding:0.75rem"><div style="font-size:0.5rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">CLIENTS</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;">8</div></div><div style="background:#1a1a1a;border-radius:8px;padding:0.75rem"><div style="font-size:0.5rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">WORKOUTS COMPLETED</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;">48</div></div><div style="background:#1a1a1a;border-radius:8px;padding:0.75rem"><div style="font-size:0.5rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">MISSED WORKOUTS</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;">27</div></div><div style="background:#1a1a1a;border-radius:8px;padding:0.75rem"><div style="font-size:0.5rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">ADHERENCE</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#adff2f;">64%</div></div></div><div style="background:#1a1a1a;border-radius:8px;overflow:hidden"><div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem;border-bottom:1px solid #252525"><div style="font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;color:#fff;">Client Program Progress</div><div style="font-size:0.65rem;color:#adff2f;">6 clients</div></div><div style="padding:0.6rem 0.75rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #252525"><div style="display:flex;align-items:center;gap:0.5rem"><div style="width:24px;height:24px;border-radius:50%;background:#adff2f;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:#000;">HF</div><div><div style="font-size:0.68rem;font-weight:600;color:#fff;">Hope Flores</div><div style="font-size:0.55rem;color:#555;">Full Body - 4 day split &nbsp;·&nbsp; <span style="color:#ff6b1a;">0/8</span></div></div></div><div style="font-size:0.6rem;color:#adff2f;">View →</div></div><div style="padding:0.6rem 0.75rem;display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:0.5rem"><div style="width:24px;height:24px;border-radius:50%;background:#adff2f;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:#000;">MJ</div><div><div style="font-size:0.68rem;font-weight:600;color:#fff;">Merel Jacobs</div><div style="font-size:0.55rem;color:#555;">Strength · Week 3/8</div></div></div><div style="font-size:0.6rem;color:#adff2f;">View →</div></div></div></div></div>`
+            screen: `<div style="background:#0a0a0a;width:100%;height:100%;display:flex;justify-content:center;overflow:hidden"><div style="width:280px;padding:1rem;display:flex;flex-direction:column;gap:0.75rem"><div style="display:flex;align-items:center;gap:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid #1e1e1e"><span style="font-size:1.1rem;color:#666;">☰</span><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:0.95rem;color:#adff2f;">Dialed Fitness</span></div><div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;line-height:1.1;">Welcome back</div><div style="font-size:0.62rem;color:#555;margin-top:3px;">Here's an overview of your clients' training activity</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem"><div style="background:#1a1a1a;border-radius:8px;padding:0.75rem"><div style="font-size:0.5rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">CLIENTS</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;">8</div></div><div style="background:#1a1a1a;border-radius:8px;padding:0.75rem"><div style="font-size:0.5rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">WORKOUTS COMPLETED</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;">48</div></div><div style="background:#1a1a1a;border-radius:8px;padding:0.75rem"><div style="font-size:0.5rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">MISSED WORKOUTS</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;">27</div></div><div style="background:#1a1a1a;border-radius:8px;padding:0.75rem"><div style="font-size:0.5rem;font-weight:700;letter-spacing:0.12em;color:#555;text-transform:uppercase;margin-bottom:4px;">ADHERENCE</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#adff2f;">64%</div></div></div><div style="background:#1a1a1a;border-radius:8px;overflow:hidden"><div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem;border-bottom:1px solid #252525"><div style="font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;color:#fff;">Client Program Progress</div><div style="font-size:0.65rem;color:#adff2f;">6 clients</div></div><div style="padding:0.6rem 0.75rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #252525"><div style="display:flex;align-items:center;gap:0.5rem"><div style="width:24px;height:24px;border-radius:50%;background:#adff2f;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:#000;">HF</div><div><div style="font-size:0.68rem;font-weight:600;color:#fff;">Hope Flores</div><div style="font-size:0.55rem;color:#555;">Full Body - 4 day split · <span style="color:#ff6b1a;">0/8</span></div></div></div><div style="font-size:0.6rem;color:#adff2f;">View →</div></div><div style="padding:0.6rem 0.75rem;display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:0.5rem"><div style="width:24px;height:24px;border-radius:50%;background:#adff2f;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:#000;">MJ</div><div><div style="font-size:0.68rem;font-weight:600;color:#fff;">Merel Jacobs</div><div style="font-size:0.55rem;color:#555;">Strength · Week 3/8</div></div></div><div style="font-size:0.6rem;color:#adff2f;">View →</div></div></div></div></div>`
           },
           {
             label: "03 — Workout Log",
             title: "Workout Completed!",
             desc: "After a session, clients see a full breakdown of every exercise — prescribed vs. performed sets, reps logged, and any notes they added mid-workout.",
             features: ["Prescribed vs. performed comparison per exercise", "Set-by-set reps and weight logging", "Client notes attached to individual exercises"],
-            screen: `<div style="background:#0a0a0a;width:100%;height:100%;display:flex;justify-content:center;overflow:hidden"><div style="width:260px;padding:1.25rem 1rem;display:flex;flex-direction:column;gap:0.75rem"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#adff2f;">Dialed Fitness</span><div style="width:28px;height:28px;border-radius:50%;background:#adff2f;display:flex;align-items:center;justify-content:center;font-size:0.75rem;">👤</div></div><div style="font-size:0.62rem;color:#666;letter-spacing:0.05em;">← BACK</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;line-height:1.1;">Workout<br/>completed!</div><div style="background:#1a1a1a;border-radius:10px;padding:0.875rem"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.625rem"><div style="font-size:0.75rem;font-weight:700;color:#fff;">Hanging Knee Raise</div><div style="background:#adff2f;color:#000;font-size:0.55rem;font-weight:700;padding:2px 8px;border-radius:20px;">Logged</div></div><div style="background:#0f1f0a;border-radius:6px;padding:0.4rem 0.6rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem"><span style="font-size:0.5rem;font-weight:700;color:#adff2f;letter-spacing:0.1em;">PRESCRIBED</span><span style="font-size:0.7rem;font-weight:700;color:#fff;margin-left:auto;">2 × 10</span></div><div style="font-size:0.5rem;font-weight:700;letter-spacing:0.12em;color:#555;margin-bottom:0.4rem;">PERFORMED</div><div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.3rem;padding:0 0.25rem"><span style="font-size:0.62rem;color:#666;width:20px;">S1</span><span style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff;">10</span><span style="font-size:0.62rem;color:#555;margin-left:2px;">reps</span></div><div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;padding:0 0.25rem"><span style="font-size:0.62rem;color:#666;width:20px;">S2</span><span style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff;">10</span><span style="font-size:0.62rem;color:#555;margin-left:2px;">reps</span></div><div style="background:#0f1f0a;border-radius:6px;padding:0.4rem 0.6rem;display:flex;align-items:center;gap:0.5rem"><span style="font-size:0.5rem;font-weight:700;color:#adff2f;letter-spacing:0.1em;">NOTE</span><span style="font-size:0.65rem;font-style:italic;color:#aaa;margin-left:auto;">Client added exercise</span></div></div></div></div>`
+            screen: `<div style="background:#0a0a0a;width:100%;height:100%;display:flex;justify-content:center;overflow:hidden"><div style="width:260px;padding:1.25rem 1rem;display:flex;flex-direction:column;gap:0.75rem"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#adff2f;">Dialed Fitness</span><div style="width:28px;height:28px;border-radius:50%;background:#adff2f;display:flex;align-items:center;justify-content:center;font-size:0.75rem;">👤</div></div><div style="font-size:0.62rem;color:#666;">← BACK</div><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;line-height:1.1;">Workout<br/>completed!</div><div style="background:#1a1a1a;border-radius:10px;padding:0.875rem"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.625rem"><div style="font-size:0.75rem;font-weight:700;color:#fff;">Hanging Knee Raise</div><div style="background:#adff2f;color:#000;font-size:0.55rem;font-weight:700;padding:2px 8px;border-radius:20px;">Logged</div></div><div style="background:#0f1f0a;border-radius:6px;padding:0.4rem 0.6rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem"><span style="font-size:0.5rem;font-weight:700;color:#adff2f;">PRESCRIBED</span><span style="font-size:0.7rem;font-weight:700;color:#fff;margin-left:auto;">2 × 10</span></div><div style="font-size:0.5rem;font-weight:700;color:#555;margin-bottom:0.4rem;">PERFORMED</div><div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.3rem;padding:0 0.25rem"><span style="font-size:0.62rem;color:#666;width:20px;">S1</span><span style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff;">10</span><span style="font-size:0.62rem;color:#555;margin-left:2px;">reps</span></div><div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;padding:0 0.25rem"><span style="font-size:0.62rem;color:#666;width:20px;">S2</span><span style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff;">10</span><span style="font-size:0.62rem;color:#555;margin-left:2px;">reps</span></div><div style="background:#0f1f0a;border-radius:6px;padding:0.4rem 0.6rem;display:flex;align-items:center;gap:0.5rem"><span style="font-size:0.5rem;font-weight:700;color:#adff2f;">NOTE</span><span style="font-size:0.65rem;font-style:italic;color:#aaa;margin-left:auto;">Client added exercise</span></div></div></div></div>`
           }
         ]
       },
-     {
+      {
         name: "Ignite Appreciation",
         slides: [
           {
             label: "01 — Recognition Feed",
             title: "Give Stars, Build Culture",
-            desc: "The recognition feed is where company culture happens in real time. Employees send shoutouts tied to core values, attach star points, and the whole team sees it — like a LinkedIn feed but actually worth reading.",
+            desc: "The recognition feed is where company culture happens in real time. Employees send shoutouts tied to core values, attach star points, and the whole team sees it.",
             features: ["Peer-to-peer star recognition with core value tags", "Live activity feed with comments and reactions", "GIF support and team-wide shoutouts"],
-            screen: `<div style="background:#f0f2ff;width:100%;height:100%;display:flex;overflow:hidden"><div style="width:130px;background:#fff;border-right:1px solid #e8eaff;padding:0.75rem 0;flex-shrink:0"><div style="padding:0 0.75rem;margin-bottom:0.75rem"><img style="height:18px;" src="" alt=""/><div style="font-size:0.65rem;font-weight:800;color:#5b6cf9;">Ignite</div></div><div style="font-size:0.5rem;font-weight:700;color:#aaa;letter-spacing:0.1em;padding:0 0.75rem;margin-bottom:0.4rem;">MENU</div>${['Feed','Rewards','Challenges','Recognitions','Leaderboard','Departments','Users'].map((n,i)=>`<div style="padding:0.3rem 0.75rem;font-size:0.6rem;color:${i===0?'#5b6cf9':'#555'};font-weight:${i===0?'700':'400'};background:${i===0?'#eef0ff':'transparent'};border-radius:4px;margin:1px 4px;">${n}</div>`).join('')}</div><div style="flex:1;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem;overflow:hidden"><div style="background:#fff;border-radius:10px;padding:0.75rem;box-shadow:0 2px 8px rgba(91,108,249,0.08)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem"><div style="font-size:0.58rem;color:#888;">★ 40 stars available</div><div style="font-size:0.5rem;background:#eef0ff;color:#5b6cf9;padding:2px 6px;border-radius:4px;">Switch to Team</div></div><div style="display:flex;gap:0.4rem;align-items:center;margin-bottom:0.4rem"><span style="font-size:0.52rem;color:#888;">TO</span><div style="flex:1;background:#f5f6ff;border:1px solid #dde0ff;border-radius:4px;padding:3px 6px;font-size:0.55rem;color:#333;">Anailie Estrella</div><div style="background:#f5f6ff;border:1px solid #dde0ff;border-radius:4px;padding:3px 6px;font-size:0.55rem;color:#333;">5 ★</div></div><div style="background:#f8f9ff;border-radius:6px;padding:0.4rem;font-size:0.52rem;color:#aaa;margin-bottom:0.4rem;">Give someone a shoutout!</div><div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.4rem">${['🙌 Be the light','🏆 Do the right thing','💛 Selfless Service'].map(v=>`<span style="font-size:0.45rem;background:#f0f2ff;color:#5b6cf9;padding:2px 5px;border-radius:20px;border:1px solid #dde0ff;">${v}</span>`).join('')}</div><div style="background:#e8eaee;border-radius:5px;padding:0.4rem;text-align:center;font-size:0.55rem;color:#aaa;">Send Stars</div></div><div style="background:#fff;border-radius:10px;padding:0.75rem;box-shadow:0 2px 8px rgba(91,108,249,0.08)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.3rem"><div style="display:flex;align-items:center;gap:0.4rem"><div style="width:20px;height:20px;border-radius:50%;background:#ddd;overflow:hidden;background:linear-gradient(135deg,#c9ccff,#a5b4fc)"></div><div style="font-size:0.62rem;font-weight:700;color:#1a1f3a;">Peggy Zinkovich</div></div><div style="font-size:0.6rem;color:#f5a623;font-weight:700;">★ +10</div></div><div style="font-size:0.52rem;color:#888;margin-bottom:0.3rem;">recognized by Jeff Randall</div><div style="font-size:0.58rem;color:#333;line-height:1.5;">"Thank you for always helping me with customers."</div></div></div></div>`
+            screen: `<div style="background:#f0f2ff;width:100%;height:100%;display:flex;overflow:hidden"><div style="width:130px;background:#fff;border-right:1px solid #e8eaff;padding:0.75rem 0;flex-shrink:0"><div style="padding:0 0.75rem;margin-bottom:0.75rem;font-size:0.65rem;font-weight:800;color:#5b6cf9;">Ignite</div><div style="font-size:0.5rem;font-weight:700;color:#aaa;letter-spacing:0.1em;padding:0 0.75rem;margin-bottom:0.4rem;">MENU</div>${['Feed','Rewards','Challenges','Recognitions','Leaderboard','Departments','Users'].map((n,i)=>`<div style="padding:0.3rem 0.75rem;font-size:0.6rem;color:${i===0?'#5b6cf9':'#555'};font-weight:${i===0?'700':'400'};background:${i===0?'#eef0ff':'transparent'};border-radius:4px;margin:1px 4px;">${n}</div>`).join('')}</div><div style="flex:1;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem;overflow:hidden"><div style="background:#fff;border-radius:10px;padding:0.75rem;box-shadow:0 2px 8px rgba(91,108,249,0.08)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem"><div style="font-size:0.58rem;color:#888;">★ 40 stars available</div><div style="font-size:0.5rem;background:#eef0ff;color:#5b6cf9;padding:2px 6px;border-radius:4px;">Switch to Team</div></div><div style="display:flex;gap:0.4rem;align-items:center;margin-bottom:0.4rem"><span style="font-size:0.52rem;color:#888;">TO</span><div style="flex:1;background:#f5f6ff;border:1px solid #dde0ff;border-radius:4px;padding:3px 6px;font-size:0.55rem;color:#333;">Anailie Estrella</div><div style="background:#f5f6ff;border:1px solid #dde0ff;border-radius:4px;padding:3px 6px;font-size:0.55rem;color:#333;">5 ★</div></div><div style="background:#f8f9ff;border-radius:6px;padding:0.4rem;font-size:0.52rem;color:#aaa;margin-bottom:0.4rem;">Give someone a shoutout!</div><div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.4rem">${['🙌 Be the light','🏆 Do the right thing','💛 Selfless Service'].map(v=>`<span style="font-size:0.45rem;background:#f0f2ff;color:#5b6cf9;padding:2px 5px;border-radius:20px;border:1px solid #dde0ff;">${v}</span>`).join('')}</div><div style="background:#e8eaee;border-radius:5px;padding:0.4rem;text-align:center;font-size:0.55rem;color:#aaa;">Send Stars</div></div><div style="background:#fff;border-radius:10px;padding:0.75rem;box-shadow:0 2px 8px rgba(91,108,249,0.08)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.3rem"><div style="display:flex;align-items:center;gap:0.4rem"><div style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#c9ccff,#a5b4fc)"></div><div style="font-size:0.62rem;font-weight:700;color:#1a1f3a;">Peggy Zinkovich</div></div><div style="font-size:0.6rem;color:#f5a623;font-weight:700;">★ +10</div></div><div style="font-size:0.52rem;color:#888;margin-bottom:0.3rem;">recognized by Jeff Randall</div><div style="font-size:0.58rem;color:#333;line-height:1.5;">"Thank you for always helping me with customers."</div></div></div></div>`
           },
           {
             label: "02 — Admin: Challenges",
             title: "Company-Wide Challenges",
             desc: "Admins create challenges tied to company values — each with point rewards, date ranges, and submission tracking. It's how you turn culture statements into actual behavior.",
             features: ["Challenge builder with points, dates, and descriptions", "Submission counter badge per challenge", "Active / Inactive status with full CRUD controls"],
-            screen: `<div style="background:#f8f9ff;width:100%;height:100%;display:flex;overflow:hidden"><div style="width:130px;background:#fff;border-right:1px solid #eef0ff;padding:0.75rem 0;flex-shrink:0"><div style="padding:0 0.75rem;margin-bottom:0.75rem;font-size:0.68rem;font-weight:800;color:#5b6cf9;">Ignite ✦</div><div style="font-size:0.45rem;font-weight:700;color:#bbb;letter-spacing:0.1em;padding:0 0.75rem;margin-bottom:0.3rem;">ADMIN</div>${['Challenges','Recognitions','Manage Rewards','Leaderboard','Departments','Users'].map((n,i)=>`<div style="padding:0.28rem 0.75rem;font-size:0.58rem;color:${i===0?'#5b6cf9':'#666'};font-weight:${i===0?'700':'400'};background:${i===0?'#eef0ff':'transparent'};border-radius:4px;margin:1px 4px;">${n}</div>`).join('')}</div><div style="flex:1;padding:0.75rem;overflow:hidden"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem"><div><div style="font-size:0.48rem;color:#888;text-transform:uppercase;letter-spacing:0.1em;">ADMIN</div><div style="font-size:0.85rem;font-weight:800;color:#1a1f3a;">Challenges</div></div><div style="background:#5b6cf9;color:#fff;border-radius:5px;padding:3px 8px;font-size:0.52rem;font-weight:600;">+ Create Challenge</div></div><div style="display:flex;flex-direction:column;gap:0.35rem;overflow:hidden">${[{t:'Be the Light Q1 2026',s:'Active',pts:'500',n:2},{t:'Proactive Problem Solving Q1 2026',s:'Active',pts:'500',n:1},{t:'Embrace Evolution Q1 2026',s:'Active',pts:'500',n:1},{t:'Employee of the Quarter Q1 2026',s:'Active',pts:'1000',n:2}].map(c=>`<div style="background:#fff;border-radius:6px;padding:0.45rem 0.6rem;display:flex;align-items:flex-start;gap:0.4rem;box-shadow:0 1px 3px rgba(0,0,0,0.05)"><div style="width:18px;height:18px;background:#eef0ff;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.55rem;">🚀</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:0.3rem;margin-bottom:1px;flex-wrap:wrap"><span style="font-size:0.58rem;font-weight:700;color:#1a1f3a;">${c.t}</span>${c.n?`<span style="background:#5b6cf9;color:#fff;border-radius:50%;width:12px;height:12px;display:inline-flex;align-items:center;justify-content:center;font-size:0.42rem;flex-shrink:0;">${c.n}</span>`:''}<span style="background:#e8f5e9;color:#2e7d32;font-size:0.42rem;padding:1px 5px;border-radius:20px;">Active</span></div><div style="font-size:0.48rem;color:#888;">2/4/2026 – 4/3/2026 &nbsp;⭐ ${c.pts} pts</div></div><div style="font-size:0.52rem;color:#5b6cf9;flex-shrink:0;">View</div></div>`).join('')}</div></div></div>`
+            screen: `<div style="background:#f8f9ff;width:100%;height:100%;display:flex;overflow:hidden"><div style="width:130px;background:#fff;border-right:1px solid #eef0ff;padding:0.75rem 0;flex-shrink:0"><div style="padding:0 0.75rem;margin-bottom:0.75rem;font-size:0.68rem;font-weight:800;color:#5b6cf9;">Ignite ✦</div><div style="font-size:0.45rem;font-weight:700;color:#bbb;letter-spacing:0.1em;padding:0 0.75rem;margin-bottom:0.3rem;">ADMIN</div>${['Challenges','Recognitions','Manage Rewards','Leaderboard','Departments','Users'].map((n,i)=>`<div style="padding:0.28rem 0.75rem;font-size:0.58rem;color:${i===0?'#5b6cf9':'#666'};font-weight:${i===0?'700':'400'};background:${i===0?'#eef0ff':'transparent'};border-radius:4px;margin:1px 4px;">${n}</div>`).join('')}</div><div style="flex:1;padding:0.75rem;overflow:hidden"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem"><div><div style="font-size:0.48rem;color:#888;text-transform:uppercase;">ADMIN</div><div style="font-size:0.85rem;font-weight:800;color:#1a1f3a;">Challenges</div></div><div style="background:#5b6cf9;color:#fff;border-radius:5px;padding:3px 8px;font-size:0.52rem;font-weight:600;">+ Create Challenge</div></div><div style="display:flex;flex-direction:column;gap:0.35rem;overflow:hidden">${[{t:'Be the Light Q1 2026',pts:'500',n:2},{t:'Proactive Problem Solving Q1 2026',pts:'500',n:1},{t:'Embrace Evolution Q1 2026',pts:'500',n:1},{t:'Employee of the Quarter Q1 2026',pts:'1000',n:2}].map(c=>`<div style="background:#fff;border-radius:6px;padding:0.45rem 0.6rem;display:flex;align-items:flex-start;gap:0.4rem;box-shadow:0 1px 3px rgba(0,0,0,0.05)"><div style="width:18px;height:18px;background:#eef0ff;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.55rem;">🚀</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:0.3rem;margin-bottom:1px;flex-wrap:wrap"><span style="font-size:0.58rem;font-weight:700;color:#1a1f3a;">${c.t}</span>${c.n?`<span style="background:#5b6cf9;color:#fff;border-radius:50%;width:12px;height:12px;display:inline-flex;align-items:center;justify-content:center;font-size:0.42rem;">${c.n}</span>`:''}<span style="background:#e8f5e9;color:#2e7d32;font-size:0.42rem;padding:1px 5px;border-radius:20px;">Active</span></div><div style="font-size:0.48rem;color:#888;">2/4/2026 – 4/3/2026 &nbsp;⭐ ${c.pts} pts</div></div><div style="font-size:0.52rem;color:#5b6cf9;flex-shrink:0;">View</div></div>`).join('')}</div></div></div>`
           },
           {
             label: "03 — Stars & Rewards",
             title: "Stars to Spend",
-            desc: "Stars earned through recognition and challenges accumulate in each employee's wallet. They redeem them for real rewards — gift cards, company swag, and custom perks configured by the admin.",
+            desc: "Stars earned through recognition and challenges accumulate in each employee's wallet. They redeem them for real rewards — gift cards, company swag, and custom perks.",
             features: ["Dual wallet: stars to give + stars to redeem", "Boost button to amplify a colleague's recognition", "Admin-configured reward catalog with redemption flow"],
-            screen: `<div style="background:#f0f2ff;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:0.75rem;gap:0.6rem;overflow:hidden"><div style="flex:1;display:flex;flex-direction:column;gap:0.5rem;max-width:200px"><div style="background:#fff;border-radius:10px;padding:0.875rem;box-shadow:0 2px 10px rgba(91,108,249,0.1)"><div style="font-size:0.55rem;color:#888;margin-bottom:0.3rem;">★ 40 stars available</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin-bottom:0.5rem"><div style="background:#f8f9ff;border:1px solid #eef0ff;border-radius:6px;padding:0.5rem"><div style="font-size:0.45rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;">TO</div><div style="font-size:0.6rem;font-weight:700;color:#555;">Anailie Estrella ▾</div></div><div style="background:#f8f9ff;border:1px solid #eef0ff;border-radius:6px;padding:0.5rem;display:flex;align-items:center;justify-content:center;gap:3px"><span style="font-size:0.75rem;font-weight:800;color:#1a1f3a;">5</span><span style="font-size:0.55rem;color:#f5a623;">★</span></div></div><div style="background:#f8f9ff;border-radius:6px;padding:0.5rem;font-size:0.52rem;color:#aaa;margin-bottom:0.4rem;">Give someone a shoutout!</div><div style="display:flex;gap:0.25rem;flex-wrap:wrap;margin-bottom:0.5rem">${['🙌 Be the light','🏆 Do the right thing','💛 Selfless','🌱 Embrace Evolution'].map(v=>`<span style="font-size:0.42rem;background:#eef0ff;color:#5b6cf9;padding:2px 4px;border-radius:10px;">${v}</span>`).join('')}</div><div style="background:#e0e2ee;border-radius:5px;padding:0.4rem;text-align:center;font-size:0.55rem;color:#aaa;">Send Stars</div></div></div><div style="display:flex;flex-direction:column;gap:0.45rem;width:90px"><div style="background:#5b6cf9;border-radius:8px;padding:0.6rem"><div style="font-size:0.42rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">TO GIVE</div><div style="font-size:1.3rem;font-weight:800;color:#fff;line-height:1;">40</div><div style="font-size:0.42rem;color:rgba(255,255,255,0.55);">stars</div><div style="margin-top:0.3rem;background:rgba(255,255,255,0.2);border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#fff;text-align:center;">Boost →</div></div><div style="background:#fff;border-radius:8px;padding:0.6rem;box-shadow:0 2px 6px rgba(0,0,0,0.07)"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">AVAILABLE</div><div style="font-size:1.3rem;font-weight:800;color:#f5a623;line-height:1;">70</div><div style="font-size:0.42rem;color:#aaa;">stars</div><div style="margin-top:0.3rem;background:#eef0ff;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#5b6cf9;text-align:center;">Redeem →</div></div><div style="background:#e8302a;border-radius:8px;padding:0.5rem"><div style="display:flex;align-items:center;gap:3px"><span style="font-size:0.65rem;">🚀</span><div style="font-size:0.48rem;color:#fff;font-weight:700;line-height:1.2;">Challenges &amp; Nominations</div></div></div></div></div>`
+            screen: `<div style="background:#f0f2ff;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:0.75rem;gap:0.6rem;overflow:hidden"><div style="flex:1;display:flex;flex-direction:column;gap:0.5rem;max-width:200px"><div style="background:#fff;border-radius:10px;padding:0.875rem;box-shadow:0 2px 10px rgba(91,108,249,0.1)"><div style="font-size:0.55rem;color:#888;margin-bottom:0.3rem;">★ 40 stars available</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin-bottom:0.5rem"><div style="background:#f8f9ff;border:1px solid #eef0ff;border-radius:6px;padding:0.5rem"><div style="font-size:0.45rem;color:#888;text-transform:uppercase;">TO</div><div style="font-size:0.6rem;font-weight:700;color:#555;">Anailie Estrella ▾</div></div><div style="background:#f8f9ff;border:1px solid #eef0ff;border-radius:6px;padding:0.5rem;display:flex;align-items:center;justify-content:center;gap:3px"><span style="font-size:0.75rem;font-weight:800;color:#1a1f3a;">5</span><span style="font-size:0.55rem;color:#f5a623;">★</span></div></div><div style="background:#f8f9ff;border-radius:6px;padding:0.5rem;font-size:0.52rem;color:#aaa;margin-bottom:0.4rem;">Give someone a shoutout!</div><div style="display:flex;gap:0.25rem;flex-wrap:wrap;margin-bottom:0.5rem">${['🙌 Be the light','🏆 Do the right thing','💛 Selfless','🌱 Embrace Evolution'].map(v=>`<span style="font-size:0.42rem;background:#eef0ff;color:#5b6cf9;padding:2px 4px;border-radius:10px;">${v}</span>`).join('')}</div><div style="background:#e0e2ee;border-radius:5px;padding:0.4rem;text-align:center;font-size:0.55rem;color:#aaa;">Send Stars</div></div></div><div style="display:flex;flex-direction:column;gap:0.45rem;width:90px"><div style="background:#5b6cf9;border-radius:8px;padding:0.6rem"><div style="font-size:0.42rem;color:rgba(255,255,255,0.6);text-transform:uppercase;margin-bottom:2px;">TO GIVE</div><div style="font-size:1.3rem;font-weight:800;color:#fff;line-height:1;">40</div><div style="font-size:0.42rem;color:rgba(255,255,255,0.55);">stars</div><div style="margin-top:0.3rem;background:rgba(255,255,255,0.2);border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#fff;text-align:center;">Boost →</div></div><div style="background:#fff;border-radius:8px;padding:0.6rem;box-shadow:0 2px 6px rgba(0,0,0,0.07)"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;margin-bottom:2px;">AVAILABLE</div><div style="font-size:1.3rem;font-weight:800;color:#f5a623;line-height:1;">70</div><div style="font-size:0.42rem;color:#aaa;">stars</div><div style="margin-top:0.3rem;background:#eef0ff;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#5b6cf9;text-align:center;">Redeem →</div></div><div style="background:#e8302a;border-radius:8px;padding:0.5rem"><div style="display:flex;align-items:center;gap:3px"><span style="font-size:0.65rem;">🚀</span><div style="font-size:0.48rem;color:#fff;font-weight:700;line-height:1.2;">Challenges &amp; Nominations</div></div></div></div></div>`
           }
         ]
       },
-     {
+      {
         name: "Campaign Tracker",
         slides: [
           {
             label: "01 — Campaigns",
             title: "All Your Campaigns, Live",
-            desc: "The campaigns dashboard gives you a bird's-eye view across every influencer campaign — status, creator count, posts, engagement, and last updated. Live data, no manual updates.",
+            desc: "The campaigns dashboard gives you a bird's-eye view across every influencer campaign — status, creator count, posts, engagement, and last updated.",
             features: ["Live/Archived/Draft status per campaign", "Aggregate stats: reach, posts, engagement", "One-click to deep-dive into any campaign"],
-            screen: `<div style="background:#f0efec;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;"><div style="background:#fff;border-bottom:1px solid #e5e5e5;padding:0.5rem 0.875rem;display:flex;align-items:center;justify-content:space-between;"><div style="font-size:0.75rem;font-weight:800;color:#111;letter-spacing:-0.01em;">CAMPAIGN TRACKER</div><div style="display:flex;gap:1rem;"><span style="font-size:0.6rem;color:#555;">Campaigns</span><span style="font-size:0.6rem;color:#555;">Creators</span></div><div style="width:22px;height:22px;border-radius:50%;background:#b91c1c;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#fff;font-weight:700;">M</div></div><div style="padding:0.75rem;"><div style="background:#0f2033;border-radius:8px;padding:0.875rem;margin-bottom:0.75rem;"><div style="display:flex;align-items:center;justify-content:space-between;"><div><div style="font-size:1rem;font-weight:800;color:#fff;">Campaigns</div><div style="font-size:0.55rem;color:rgba(255,255,255,0.45);margin-top:2px;">Manage and track all your influencer campaigns</div></div><div style="display:flex;gap:0.875rem;align-items:center;"><div style="text-align:center;border-right:1px solid rgba(255,255,255,0.1);padding-right:0.875rem;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em;">TOTAL</div><div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1;">3</div></div><div style="text-align:center;border-right:1px solid rgba(255,255,255,0.1);padding-right:0.875rem;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em;">ACTIVE</div><div style="font-size:1.1rem;font-weight:800;color:#4ade80;line-height:1;">1</div></div><div style="text-align:center;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em;">DRAFT</div><div style="font-size:1.1rem;font-weight:800;color:#facc15;line-height:1;">0</div></div></div><div style="background:#b91c1c;border-radius:5px;padding:4px 10px;font-size:0.55rem;font-weight:700;color:#fff;margin-left:0.5rem;">+ New</div></div></div><div style="background:#fff;border-radius:8px;overflow:hidden;"><div style="display:grid;grid-template-columns:2fr 0.8fr 0.6fr 0.6fr 0.8fr 0.7fr;gap:0;padding:0.4rem 0.75rem;border-bottom:1px solid #f0f0f0;"><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Campaign</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Status</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Creators</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Posts</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Engagement</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Actions</span></div>${[{n:'TEACH',sub:'Teacher Strike',s:'Live',sc:'#dcfce7',tc:'#166534',bar:'#22c55e',c:1,p:2,e:'1.6 K'},{n:'OSIW',sub:'Instagram only campaign',s:'Archived',sc:'#f3f4f6',tc:'#6b7280',bar:'#22c55e',c:5,p:1,e:'13'},{n:'Mental Health Matters',sub:'',s:'Archived',sc:'#f3f4f6',tc:'#6b7280',bar:'#a78bfa',c:3,p:6,e:'7.59 K'}].map(r=>`<div style="display:grid;grid-template-columns:2fr 0.8fr 0.6fr 0.6fr 0.8fr 0.7fr;align-items:center;padding:0.5rem 0.75rem;border-bottom:1px solid #f5f5f5;gap:0;"><div style="display:flex;align-items:center;gap:0.4rem;"><div style="width:3px;height:28px;border-radius:2px;background:${r.bar};flex-shrink:0;"></div><div><div style="font-size:0.62rem;font-weight:700;color:#111;">${r.n}</div><div style="font-size:0.5rem;color:#999;">${r.sub}</div></div></div><div><span style="background:${r.sc};color:${r.tc};font-size:0.48rem;padding:2px 7px;border-radius:20px;font-weight:500;">${r.s}</span></div><div style="font-size:0.6rem;color:#333;font-weight:600;">${r.c}</div><div style="font-size:0.6rem;color:#333;font-weight:600;">${r.p}</div><div style="font-size:0.6rem;color:#333;font-weight:600;">${r.e}</div><div style="display:flex;gap:0.25rem;"><div style="border:1px solid #e5e5e5;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#333;">View</div><div style="background:#b91c1c;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#fff;font-weight:600;">Stats</div></div></div>`).join('')}</div></div></div>`
+            screen: `<div style="background:#f0efec;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;"><div style="background:#fff;border-bottom:1px solid #e5e5e5;padding:0.5rem 0.875rem;display:flex;align-items:center;justify-content:space-between;"><div style="font-size:0.75rem;font-weight:800;color:#111;">CAMPAIGN TRACKER</div><div style="display:flex;gap:1rem;"><span style="font-size:0.6rem;color:#555;">Campaigns</span><span style="font-size:0.6rem;color:#555;">Creators</span></div><div style="width:22px;height:22px;border-radius:50%;background:#b91c1c;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#fff;font-weight:700;">M</div></div><div style="padding:0.75rem;"><div style="background:#0f2033;border-radius:8px;padding:0.875rem;margin-bottom:0.75rem;"><div style="display:flex;align-items:center;justify-content:space-between;"><div><div style="font-size:1rem;font-weight:800;color:#fff;">Campaigns</div><div style="font-size:0.55rem;color:rgba(255,255,255,0.45);margin-top:2px;">Manage and track all your influencer campaigns</div></div><div style="display:flex;gap:0.875rem;align-items:center;"><div style="text-align:center;border-right:1px solid rgba(255,255,255,0.1);padding-right:0.875rem;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.45);text-transform:uppercase;">TOTAL</div><div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1;">3</div></div><div style="text-align:center;border-right:1px solid rgba(255,255,255,0.1);padding-right:0.875rem;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.45);text-transform:uppercase;">ACTIVE</div><div style="font-size:1.1rem;font-weight:800;color:#4ade80;line-height:1;">1</div></div><div style="text-align:center;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.45);text-transform:uppercase;">DRAFT</div><div style="font-size:1.1rem;font-weight:800;color:#facc15;line-height:1;">0</div></div></div><div style="background:#b91c1c;border-radius:5px;padding:4px 10px;font-size:0.55rem;font-weight:700;color:#fff;margin-left:0.5rem;">+ New</div></div></div><div style="background:#fff;border-radius:8px;overflow:hidden;"><div style="display:grid;grid-template-columns:2fr 0.8fr 0.6fr 0.6fr 0.8fr 0.7fr;padding:0.4rem 0.75rem;border-bottom:1px solid #f0f0f0;"><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;">Campaign</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;">Status</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;">Creators</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;">Posts</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;">Engagement</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;">Actions</span></div>${[{n:'TEACH',sub:'Teacher Strike',s:'Live',sc:'#dcfce7',tc:'#166534',bar:'#22c55e',c:1,p:2,e:'1.6 K'},{n:'OSIW',sub:'Instagram only',s:'Archived',sc:'#f3f4f6',tc:'#6b7280',bar:'#22c55e',c:5,p:1,e:'13'},{n:'Mental Health Matters',sub:'',s:'Archived',sc:'#f3f4f6',tc:'#6b7280',bar:'#a78bfa',c:3,p:6,e:'7.59 K'}].map(r=>`<div style="display:grid;grid-template-columns:2fr 0.8fr 0.6fr 0.6fr 0.8fr 0.7fr;align-items:center;padding:0.5rem 0.75rem;border-bottom:1px solid #f5f5f5;"><div style="display:flex;align-items:center;gap:0.4rem;"><div style="width:3px;height:28px;border-radius:2px;background:${r.bar};flex-shrink:0;"></div><div><div style="font-size:0.62rem;font-weight:700;color:#111;">${r.n}</div><div style="font-size:0.5rem;color:#999;">${r.sub}</div></div></div><span style="background:${r.sc};color:${r.tc};font-size:0.48rem;padding:2px 7px;border-radius:20px;">${r.s}</span><span style="font-size:0.6rem;color:#333;font-weight:600;">${r.c}</span><span style="font-size:0.6rem;color:#333;font-weight:600;">${r.p}</span><span style="font-size:0.6rem;color:#333;font-weight:600;">${r.e}</span><div style="display:flex;gap:0.25rem;"><div style="border:1px solid #e5e5e5;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#333;">View</div><div style="background:#b91c1c;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#fff;font-weight:600;">Stats</div></div></div>`).join('')}</div></div></div>`
           },
           {
             label: "02 — Analytics",
             title: "Real-Time Reach Stats",
-            desc: "Each campaign gets a full analytics breakdown — actual vs. potential reach, per-platform performance, views, engagement, and cost analysis. All scraped live from Instagram, TikTok, and X.",
+            desc: "Each campaign gets a full analytics breakdown — actual vs. potential reach, per-platform performance, views, engagement, and cost analysis. All scraped live.",
             features: ["Actual vs. potential reach with conversion %", "Per-platform breakdown: Instagram, TikTok, X", "Cost analysis with ROI and performance chart"],
-            screen: `<div style="background:#f0efec;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem;"><div style="background:#fff;border-radius:8px;padding:0.75rem;"><div style="display:flex;align-items:flex-start;justify-content:space-between;"><div><div style="font-size:1rem;font-weight:800;color:#111;">TEACH</div><div style="font-size:0.52rem;color:#888;margin-top:2px;">1 creators · 2 posts · Created Mar 13, 2026</div><div style="font-size:0.58rem;color:#555;margin-top:4px;">Teacher Strike campagin in partnership with PPS</div></div><div style="display:flex;align-items:center;gap:0.4rem;"><div style="background:#dcfce7;color:#166534;font-size:0.52rem;padding:3px 9px;border-radius:20px;font-weight:600;">Live ▾</div><div style="font-size:0.55rem;color:#555;border:1px solid #e5e5e5;padding:3px 8px;border-radius:4px;">✏ Edit</div></div></div></div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.4rem;"><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #b91c1c;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">TOTAL REACH</div><div style="font-size:0.85rem;font-weight:800;color:#111;">20.9K</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #6366f1;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">CREATORS</div><div style="font-size:0.85rem;font-weight:800;color:#111;">1</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #a855f7;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">POSTS</div><div style="font-size:0.85rem;font-weight:800;color:#111;">2</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #ef4444;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">ENGAGEMENT</div><div style="font-size:0.85rem;font-weight:800;color:#111;">1.6K</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #8b5cf6;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">VIEWS</div><div style="font-size:0.85rem;font-weight:800;color:#111;">19.3K</div></div></div><div style="background:#0f2033;border-radius:8px;padding:0.75rem;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;"><div style="font-size:0.6rem;font-weight:700;color:#fff;letter-spacing:0.05em;">REACH OVERVIEW</div><div style="display:flex;align-items:center;gap:0.4rem;"><div style="background:rgba(255,255,255,0.1);border-radius:20px;padding:2px 8px;font-size:0.48rem;color:#fff;">Conversion 15.4%</div></div></div><div style="margin-bottom:0.5rem;"><div style="font-size:0.45rem;color:rgba(255,255,255,0.4);margin-bottom:3px;">Actual vs Potential</div><div style="background:rgba(255,255,255,0.1);border-radius:2px;height:5px;overflow:hidden;"><div style="height:100%;width:15.4%;background:#22c55e;border-radius:2px;"></div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;"><div><div style="font-size:0.42rem;color:#a78bfa;font-weight:700;letter-spacing:0.08em;margin-bottom:2px;">● POTENTIAL REACH</div><div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1;">136K</div><div style="font-size:0.45rem;color:rgba(255,255,255,0.4);margin-bottom:0.3rem;">combined follower count</div><div style="display:flex;gap:0.3rem;"><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 6px;font-size:0.45rem;color:rgba(255,255,255,0.6);">📸 36.9K</div><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 6px;font-size:0.45rem;color:rgba(255,255,255,0.6);">🎵 98.6K</div></div></div><div><div style="font-size:0.42rem;color:#4ade80;font-weight:700;letter-spacing:0.08em;margin-bottom:2px;">● ACTUAL REACH</div><div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1;">20.9K</div><div style="font-size:0.45rem;color:rgba(255,255,255,0.4);margin-bottom:0.3rem;">views + engagement</div><div style="display:flex;gap:0.3rem;"><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 5px;font-size:0.42rem;color:rgba(255,255,255,0.6);">📸 19.7K<br/><span style="color:#4ade80;">53.4%</span></div><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 5px;font-size:0.42rem;color:rgba(255,255,255,0.6);">🎵 1.13K<br/><span style="color:#f87171;">1.1%</span></div></div></div></div></div></div>`
+            screen: `<div style="background:#f0efec;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem;"><div style="background:#fff;border-radius:8px;padding:0.75rem;"><div style="display:flex;align-items:flex-start;justify-content:space-between;"><div><div style="font-size:1rem;font-weight:800;color:#111;">TEACH</div><div style="font-size:0.52rem;color:#888;margin-top:2px;">1 creators · 2 posts · Mar 13, 2026</div></div><div style="display:flex;gap:0.4rem;"><div style="background:#dcfce7;color:#166534;font-size:0.52rem;padding:3px 9px;border-radius:20px;">Live ▾</div><div style="border:1px solid #e5e5e5;padding:3px 8px;border-radius:4px;font-size:0.52rem;color:#555;">✏ Edit</div></div></div></div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.4rem;"><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #b91c1c;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;margin-bottom:2px;">TOTAL REACH</div><div style="font-size:0.85rem;font-weight:800;color:#111;">20.9K</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #6366f1;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;margin-bottom:2px;">CREATORS</div><div style="font-size:0.85rem;font-weight:800;color:#111;">1</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #a855f7;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;margin-bottom:2px;">POSTS</div><div style="font-size:0.85rem;font-weight:800;color:#111;">2</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #ef4444;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;margin-bottom:2px;">ENGAGEMENT</div><div style="font-size:0.85rem;font-weight:800;color:#111;">1.6K</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #8b5cf6;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;margin-bottom:2px;">VIEWS</div><div style="font-size:0.85rem;font-weight:800;color:#111;">19.3K</div></div></div><div style="background:#0f2033;border-radius:8px;padding:0.75rem;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;"><div style="font-size:0.6rem;font-weight:700;color:#fff;">REACH OVERVIEW</div><div style="background:rgba(255,255,255,0.1);border-radius:20px;padding:2px 8px;font-size:0.48rem;color:#fff;">Conversion 15.4%</div></div><div style="margin-bottom:0.5rem;"><div style="font-size:0.45rem;color:rgba(255,255,255,0.4);margin-bottom:3px;">Actual vs Potential</div><div style="background:rgba(255,255,255,0.1);border-radius:2px;height:5px;overflow:hidden;"><div style="height:100%;width:15.4%;background:#22c55e;border-radius:2px;"></div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;"><div><div style="font-size:0.42rem;color:#a78bfa;font-weight:700;margin-bottom:2px;">● POTENTIAL REACH</div><div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1;">136K</div><div style="display:flex;gap:0.3rem;margin-top:0.3rem;"><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 6px;font-size:0.45rem;color:rgba(255,255,255,0.6);">📸 36.9K</div><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 6px;font-size:0.45rem;color:rgba(255,255,255,0.6);">🎵 98.6K</div></div></div><div><div style="font-size:0.42rem;color:#4ade80;font-weight:700;margin-bottom:2px;">● ACTUAL REACH</div><div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1;">20.9K</div><div style="display:flex;gap:0.3rem;margin-top:0.3rem;"><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 5px;font-size:0.42rem;color:rgba(255,255,255,0.6);">📸 19.7K <span style="color:#4ade80;">53.4%</span></div><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 5px;font-size:0.42rem;color:rgba(255,255,255,0.6);">🎵 1.13K <span style="color:#f87171;">1.1%</span></div></div></div></div></div></div>`
           },
           {
             label: "03 — Creator Roster",
             title: "Your Creator Network",
             desc: "The creators page is your full talent database — searchable, filterable by platform, tagged as Paid or Unpaid, with live follower counts scraped from each platform.",
             features: ["Multi-platform filter: TikTok, Instagram, YouTube, X", "Paid/Unpaid tagging and Deep Filter search", "Network Overview: total reach + top performer"],
-            screen: `<div style="background:#f0efec;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;display:flex;gap:0;"><div style="flex:1;padding:0.75rem;overflow:hidden;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem;"><div style="font-size:0.9rem;font-weight:800;color:#111;">Creators <span style="font-size:0.55rem;font-weight:400;color:#888;">(10 total)</span></div></div><div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.6rem;flex-wrap:wrap;"><div style="background:#fff;border:1px solid #e5e5e5;border-radius:20px;padding:2px 8px;font-size:0.52rem;color:#888;">Search creators...</div><div style="background:#111;color:#fff;border-radius:20px;padding:2px 7px;font-size:0.52rem;font-weight:600;">All</div><span style="font-size:0.7rem;color:#888;">📱</span><span style="font-size:0.7rem;color:#888;">📸</span><span style="font-size:0.7rem;color:#888;">▶</span><span style="font-size:0.7rem;color:#888;">✕</span><div style="background:#fff;border:1px solid #e5e5e5;border-radius:20px;padding:2px 7px;font-size:0.48rem;color:#888;">🏷 Filter tags ▾</div><div style="background:#b91c1c;color:#fff;border-radius:5px;padding:3px 8px;font-size:0.5rem;font-weight:700;">+ ADD CREATOR</div></div><div style="display:flex;flex-direction:column;gap:0.3rem;">${[{i:'CP',ic:'#22c55e',n:'Courtney Park',f:'136K',c:1,t:'#Paid',pl:'📸🎵'},{i:'AR',ic:'#06b6d4',n:'Alexis Rose Hinkley',f:'529K',c:0,pl:'📸'},{i:'MT',ic:'#6366f1',n:'Megan Thuy',f:'44.1K',c:1,t:'#Unpaid',pl:'📸'},{i:'JG',ic:'#8b5cf6',n:'Juan Guerrero Maya',f:'70.1K',c:1,pl:'📸'},{i:'Y',ic:'#f59e0b',n:'Yaretua',f:'145K',c:1,pl:'📸'}].map(r=>`<div style="background:#fff;border-radius:6px;padding:0.45rem 0.6rem;display:flex;align-items:center;gap:0.5rem;"><div style="width:22px;height:22px;border-radius:50%;background:${r.ic};display:flex;align-items:center;justify-content:center;font-size:0.48rem;font-weight:700;color:#fff;flex-shrink:0;">${r.i}</div><div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.n}</div>${r.t?`<span style="font-size:0.42rem;color:#6366f1;background:#eef2ff;padding:1px 4px;border-radius:10px;">${r.t}</span>`:''}</div><div style="font-size:0.6rem;color:#888;margin-right:0.25rem;">${r.pl}</div><div style="text-align:right;flex-shrink:0;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.06em;">FOLLOWERS</div><div style="font-size:0.62rem;font-weight:700;color:#111;">${r.f}</div></div><div style="border:1px solid #e5e5e5;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#333;flex-shrink:0;">View</div></div>`).join('')}</div></div><div style="width:110px;padding:0.75rem;flex-shrink:0;display:flex;flex-direction:column;gap:0.5rem;"><div style="background:#0f2033;border-radius:8px;padding:0.6rem;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">TOTAL REACH</div><div style="font-size:0.9rem;font-weight:800;color:#fff;line-height:1;">1.6 M</div><div style="font-size:0.48rem;color:#4ade80;margin-top:1px;">3.66 M followers</div></div><div style="background:#fff;border-radius:8px;padding:0.6rem;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;">POPULAR TAGS</div><div style="display:flex;gap:0.25rem;flex-wrap:wrap;"><span style="font-size:0.42rem;color:#6366f1;background:#eef2ff;padding:1px 5px;border-radius:10px;">#Paid (2)</span><span style="font-size:0.42rem;color:#6366f1;background:#eef2ff;padding:1px 5px;border-radius:10px;">#Unpaid (1)</span></div><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.4rem;margin-bottom:0.25rem;">TOP PERFORMER</div><div style="display:flex;align-items:center;gap:0.35rem;"><div style="width:18px;height:18px;border-radius:50%;background:#06b6d4;display:flex;align-items:center;justify-content:center;font-size:0.45rem;font-weight:700;color:#fff;">F</div><div><div style="font-size:0.55rem;font-weight:700;color:#111;">Fernanda</div><div style="font-size:0.42rem;color:#888;">1.57 M followers</div></div></div></div><div style="background:#fff;border-radius:8px;padding:0.6rem;"><div style="font-size:0.55rem;font-weight:700;color:#111;">🔍 Deep Filter</div><div style="font-size:0.42rem;color:#888;margin-top:2px;">Filter by niche, platform, engagement rate...</div></div></div></div>`
+            screen: `<div style="background:#f0efec;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;display:flex;"><div style="flex:1;padding:0.75rem;overflow:hidden;"><div style="font-size:0.9rem;font-weight:800;color:#111;margin-bottom:0.6rem;">Creators <span style="font-size:0.55rem;font-weight:400;color:#888;">(10 total)</span></div><div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.6rem;flex-wrap:wrap;"><div style="background:#fff;border:1px solid #e5e5e5;border-radius:20px;padding:2px 8px;font-size:0.52rem;color:#888;">Search creators...</div><div style="background:#111;color:#fff;border-radius:20px;padding:2px 7px;font-size:0.52rem;font-weight:600;">All</div><span style="font-size:0.7rem;color:#888;">📱</span><span style="font-size:0.7rem;color:#888;">📸</span><span style="font-size:0.7rem;color:#888;">▶</span><div style="background:#b91c1c;color:#fff;border-radius:5px;padding:3px 8px;font-size:0.5rem;font-weight:700;">+ ADD CREATOR</div></div><div style="display:flex;flex-direction:column;gap:0.3rem;">${[{i:'CP',ic:'#22c55e',n:'Courtney Park',f:'136K',t:'#Paid',pl:'📸🎵'},{i:'AR',ic:'#06b6d4',n:'Alexis Rose Hinkley',f:'529K',pl:'📸'},{i:'MT',ic:'#6366f1',n:'Megan Thuy',f:'44.1K',t:'#Unpaid',pl:'📸'},{i:'JG',ic:'#8b5cf6',n:'Juan Guerrero Maya',f:'70.1K',pl:'📸'},{i:'Y',ic:'#f59e0b',n:'Yaretua',f:'145K',pl:'📸'}].map(r=>`<div style="background:#fff;border-radius:6px;padding:0.45rem 0.6rem;display:flex;align-items:center;gap:0.5rem;"><div style="width:22px;height:22px;border-radius:50%;background:${r.ic};display:flex;align-items:center;justify-content:center;font-size:0.48rem;font-weight:700;color:#fff;flex-shrink:0;">${r.i}</div><div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.n}</div>${r.t?`<span style="font-size:0.42rem;color:#6366f1;background:#eef2ff;padding:1px 4px;border-radius:10px;">${r.t}</span>`:''}</div><span style="font-size:0.6rem;color:#888;">${r.pl}</span><div style="text-align:right;flex-shrink:0;margin:0 0.25rem;"><div style="font-size:0.38rem;color:#888;text-transform:uppercase;">FOLLOWERS</div><div style="font-size:0.62rem;font-weight:700;color:#111;">${r.f}</div></div><div style="border:1px solid #e5e5e5;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#333;flex-shrink:0;">View</div></div>`).join('')}</div></div><div style="width:110px;padding:0.75rem;flex-shrink:0;display:flex;flex-direction:column;gap:0.5rem;"><div style="background:#0f2033;border-radius:8px;padding:0.6rem;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:2px;">TOTAL REACH</div><div style="font-size:0.9rem;font-weight:800;color:#fff;">1.6 M</div><div style="font-size:0.48rem;color:#4ade80;margin-top:1px;">3.66 M followers</div></div><div style="background:#fff;border-radius:8px;padding:0.6rem;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;margin-bottom:0.3rem;">POPULAR TAGS</div><div style="display:flex;gap:0.25rem;flex-wrap:wrap;margin-bottom:0.4rem;"><span style="font-size:0.42rem;color:#6366f1;background:#eef2ff;padding:1px 5px;border-radius:10px;">#Paid (2)</span><span style="font-size:0.42rem;color:#6366f1;background:#eef2ff;padding:1px 5px;border-radius:10px;">#Unpaid (1)</span></div><div style="font-size:0.42rem;color:#888;text-transform:uppercase;margin-bottom:0.25rem;">TOP PERFORMER</div><div style="display:flex;align-items:center;gap:0.35rem;"><div style="width:18px;height:18px;border-radius:50%;background:#06b6d4;display:flex;align-items:center;justify-content:center;font-size:0.45rem;font-weight:700;color:#fff;">F</div><div><div style="font-size:0.55rem;font-weight:700;color:#111;">Fernanda</div><div style="font-size:0.42rem;color:#888;">1.57 M followers</div></div></div></div></div></div>`
           }
         ]
       },
       {
-        name: "Cognify",
+        name: "AV Projects",
         slides: [
           {
-            label: "01 — Setup",
-            title: "Connect Your Knowledge",
-            desc: "Cognify ingests your Notion workspace or Confluence instance, chunks the content, embeds it, and stores it in a vector DB — all in under 5 minutes.",
-            features: ["Notion & Confluence OAuth connectors", "Smart chunking respects document structure", "pgvector for storage, no external DB needed"],
-            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">cognify.app/setup</div></div><div class="sim-landing"><div class="sim-hero-label">Knowledge Sources</div><div class="sim-hero-h1">Connect & Index</div><div style="display:flex;flex-direction:column;gap:0.75rem;margin:1rem 0"><div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(126,255,245,0.2);padding:0.75rem;border-radius:4px"><div style="display:flex;align-items:center;gap:0.75rem"><span>📝</span><div><div style="font-size:0.82rem;font-weight:600">Notion Workspace</div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--accent)">✓ Connected · 842 pages</div></div></div><div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--accent)">Indexed</div></div><div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:0.75rem;border-radius:4px"><div style="display:flex;align-items:center;gap:0.75rem"><span>📘</span><div><div style="font-size:0.82rem;font-weight:600">Confluence</div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--muted)">Not connected</div></div></div><div class="sim-btn" style="font-size:0.62rem;padding:0.35rem 0.75rem;">Connect</div></div></div></div>`
+            label: "01 — Dashboard",
+            title: "Project Command Center",
+            desc: "The AV Projects dashboard gives AV integrators a live pulse on their business — open projects, sales pipeline, invoiced revenue, hours burned, and average margin. Everything a project manager needs at a glance.",
+            features: ["KPI cards: projects, revenue, overdue, margin %", "Hour burn by project with over-estimate alerts", "Open sales orders and upcoming milestones"],
+            screen: `<div style="background:#f5f4f0;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;display:flex;"><div style="width:120px;background:#fff;border-right:1px solid #e8e6e0;padding:0.75rem 0;flex-shrink:0;"><div style="padding:0 0.875rem;margin-bottom:0.75rem;"><div style="font-size:0.68rem;font-weight:800;color:#0ea5e9;line-height:1.1;">AV Projects</div><div style="font-size:0.45rem;color:#999;margin-top:1px;">CALL ONE, INC</div></div><div style="border-top:1px solid #f0eeea;margin-bottom:0.4rem;"></div>${['Dashboard','Projects','Items','Customers','Quotes','Purchase Orders','Shipments','Time Tracking','Invoices','Subscriptions','Reports'].map((n,i)=>`<div style="padding:0.28rem 0.875rem;font-size:0.55rem;color:${i===0?'#0ea5e9':'#666'};font-weight:${i===0?'700':'400'};background:${i===0?'#eff9ff':'transparent'};border-radius:4px;margin:1px 4px;">${n}</div>`).join('')}</div><div style="flex:1;padding:0.75rem;overflow:hidden;"><div style="margin-bottom:0.5rem;"><div style="font-size:0.9rem;font-weight:800;color:#111;line-height:1.1;">Dashboard</div><div style="font-size:0.45rem;color:#999;margin-top:1px;">Sunday, March 15</div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.35rem;margin-bottom:0.5rem;">${[{l:'PROJECTS',v:'2',s:''},{l:'OPEN SOS',v:'1',s:'$4.3k pipeline'},{l:'REVENUE 30D',v:'$0',s:'Paid invoices'},{l:'INVOICED 30D',v:'$12.0k',s:'Awaiting payment'},{l:'OVERDUE',v:'$0',s:'0 invoices'},{l:'HOURS / WK',v:'0.0',s:'This week'},{l:'AVG MARGIN',v:'45.4%',s:'Accepted quotes',accent:true}].slice(0,4).map(k=>`<div style="background:#fff;border-radius:8px;padding:0.5rem;border:1px solid #e8e6e0;"><div style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px;">${k.l}</div><div style="font-size:0.8rem;font-weight:800;color:${k.accent?'#0ea5e9':'#111'};line-height:1;">${k.v}</div>${k.s?`<div style="font-size:0.38rem;color:#bbb;margin-top:1px;">${k.s}</div>`:''}</div>`).join('')}</div><div style="background:#fff;border-radius:8px;padding:0.6rem;margin-bottom:0.4rem;border:1px solid #e8e6e0;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.4rem;"><div style="font-size:0.58rem;font-weight:700;color:#111;">Hour Burn by Project</div><div style="font-size:0.45rem;color:#0ea5e9;">All projects ›</div></div><div style="display:flex;flex-direction:column;gap:0.3rem;"><div style="font-size:0.52rem;color:#333;font-weight:600;">Test Project 1 <span style="color:#999;font-weight:400;font-size:0.45rem;">· Intel Corporation</span><span style="float:right;font-size:0.48rem;color:#666;">0.0h</span></div><div><div style="font-size:0.52rem;color:#333;font-weight:600;margin-bottom:2px;">Nike HQ Conference Room AV <span style="float:right;font-size:0.48rem;color:#666;">9.0h / 2h</span></div><div style="height:4px;background:#fee2e2;border-radius:2px;overflow:hidden;"><div style="height:100%;width:100%;background:#ef4444;border-radius:2px;"></div></div><div style="font-size:0.38rem;color:#ef4444;margin-top:1px;">450% of estimate</div></div></div></div><div style="background:#fff;border-radius:8px;padding:0.6rem;border:1px solid #e8e6e0;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;"><div style="font-size:0.58rem;font-weight:700;color:#111;">Open Sales Orders</div><div style="font-size:0.45rem;color:#0ea5e9;">View all ›</div></div><div style="display:grid;grid-template-columns:1fr 1.5fr 0.6fr 0.5fr;padding:0.2rem 0;border-bottom:1px solid #f5f4f0;margin-bottom:0.2rem;"><span style="font-size:0.38rem;color:#999;text-transform:uppercase;">Customer</span><span style="font-size:0.38rem;color:#999;text-transform:uppercase;">Project</span><span style="font-size:0.38rem;color:#999;text-transform:uppercase;">Value</span><span style="font-size:0.38rem;color:#999;text-transform:uppercase;">Created</span></div><div style="display:grid;grid-template-columns:1fr 1.5fr 0.6fr 0.5fr;align-items:center;"><span style="font-size:0.52rem;font-weight:700;color:#111;">Nike HQ</span><span style="font-size:0.48rem;color:#555;">Nike HQ Conference Room AV</span><span style="font-size:0.52rem;font-weight:700;color:#111;">$4.3k</span><span style="font-size:0.45rem;color:#999;">Mar 10</span></div></div></div>`
           },
           {
-            label: "02 — Product",
-            title: "Ask Anything",
-            desc: "The chat interface lets your team ask natural language questions and get answers cited directly from your internal docs. No hallucinations — every answer is grounded.",
-            features: ["Source citations for every answer", "Confidence scores per response", "Fallback: 'I don't know' when info isn't found"],
-            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">cognify.app/chat</div></div><div class="sim-body" style="display:flex;flex-direction:column;gap:0.75rem"><div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:0.75rem;border-radius:4px;align-self:flex-end;max-width:80%;font-family:var(--font-mono);font-size:0.72rem">What's our refund policy for annual plans?</div><div style="background:rgba(126,255,245,0.06);border:1px solid rgba(126,255,245,0.15);padding:0.75rem;border-radius:4px;max-width:90%"><div style="font-family:var(--font-mono);font-size:0.72rem;line-height:1.7;margin-bottom:0.5rem">Annual plan refunds are pro-rated for the unused months, minus a 10% processing fee. Requests must be submitted within 30 days of billing.</div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--accent)">📄 Source: Notion › Legal › Refund Policy (95% confidence)</div></div><div style="display:flex;gap:0.5rem;margin-top:0.5rem"><div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:0.6rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);">Ask a follow-up...</div><div style="background:var(--accent);color:#000;padding:0.6rem 0.75rem;font-family:var(--font-mono);font-size:0.65rem;font-weight:600;">↑</div></div></div>`
+            label: "02 — Items",
+            title: "Hardware & Services Catalog",
+            desc: "The items page is a master catalog of every hardware unit and service SKU the company sells. Cost vs. price at a glance, with type badges to separate gear from labor.",
+            features: ["Hardware vs. Service type badges", "Cost and sell price per item with margin implied", "CSV import for bulk catalog uploads"],
+            screen: `<div style="background:#f5f4f0;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;display:flex;"><div style="width:120px;background:#fff;border-right:1px solid #e8e6e0;padding:0.75rem 0;flex-shrink:0;"><div style="padding:0 0.875rem;margin-bottom:0.75rem;"><div style="font-size:0.68rem;font-weight:800;color:#0ea5e9;">AV Projects</div><div style="font-size:0.45rem;color:#999;">CALL ONE, INC</div></div><div style="border-top:1px solid #f0eeea;margin-bottom:0.4rem;"></div>${['Dashboard','Projects','Items','Customers','Quotes','Purchase Orders','Shipments','Time Tracking','Invoices','Subscriptions','Reports'].map((n,i)=>`<div style="padding:0.28rem 0.875rem;font-size:0.55rem;color:${i===2?'#0ea5e9':'#666'};font-weight:${i===2?'700':'400'};background:${i===2?'#eff9ff':'transparent'};border-radius:4px;margin:1px 4px;">${n}</div>`).join('')}</div><div style="flex:1;padding:0.75rem;overflow:hidden;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;"><div style="font-size:0.9rem;font-weight:800;color:#111;">Items</div><div style="display:flex;gap:0.35rem;"><div style="background:#111;color:#fff;border-radius:5px;padding:3px 9px;font-size:0.5rem;font-weight:600;">+ Add Item</div><div style="border:1px solid #e2e8f0;border-radius:5px;padding:3px 9px;font-size:0.5rem;color:#555;">↑ Import CSV</div></div></div><div style="background:#fff;border-radius:8px;border:1px solid #e8e6e0;overflow:hidden;"><div style="display:grid;grid-template-columns:1.5fr 1fr 0.7fr 0.8fr 0.8fr 0.3fr;padding:0.4rem 0.75rem;border-bottom:1px solid #f5f4f0;"><span style="font-size:0.42rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.07em;">ITEM #</span><span style="font-size:0.42rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.07em;">MANUFACTURER</span><span style="font-size:0.42rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.07em;">TYPE</span><span style="font-size:0.42rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.07em;">COST</span><span style="font-size:0.42rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.07em;">PRICE</span><span></span></div>${[{n:'CISCO-SW-9200',m:'Cisco',t:'HARDWARE',tc:'#0ea5e9',tb:'#eff9ff',cost:'$2,200.00',price:'$4,204.00'},{n:'LABOR-INSTALL',m:'Internal',t:'SERVICE',tc:'#16a34a',tb:'#f0fdf4',cost:'$60.00',price:'$150.00'},{n:'PS-CAD',m:'—',t:'SERVICE',tc:'#16a34a',tb:'#f0fdf4',cost:'$100.00',price:'$110.00'},{n:'RACK-42U',m:'Middle Atlantic',t:'HARDWARE',tc:'#0ea5e9',tb:'#eff9ff',cost:'$900.00',price:'$1,800.00'}].map(item=>`<div style="display:grid;grid-template-columns:1.5fr 1fr 0.7fr 0.8fr 0.8fr 0.3fr;padding:0.5rem 0.75rem;border-bottom:1px solid #f9f9f7;align-items:center;"><span style="font-size:0.58rem;font-weight:800;color:#111;letter-spacing:0.02em;">${item.n}</span><span style="font-size:0.52rem;color:#666;">${item.m}</span><span style="background:${item.tb};color:${item.tc};font-size:0.42rem;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.06em;display:inline-block;">${item.t}</span><span style="font-size:0.52rem;color:#888;">${item.cost}</span><span style="font-size:0.58rem;font-weight:800;color:#111;">${item.price}</span><span style="font-size:0.6rem;color:#ccc;">›</span></div>`).join('')}</div></div>`
+          },
+          {
+            label: "03 — Subscriptions",
+            title: "Recurring Revenue Tracker",
+            desc: "AV Projects tracks every customer subscription — annual maintenance contracts, hardware warranties, software licenses — with renewal alerts and ARR calculations.",
+            features: ["Active / Expiring Soon / Pending Renewal counts", "Annual value aggregated across all active subs", "Per-customer subscription table with date ranges"],
+            screen: `<div style="background:#f5f4f0;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;display:flex;"><div style="width:120px;background:#fff;border-right:1px solid #e8e6e0;padding:0.75rem 0;flex-shrink:0;"><div style="padding:0 0.875rem;margin-bottom:0.75rem;"><div style="font-size:0.68rem;font-weight:800;color:#0ea5e9;">AV Projects</div><div style="font-size:0.45rem;color:#999;">CALL ONE, INC</div></div><div style="border-top:1px solid #f0eeea;margin-bottom:0.4rem;"></div>${['Dashboard','Projects','Items','Customers','Quotes','Purchase Orders','Shipments','Time Tracking','Invoices','Subscriptions','Reports'].map((n,i)=>`<div style="padding:0.28rem 0.875rem;font-size:0.55rem;color:${i===9?'#0ea5e9':'#666'};font-weight:${i===9?'700':'400'};background:${i===9?'#eff9ff':'transparent'};border-radius:4px;margin:1px 4px;">${n}</div>`).join('')}</div><div style="flex:1;padding:0.75rem;overflow:hidden;"><div style="margin-bottom:0.6rem;"><div style="font-size:0.9rem;font-weight:800;color:#111;">Subscriptions</div><div style="font-size:0.48rem;color:#999;margin-top:1px;">All customer subscription items</div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.35rem;margin-bottom:0.5rem;">${[{icon:'✓',ic:'#16a34a',l:'ACTIVE',v:'1',s:''},{icon:'△',ic:'#999',l:'EXPIRING SOON',v:'0',s:'Within 30 days'},{icon:'↻',ic:'#f59e0b',l:'PENDING RENEWAL',v:'0',s:''},{icon:'$',ic:'#0ea5e9',l:'ANNUAL VALUE',v:'$4,204',s:'Active only'}].map(k=>`<div style="background:#fff;border-radius:8px;padding:0.6rem;border:1px solid #e8e6e0;"><div style="width:18px;height:18px;border-radius:50%;background:#f5f4f0;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:${k.ic};margin-bottom:4px;">${k.icon}</div><div style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">${k.l}</div><div style="font-size:0.85rem;font-weight:800;color:#111;line-height:1;">${k.v}</div>${k.s?`<div style="font-size:0.38rem;color:#bbb;margin-top:1px;">${k.s}</div>`:''}</div>`).join('')}</div><div style="background:#fff;border-radius:8px;padding:0.6rem;border:1px solid #e8e6e0;"><div style="font-size:0.6rem;font-weight:700;color:#111;margin-bottom:0.4rem;">All Subscriptions</div><div style="display:grid;grid-template-columns:0.8fr 1fr 0.6fr 0.7fr 0.7fr 0.6fr;padding:0.2rem 0;border-bottom:1px solid #f5f4f0;margin-bottom:0.3rem;gap:0;"><span style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.06em;">CUSTOMER</span><span style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.06em;">ITEM</span><span style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.06em;">STATUS</span><span style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.06em;">START</span><span style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.06em;">END</span><span style="font-size:0.38rem;color:#999;text-transform:uppercase;letter-spacing:0.06em;">VALUE/YR</span></div><div style="display:grid;grid-template-columns:0.8fr 1fr 0.6fr 0.7fr 0.7fr 0.6fr;align-items:center;padding:0.3rem 0;"><span style="font-size:0.55rem;font-weight:700;color:#111;">Nike HQ</span><div><div style="font-size:0.55rem;font-weight:800;color:#111;">CISCO-SW-9200</div><div style="font-size:0.42rem;color:#999;">Cisco</div></div><div style="display:flex;align-items:center;gap:2px;"><span style="color:#16a34a;font-size:0.6rem;">⊙</span><span style="font-size:0.48rem;font-weight:700;color:#16a34a;letter-spacing:0.05em;">ACTIVE</span></div><span style="font-size:0.45rem;color:#555;">Mar 5, 2026</span><span style="font-size:0.45rem;color:#555;">Mar 5, 2027</span><span style="font-size:0.55rem;font-weight:800;color:#111;">$4,204.00</span></div></div></div>`
           }
         ]
       }
     ];
 
-    // ── Tour State ──
-    let currentProject = 0;
-    let currentSlide = 0;
-
-    function openTour(projectIdx) {
-      currentProject = projectIdx;
-      currentSlide = 0;
-      renderTour();
-      document.getElementById('tour-modal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeTour() {
-      document.getElementById('tour-modal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
+    let currentProject = 0, currentSlide = 0;
+    function openTour(idx) { currentProject = idx; currentSlide = 0; renderTour(); document.getElementById('tour-modal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeTour() { document.getElementById('tour-modal').classList.remove('active'); document.body.style.overflow = ''; }
     function renderTour() {
       const project = projects[currentProject];
       const slides = project.slides;
       const slide = slides[currentSlide];
-
       document.getElementById('tour-project-name').textContent = project.name;
       document.getElementById('slide-label').textContent = slide.label;
       document.getElementById('slide-title').textContent = slide.title;
       document.getElementById('slide-desc').textContent = slide.desc;
-
-      // Features
-      const featuresEl = document.getElementById('slide-features');
-      featuresEl.innerHTML = slide.features.map(f => `<div class="tour-feature">${f}</div>`).join('');
-
-      // Slides
-      const slideshow = document.getElementById('tour-slideshow');
-      slideshow.innerHTML = slides.map((s, i) => `
-        <div class="tour-slide ${i === currentSlide ? 'active' : ''}">
-          <div class="sim-screen">${s.screen}</div>
-        </div>
-      `).join('');
-
-      // Dots
+      document.getElementById('slide-features').innerHTML = slide.features.map(f => `<div class="tour-feature">${f}</div>`).join('');
+      document.getElementById('tour-slideshow').innerHTML = slides.map((s, i) => `<div class="tour-slide ${i===currentSlide?'active':''}"><div class="sim-screen">${s.screen}</div></div>`).join('');
       const dotsEl = document.getElementById('tour-dots');
-      dotsEl.innerHTML = slides.map((_, i) => `<div class="tour-dot ${i === currentSlide ? 'active' : ''}" data-idx="${i}"></div>`).join('');
-      dotsEl.querySelectorAll('.tour-dot').forEach(dot => {
-        dot.addEventListener('click', () => { currentSlide = parseInt(dot.dataset.idx); renderTour(); });
-      });
-
+      dotsEl.innerHTML = slides.map((_,i) => `<div class="tour-dot ${i===currentSlide?'active':''}" data-idx="${i}"></div>`).join('');
+      dotsEl.querySelectorAll('.tour-dot').forEach(dot => { dot.addEventListener('click', () => { currentSlide = parseInt(dot.dataset.idx); renderTour(); }); });
       document.getElementById('slide-current').textContent = currentSlide + 1;
       document.getElementById('slide-total').textContent = slides.length;
-
       document.getElementById('tour-prev').disabled = currentSlide === 0;
       document.getElementById('tour-next').disabled = currentSlide === slides.length - 1;
     }
-
-    // Project card clicks
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('click', () => openTour(parseInt(card.dataset.project)));
-    });
-
+    document.querySelectorAll('.project-card').forEach(card => { card.addEventListener('click', () => openTour(parseInt(card.dataset.project))); });
     document.getElementById('tour-close').addEventListener('click', closeTour);
     document.getElementById('tour-prev').addEventListener('click', () => { if (currentSlide > 0) { currentSlide--; renderTour(); } });
-    document.getElementById('tour-next').addEventListener('click', () => {
-      if (currentSlide < projects[currentProject].slides.length - 1) { currentSlide++; renderTour(); }
-    });
-
-    // Close on backdrop click
-    document.getElementById('tour-modal').addEventListener('click', e => {
-      if (e.target === document.getElementById('tour-modal')) closeTour();
-    });
-
-    // Keyboard nav
+    document.getElementById('tour-next').addEventListener('click', () => { if (currentSlide < projects[currentProject].slides.length - 1) { currentSlide++; renderTour(); } });
+    document.getElementById('tour-modal').addEventListener('click', e => { if (e.target === document.getElementById('tour-modal')) closeTour(); });
     document.addEventListener('keydown', e => {
       if (!document.getElementById('tour-modal').classList.contains('active')) return;
       if (e.key === 'Escape') closeTour();
       if (e.key === 'ArrowRight' && currentSlide < projects[currentProject].slides.length - 1) { currentSlide++; renderTour(); }
       if (e.key === 'ArrowLeft' && currentSlide > 0) { currentSlide--; renderTour(); }
     });
+
+    // ── Touch swipe for tour modal ──
+    let touchStartX = 0;
+    document.getElementById('tour-slideshow').addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    document.getElementById('tour-slideshow').addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) < 40) return;
+      if (diff > 0 && currentSlide < projects[currentProject].slides.length - 1) { currentSlide++; renderTour(); }
+      else if (diff < 0 && currentSlide > 0) { currentSlide--; renderTour(); }
+    }, { passive: true });
+
+    // ── On mobile, show tour hint always (no hover state) ──
+    if (window.matchMedia('(max-width: 600px)').matches) {
+      document.querySelectorAll('.card-tour-hint').forEach(el => el.style.opacity = '1');
+    }
   </script>
 </body>
 </html>
