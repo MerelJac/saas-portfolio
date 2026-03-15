@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merel Jacobs — Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080a0f;
+      --surface: #0e1117;
+      --surface2: #141820;
+      --border: rgba(255,255,255,0.07);
+      --text: #e8eaf0;
+      --muted: #606472;
+      --accent: #7efff5;
+      --accent2: #ff6b6b;
+      --accent3: #a78bfa;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --font-serif: 'Instrument Serif', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-display);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── Custom Cursor ── */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, background 0.2s ease;
+      mix-blend-mode: screen;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(126,255,245,0.4);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94), border-color 0.2s;
+    }
+    body:has(a:hover) .cursor, body:has(button:hover) .cursor { transform: scale(2.5); background: var(--accent2); }
+    body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { transform: translate(-50%, -50%) scale(1.5); border-color: rgba(255,107,107,0.5); }
+
+    /* ── Noise Overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 3rem;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(8,10,15,0.9), transparent);
+      backdrop-filter: blur(0px);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(126,255,245,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(126,255,245,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+    }
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .hero-glow-1 {
+      background: radial-gradient(circle, rgba(126,255,245,0.08) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      animation: floatGlow 8s ease-in-out infinite alternate;
+    }
+    .hero-glow-2 {
+      background: radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 70%);
+      bottom: -100px; left: -100px;
+      animation: floatGlow 10s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes floatGlow {
+      from { transform: translate(0,0) scale(1); }
+      to { transform: translate(40px, 30px) scale(1.1); }
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+    .hero-name {
+      font-size: clamp(4rem, 10vw, 9rem);
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+    .hero-name em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+    }
+    .hero-tagline {
+      font-family: var(--font-mono);
+      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+    .hero-tagline span { color: var(--accent); }
+
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.8s forwards;
+    }
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      border-radius: 2px;
+      text-decoration: none;
+      cursor: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 500;
+    }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 3rem;
+      display: flex; align-items: center; gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.2s forwards;
+    }
+    .hero-scroll-hint span {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+    .scroll-line {
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Section Base ── */
+    section { padding: 7rem 3rem; max-width: 1200px; margin: 0 auto; }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 4rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      height: 1px;
+      width: 60px;
+      background: var(--accent);
+      opacity: 0.4;
+    }
+
+    /* ── About ── */
+    #about { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; max-width: 1200px; margin: 0 auto; padding: 7rem 3rem; }
+    .about-text h2 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+    }
+    .about-text h2 em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent3);
+    }
+    .about-text p {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+    }
+    .about-text p strong { color: var(--text); }
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .stat-card {
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 2px; height: 100%;
+      background: var(--accent);
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-number span { color: var(--accent); }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── Stack ── */
+    .stack-cloud {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem;
+    }
+    .stack-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .stack-tag:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── Projects Section ── */
+    #projects { max-width: 1200px; margin: 0 auto; padding: 7rem 3rem; }
+
+    .projects-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 4rem;
+    }
+    .projects-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    /* Project Cards Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      cursor: none;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+    .project-card:nth-child(1) { grid-column: span 7; }
+    .project-card:nth-child(2) { grid-column: span 5; }
+    .project-card:nth-child(3) { grid-column: span 4; }
+    .project-card:nth-child(4) { grid-column: span 4; }
+    .project-card:nth-child(5) { grid-column: span 4; }
+
+    .project-card:hover { border-color: rgba(126,255,245,0.3); }
+    .project-card:hover .card-tour-hint { opacity: 1; }
+    .project-card:hover .project-accent-line { width: 100%; }
+
+    .project-accent-line {
+      height: 2px;
+      width: 0;
+      background: var(--accent);
+      transition: width 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      position: absolute; top: 0; left: 0;
+    }
+
+    .project-card-inner {
+      padding: 2rem;
+      height: 100%;
+      display: flex; flex-direction: column;
+    }
+    .project-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .project-year {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+    .project-tags-mini {
+      display: flex; gap: 0.4rem; flex-wrap: wrap;
+    }
+    .project-tag-mini {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--accent);
+      border: 1px solid rgba(126,255,245,0.2);
+      padding: 0.15rem 0.5rem;
+    }
+
+    .project-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      line-height: 1.1;
+    }
+    .project-card:nth-child(1) .project-title { font-size: 2rem; }
+
+    .project-desc {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .card-tour-hint {
+      margin-top: 1.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .card-tour-hint svg { width: 14px; height: 14px; }
+
+    .project-visual {
+      height: 140px;
+      background: var(--surface2);
+      margin: 0 2rem 2rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .project-card:nth-child(1) .project-visual { height: 200px; }
+
+    /* Fake browser screenshot aesthetics */
+    .project-visual-bar {
+      height: 24px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 0.75rem; gap: 5px;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; }
+    .dot-r { background: rgba(255,107,107,0.6); }
+    .dot-y { background: rgba(255,213,79,0.6); }
+    .dot-g { background: rgba(126,255,245,0.5); }
+
+    .project-visual-content {
+      position: absolute;
+      inset: 24px 0 0;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Animated project visual backgrounds */
+    .visual-saas {
+      background: linear-gradient(135deg, #0a0e1a 0%, #0d1520 100%);
+      width: 100%; height: 100%;
+      position: relative;
+    }
+    .visual-saas::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(126,255,245,0.04) 20px),
+                        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(126,255,245,0.04) 40px);
+    }
+    .visual-saas-ui {
+      position: absolute;
+      bottom: -10px; left: 50%; transform: translateX(-50%);
+      width: 88%;
+      background: rgba(14,17,23,0.9);
+      border: 1px solid rgba(126,255,245,0.15);
+      border-radius: 4px 4px 0 0;
+      padding: 0.75rem;
+    }
+    .fake-chart { display: flex; align-items: flex-end; gap: 4px; height: 50px; }
+    .fake-bar {
+      flex: 1;
+      background: rgba(126,255,245,0.25);
+      border-top: 1px solid rgba(126,255,245,0.6);
+      border-radius: 1px 1px 0 0;
+      animation: barPulse 3s ease-in-out infinite;
+    }
+    .fake-bar:nth-child(2) { animation-delay: 0.2s; }
+    .fake-bar:nth-child(3) { animation-delay: 0.4s; }
+    .fake-bar:nth-child(4) { animation-delay: 0.6s; }
+    .fake-bar:nth-child(5) { animation-delay: 0.8s; }
+    .fake-bar:nth-child(6) { animation-delay: 1s; }
+    @keyframes barPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .visual-api {
+      background: #06080d;
+      width: 100%; height: 100%;
+      display: flex; align-items: center;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: #3a4a5c;
+      line-height: 1.8;
+      overflow: hidden;
+      position: relative;
+    }
+    .visual-api::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 40px;
+      background: linear-gradient(to top, #06080d, transparent);
+    }
+    .api-line-green { color: #7efff5; }
+    .api-line-purple { color: #a78bfa; }
+    .api-line-orange { color: #ff9966; }
+    .typing-cursor {
+      display: inline-block;
+      width: 6px; height: 12px;
+      background: var(--accent);
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .visual-mobile {
+      background: linear-gradient(160deg, #0a0e1a 0%, #12070f 100%);
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem;
+    }
+    .phone-mock {
+      width: 55px; height: 95px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .phone-mock::before {
+      content: '';
+      position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+      width: 16px; height: 3px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+    }
+    .phone-screen {
+      position: absolute; top: 15px; left: 4px; right: 4px; bottom: 4px;
+      background: rgba(126,255,245,0.05);
+      border-radius: 3px;
+    }
+    .phone-row {
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      margin: 5px 4px 0;
+    }
+    .phone-row:nth-child(2) { width: 60%; background: rgba(126,255,245,0.3); }
+
+    .visual-devtool {
+      background: #050709;
+      width: 100%; height: 100%;
+      padding: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: #3a4a5c;
+      line-height: 2;
+      position: relative;
+      overflow: hidden;
+    }
+    .visual-devtool::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 30px;
+      background: linear-gradient(to top, #050709, transparent);
+    }
+
+    .visual-ai {
+      background: radial-gradient(ellipse at center, #0d0620 0%, #080a0f 70%);
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ai-orb {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(167,139,250,0.4) 0%, rgba(167,139,250,0.05) 70%);
+      border: 1px solid rgba(167,139,250,0.3);
+      animation: orbPulse 3s ease-in-out infinite;
+      position: relative;
+    }
+    .ai-orb::after {
+      content: '';
+      position: absolute; inset: -12px;
+      border-radius: 50%;
+      border: 1px solid rgba(167,139,250,0.1);
+      animation: orbPulse 3s ease-in-out infinite reverse;
+    }
+    @keyframes orbPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    /* ── Tour Modal ── */
+    #tour-modal {
+      position: fixed; inset: 0;
+      background: rgba(5,7,10,0.95);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      display: flex; flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    #tour-modal.active { opacity: 1; pointer-events: all; }
+
+    .tour-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .tour-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .tour-project-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .tour-close {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.2s;
+    }
+    .tour-close:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    .tour-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      overflow: hidden;
+    }
+
+    /* Tour Slideshow */
+    .tour-slideshow {
+      position: relative;
+      background: var(--surface2);
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tour-slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .tour-slide.active { opacity: 1; transform: translateX(0); }
+    .tour-slide.exit { opacity: 0; transform: translateX(-30px); }
+
+    /* Simulated project screens */
+    .sim-screen {
+      width: 80%; max-width: 560px;
+      background: #0a0d14;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    }
+    .sim-bar {
+      height: 32px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center;
+      padding: 0 1rem; gap: 6px;
+    }
+    .sim-url {
+      margin-left: 0.75rem;
+      flex: 1;
+      height: 18px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 3px;
+      display: flex; align-items: center;
+      padding: 0 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+    .sim-body {
+      padding: 1.5rem;
+      min-height: 320px;
+    }
+
+    /* Various screen designs */
+    .sim-dashboard-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .sim-h1 { font-size: 1.1rem; font-weight: 700; }
+    .sim-badge {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      background: rgba(126,255,245,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(126,255,245,0.2);
+      padding: 0.2rem 0.6rem;
+    }
+    .sim-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .sim-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 0.75rem;
+    }
+    .sim-card-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); margin-bottom: 0.3rem; }
+    .sim-card-val { font-size: 1.2rem; font-weight: 700; }
+    .sim-card-val.green { color: var(--accent); }
+    .sim-chart-row { display: flex; align-items: flex-end; gap: 3px; height: 60px; margin-bottom: 0.75rem; }
+    .sim-bar-el {
+      flex: 1;
+      background: rgba(126,255,245,0.15);
+      border-top: 1px solid rgba(126,255,245,0.4);
+      border-radius: 1px 1px 0 0;
+    }
+
+    .sim-terminal {
+      background: #050709;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 1.5rem;
+      min-height: 320px;
+      color: #5a7a5a;
+      line-height: 1.9;
+    }
+    .t-green { color: #7efff5; }
+    .t-white { color: rgba(255,255,255,0.7); }
+    .t-dim { color: #2a3a2a; }
+    .t-orange { color: #ff9966; }
+    .t-purple { color: #a78bfa; }
+
+    .sim-landing {
+      background: linear-gradient(160deg, #06050f 0%, #0a0814 100%);
+      min-height: 320px;
+      padding: 2rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .sim-hero-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .sim-hero-h1 { font-size: 1.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 0.75rem; }
+    .sim-hero-sub { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+    .sim-btn { display: inline-block; background: var(--accent); color: #000; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; padding: 0.6rem 1.2rem; }
+
+    .sim-editor {
+      background: #050709;
+      min-height: 320px;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+    }
+    .sim-sidebar {
+      border-right: 1px solid rgba(255,255,255,0.06);
+      padding: 1rem 0;
+    }
+    .sim-file { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); padding: 0.3rem 1rem; cursor: default; }
+    .sim-file.active { color: var(--text); background: rgba(255,255,255,0.04); }
+    .sim-file-icon { margin-right: 0.4rem; font-size: 0.6rem; }
+    .sim-code { padding: 1rem; font-family: var(--font-mono); font-size: 0.65rem; line-height: 2; color: #3a4a5c; }
+    .c-k { color: #a78bfa; }
+    .c-s { color: #7efff5; }
+    .c-n { color: #e8eaf0; }
+    .c-v { color: #ff9966; }
+    .c-c { color: #3a5c3a; }
+
+    /* Tour sidebar */
+    .tour-sidebar {
+      padding: 2.5rem 2rem;
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+    .tour-slide-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .tour-slide-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .tour-slide-desc {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.8;
+      flex: 1;
+    }
+    .tour-features {
+      margin-top: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .tour-feature {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex; align-items: flex-start; gap: 0.75rem;
+    }
+    .tour-feature::before {
+      content: '→';
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* Tour navigation */
+    .tour-nav {
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .tour-dots {
+      display: flex; gap: 0.5rem; align-items: center;
+    }
+    .tour-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.3s;
+      cursor: none;
+    }
+    .tour-dot.active {
+      width: 24px;
+      border-radius: 3px;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .tour-btn {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      padding: 0.7rem 1.5rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: none;
+      transition: all 0.2s;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .tour-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .tour-btn:disabled { opacity: 0.2; pointer-events: none; }
+    .tour-counter {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .tour-counter em { color: var(--text); font-style: normal; }
+
+    /* ── Contact ── */
+    #contact { max-width: 1200px; margin: 0 auto; padding: 7rem 3rem; }
+    .contact-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start;
+    }
+    .contact-left h2 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+    .contact-left h2 em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+    }
+    .contact-left p {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .contact-link:hover { color: var(--accent); border-color: rgba(126,255,245,0.3); }
+    .contact-link-icon { font-size: 0.9rem; width: 20px; text-align: center; }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .form-input, .form-textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: rgba(126,255,245,0.4); }
+    .form-textarea { min-height: 120px; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-text {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .footer-text a { color: var(--accent); text-decoration: none; }
+
+    /* ── Scroll Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.25rem 1.5rem; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      section, #about, #projects, #contact { padding: 5rem 1.5rem; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .project-card:nth-child(n) { grid-column: span 12; }
+      .tour-body { grid-template-columns: 1fr; }
+      .tour-sidebar { display: none; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">MJ_DEV</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+
+    <p class="hero-eyebrow">Available for opportunities · Based in OR</p>
+    <h1 class="hero-name">
+      Merel<br /><em>Jacobs</em>
+    </h1>
+    <p class="hero-tagline">
+      I build <span>SaaS products</span> that don't suck.<br />
+      Full-stack engineer obsessed with clean architecture<br />
+      and interfaces people actually enjoy using.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View My Work</a>
+      <a href="#contact" class="btn btn-ghost">Let's Talk</a>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div id="about">
+    <div class="about-text reveal">
+      <div class="section-label">01 — About</div>
+           <h2>I ship things<br /><em>fast</em> &amp; <em>right.</em></h2>
+      <p>I love to code and build things you'll actually use — from early prototypes to <strong>production SaaS</strong> serving real paying customers.</p>
+      <p>My sweet spot is the full stack: architecting <strong>scalable backends</strong>, crafting <strong>slick UIs</strong>, and everything in between. Product-driven mindset with quick and quality deliverables.</p>
+      <div class="stack-cloud">
+        <span class="stack-tag">TypeScript</span>
+        <span class="stack-tag">React</span>
+        <span class="stack-tag">Next.js</span>
+        <span class="stack-tag">Node.js</span>
+        <span class="stack-tag">Postgres</span>
+        <span class="stack-tag">Prisma</span>
+        <span class="stack-tag">Microsoft</span>
+        <span class="stack-tag">Tailwind</span>
+        <span class="stack-tag">Stripe</span>
+        <span class="stack-tag">AWS</span>
+        <span class="stack-tag">Docker</span>
+        <span class="stack-tag">Redis</span>
+        <span class="stack-tag">Supabase</span>
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">AL Lang</span>
+      </div>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-card">
+        <div class="stat-number">4<span>+</span></div>
+        <div class="stat-label">Years Building</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">12<span>k</span></div>
+        <div class="stat-label">Users Across Projects</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">10<span>+</span></div>
+        <div class="stat-label">SaaS Products Shipped</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Unfinished Excuses</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div id="projects">
+    <div class="projects-header reveal">
+      <div>
+        <div class="section-label">02 — Work</div>
+        <h2 class="projects-title">Selected<br />Projects</h2>
+      </div>
+      <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);max-width:240px;line-height:1.8;text-align:right;">Click any card for an interactive visual tour of the product</p>
+    </div>
+
+    <div class="projects-grid reveal">
+
+      <!-- Card 1: Large featured -->
+      <div class="project-card" data-project="0">
+        <div class="project-accent-line"></div>
+        <div class="project-visual">
+          <div class="project-visual-bar">
+            <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            <div class="sim-url" style="font-size:0.55rem;">◉ &nbsp;launchpad.app/dashboard</div>
+          </div>
+          <div class="project-visual-content">
+            <div class="visual-saas">
+              <div class="visual-saas-ui">
+                <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);margin-bottom:6px;">MONTHLY REVENUE</div>
+                <div class="fake-chart">
+                  <div class="fake-bar" style="height:40%"></div>
+                  <div class="fake-bar" style="height:55%"></div>
+                  <div class="fake-bar" style="height:45%"></div>
+                  <div class="fake-bar" style="height:70%"></div>
+                  <div class="fake-bar" style="height:60%"></div>
+                  <div class="fake-bar" style="height:85%"></div>
+                  <div class="fake-bar" style="height:75%"></div>
+                  <div class="fake-bar" style="height:100%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-card-inner">
+          <div class="project-meta">
+            <span class="project-year">2024</span>
+            <div class="project-tags-mini">
+              <span class="project-tag-mini">SaaS</span>
+              <span class="project-tag-mini">Next.js</span>
+              <span class="project-tag-mini">Stripe</span>
+            </div>
+          </div>
+          <h3 class="project-title">LaunchPad</h3>
+          <p class="project-desc">A B2B analytics SaaS for indie founders. Real-time MRR tracking, churn prediction, and cohort analysis. 400+ active paying customers, $8k MRR.</p>
+          <div class="card-tour-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Take a visual tour
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="project-card" data-project="1">
+        <div class="project-accent-line"></div>
+        <div class="project-visual">
+          <div class="project-visual-bar">
+            <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          </div>
+          <div class="project-visual-content">
+            <div class="visual-api" style="flex-direction:column;gap:0;padding:0.75rem;">
+              <div><span class="api-line-green">POST</span> <span style="color:#e8eaf0;">/api/v2/infer</span></div>
+              <div><span class="api-line-purple">{ model: "gpt-4",</span></div>
+              <div><span class="api-line-purple">&nbsp;&nbsp;stream: true }</span></div>
+              <div style="color:#3a4a5c;">→ 200 OK &nbsp;<span class="api-line-orange">142ms</span></div>
+              <div style="color:#2a3a4a;">data: {"tokens":874}</div>
+              <span class="typing-cursor"></span>
+            </div>
+          </div>
+        </div>
+        <div class="project-card-inner">
+          <div class="project-meta">
+            <span class="project-year">2024</span>
+            <div class="project-tags-mini">
+              <span class="project-tag-mini">API</span>
+              <span class="project-tag-mini">AI</span>
+            </div>
+          </div>
+          <h3 class="project-title">InferRoute</h3>
+          <p class="project-desc">LLM routing middleware that cuts inference costs by 60% by dynamically selecting the cheapest model capable of handling each request.</p>
+          <div class="card-tour-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Take a visual tour
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="project-card" data-project="2">
+        <div class="project-accent-line"></div>
+        <div class="project-visual">
+          <div class="project-visual-bar">
+            <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          </div>
+          <div class="project-visual-content">
+            <div class="visual-mobile">
+              <div class="phone-mock">
+                <div class="phone-screen">
+                  <div class="phone-row"></div>
+                  <div class="phone-row"></div>
+                  <div class="phone-row" style="height:20px;margin-top:4px;background:rgba(167,139,250,0.2);"></div>
+                </div>
+              </div>
+              <div class="phone-mock" style="transform:translateY(-10px);border-color:rgba(126,255,245,0.25);">
+                <div class="phone-screen" style="background:rgba(126,255,245,0.04);">
+                  <div class="phone-row" style="background:rgba(126,255,245,0.3);"></div>
+                  <div class="phone-row"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-card-inner">
+          <div class="project-meta">
+            <span class="project-year">2023</span>
+            <div class="project-tags-mini">
+              <span class="project-tag-mini">Mobile</span>
+              <span class="project-tag-mini">React Native</span>
+            </div>
+          </div>
+          <h3 class="project-title">Nudge</h3>
+          <p class="project-desc">Habit tracker with social accountability. 3k DAU, featured in App Store "Apps We Love."</p>
+          <div class="card-tour-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Take a visual tour
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="project-card" data-project="3">
+        <div class="project-accent-line"></div>
+        <div class="project-visual">
+          <div class="project-visual-bar">
+            <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          </div>
+          <div class="project-visual-content">
+            <div class="visual-devtool" style="width:100%;">
+              <div style="color:#a78bfa;">$ deptree analyze ./src</div>
+              <div style="color:#3a5c3a;">✓ Scanned 847 modules</div>
+              <div style="color:#ff6b6b;">⚠ 12 circular deps found</div>
+              <div style="color:#3a4a5c;">→ Generating report...</div>
+              <div style="color:#7efff5;">✓ Done in 1.2s</div>
+            </div>
+          </div>
+        </div>
+        <div class="project-card-inner">
+          <div class="project-meta">
+            <span class="project-year">2023</span>
+            <div class="project-tags-mini">
+              <span class="project-tag-mini">CLI</span>
+              <span class="project-tag-mini">OSS</span>
+            </div>
+          </div>
+          <h3 class="project-title">DepTree</h3>
+          <p class="project-desc">CLI tool that visualizes and detects circular dependencies in Node.js monorepos. 2k GitHub stars.</p>
+          <div class="card-tour-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Take a visual tour
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="project-card" data-project="4">
+        <div class="project-accent-line"></div>
+        <div class="project-visual">
+          <div class="project-visual-bar">
+            <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          </div>
+          <div class="project-visual-content">
+            <div class="visual-ai">
+              <div class="ai-orb"></div>
+            </div>
+          </div>
+        </div>
+        <div class="project-card-inner">
+          <div class="project-meta">
+            <span class="project-year">2025</span>
+            <div class="project-tags-mini">
+              <span class="project-tag-mini">AI</span>
+              <span class="project-tag-mini">Python</span>
+            </div>
+          </div>
+          <h3 class="project-title">Cognify</h3>
+          <p class="project-desc">RAG pipeline for enterprise knowledge bases. Plug in your Notion/Confluence, get a GPT-4 powered Q&amp;A bot.</p>
+          <div class="card-tour-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Take a visual tour
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /projects-grid -->
+  </div><!-- /projects -->
+
+  <!-- CONTACT -->
+  <div id="contact">
+    <div class="contact-inner reveal">
+      <div class="contact-left">
+        <div class="section-label">03 — Contact</div>
+        <h2>Let's build<br />something <em>real.</em></h2>
+        <p>Whether it's a full-time role, a contract gig, or just talking shop about tech — my inbox is always open.</p>
+        <div class="contact-links">
+          <a href="mailto:merelbjacobs@gmail.com" class="contact-link">
+            <span class="contact-link-icon">✉</span>
+            merelbjacobs@gmail.com
+          </a>
+          <a href="https://github.com/MerelJac" class="contact-link" target="_blank">
+            <span class="contact-link-icon">⌥</span>
+            github.com/MerelJac
+          </a>
+          <a href="https://www.linkedin.com/in/merel-b-jacobs/" class="contact-link" target="_blank">
+            <span class="contact-link-icon">↗</span>
+            linkedin.com/in/merel-b-jacobs
+          </a>
+          <!-- <a href="#" class="contact-link">
+            <span class="contact-link-icon">⬇</span>
+            Download Resume (PDF)
+          </a> -->
+        </div>
+      </div>`
+      <!-- <div class="contact-form">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="What's on your mind?"></textarea>
+        </div>
+        <button class="btn btn-primary" style="align-self:flex-start;border:none;">Send Message</button>
+      </div>
+    </div> -->
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-text">© 2026 <a href="#">Merel Jacobs</a>. Built with drive, not nonsense.</p>
+  </footer>
+
+  <!-- TOUR MODAL -->
+  <div id="tour-modal">
+    <div class="tour-topbar">
+      <div>
+        <div class="tour-title">Visual Tour</div>
+        <div class="tour-project-name" id="tour-project-name">LaunchPad</div>
+      </div>
+      <button class="tour-close" id="tour-close">✕</button>
+    </div>
+    <div class="tour-body">
+      <div class="tour-slideshow" id="tour-slideshow">
+        <!-- Slides injected by JS -->
+      </div>
+      <div class="tour-sidebar">
+        <div class="tour-slide-label" id="slide-label">Overview</div>
+        <div class="tour-slide-title" id="slide-title">Loading...</div>
+        <p class="tour-slide-desc" id="slide-desc">Loading...</p>
+        <div class="tour-features" id="slide-features"></div>
+      </div>
+    </div>
+    <div class="tour-nav">
+      <button class="tour-btn" id="tour-prev">← Prev</button>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0.75rem;">
+        <div class="tour-dots" id="tour-dots"></div>
+        <div class="tour-counter"><em id="slide-current">1</em> / <span id="slide-total">3</span></div>
+      </div>
+      <button class="tour-btn" id="tour-next">Next →</button>
+    </div>
+  </div>
+
+  <script>
+    // ── Cursor ──
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+    });
+    (function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+      requestAnimationFrame(animRing);
+    })();
+
+    // ── Scroll Reveal ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Tour Data ──
+    const projects = [
+      {
+        name: "LaunchPad",
+        slides: [
+          {
+            label: "01 — Overview",
+            title: "The Dashboard",
+            desc: "The main dashboard gives founders an instant pulse on their business. MRR, churn, and new signups front and center — no digging required.",
+            features: ["Live MRR counter with sparklines", "Churn rate with trend arrows", "New vs. returning customers split"],
+            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">launchpad.app/dashboard</div></div><div class="sim-body"><div class="sim-dashboard-header"><div class="sim-h1">Dashboard</div><div class="sim-badge">↑ 12% this month</div></div><div class="sim-cards"><div class="sim-card"><div class="sim-card-label">MRR</div><div class="sim-card-val green">$8,240</div></div><div class="sim-card"><div class="sim-card-label">Churn</div><div class="sim-card-val">2.1%</div></div><div class="sim-card"><div class="sim-card-label">Users</div><div class="sim-card-val">412</div></div></div><div class="sim-chart-row"><div class="sim-bar-el" style="height:40%"></div><div class="sim-bar-el" style="height:55%"></div><div class="sim-bar-el" style="height:50%"></div><div class="sim-bar-el" style="height:70%"></div><div class="sim-bar-el" style="height:65%"></div><div class="sim-bar-el" style="height:85%"></div><div class="sim-bar-el" style="height:80%"></div><div class="sim-bar-el" style="height:100%"></div></div><div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);margin-top:0.5rem;">Revenue trend — last 8 months</div></div>`
+          },
+          {
+            label: "02 — Feature",
+            title: "Cohort Analysis",
+            desc: "Visualize how different customer cohorts retain over time. Identify which acquisition channels are producing your stickiest users.",
+            features: ["Monthly cohort retention heatmaps", "Filterable by plan, channel, country", "Export as CSV or PNG"],
+            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">launchpad.app/cohorts</div></div><div class="sim-body"><div class="sim-dashboard-header"><div class="sim-h1">Cohort Retention</div></div><div style="display:grid;grid-template-columns:80px repeat(6,1fr);gap:2px;font-family:var(--font-mono);font-size:0.55rem;color:var(--muted)"><div>Cohort</div><div>M0</div><div>M1</div><div>M2</div><div>M3</div><div>M4</div><div>M5</div><div style="color:var(--text)">Jan '24</div><div style="background:rgba(126,255,245,0.5);color:#000;padding:2px;text-align:center;">100%</div><div style="background:rgba(126,255,245,0.3);padding:2px;text-align:center;color:var(--text)">74%</div><div style="background:rgba(126,255,245,0.22);padding:2px;text-align:center;color:var(--text)">61%</div><div style="background:rgba(126,255,245,0.15);padding:2px;text-align:center;color:var(--text)">55%</div><div style="background:rgba(126,255,245,0.1);padding:2px;text-align:center;color:var(--muted)">48%</div><div style="background:rgba(126,255,245,0.08);padding:2px;text-align:center;color:var(--muted)">43%</div><div style="color:var(--text)">Feb '24</div><div style="background:rgba(126,255,245,0.5);color:#000;padding:2px;text-align:center;">100%</div><div style="background:rgba(126,255,245,0.35);padding:2px;text-align:center;color:var(--text)">78%</div><div style="background:rgba(126,255,245,0.25);padding:2px;text-align:center;color:var(--text)">66%</div><div style="background:rgba(126,255,245,0.18);padding:2px;text-align:center;color:var(--text)">59%</div><div style="background:rgba(126,255,245,0.12);padding:2px;text-align:center;color:var(--muted)">52%</div><div style="color:var(--muted);padding:2px;text-align:center;">—</div><div style="color:var(--text)">Mar '24</div><div style="background:rgba(126,255,245,0.5);color:#000;padding:2px;text-align:center;">100%</div><div style="background:rgba(126,255,245,0.38);padding:2px;text-align:center;color:var(--text)">81%</div><div style="background:rgba(126,255,245,0.28);padding:2px;text-align:center;color:var(--text)">69%</div><div style="color:var(--muted);padding:2px;text-align:center;">—</div><div style="color:var(--muted);padding:2px;text-align:center;">—</div><div style="color:var(--muted);padding:2px;text-align:center;">—</div></div></div>`
+          },
+          {
+            label: "03 — Onboarding",
+            title: "Stripe Integration",
+            desc: "One-click Stripe Connect setup. Customers connect their existing Stripe account and start seeing data within seconds — no manual webhook config.",
+            features: ["OAuth Stripe Connect flow", "Automatic webhook registration", "Historical data sync (up to 2 years)"],
+            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">launchpad.app/onboarding</div></div><div class="sim-landing"><div class="sim-hero-label">Step 2 of 3</div><div class="sim-hero-h1">Connect Your Stripe</div><div class="sim-hero-sub">We'll pull your historical data and start tracking in real-time. Read-only access — we never touch your funds.</div><div class="sim-btn">Connect with Stripe →</div><div style="margin-top:1.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);">🔒 256-bit encrypted · SOC 2 Type II certified</div></div>`
+          }
+        ]
+      },
+      {
+        name: "InferRoute",
+        slides: [
+          {
+            label: "01 — Concept",
+            title: "Intelligent Routing",
+            desc: "InferRoute sits between your app and any LLM provider. It classifies each request's complexity and routes it to the cheapest model that can handle it well.",
+            features: ["Supports OpenAI, Anthropic, Mistral, Groq", "Complexity classifier runs in <5ms", "Real-time cost savings dashboard"],
+            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">inferroute.dev/dashboard</div></div><div class="sim-body"><div class="sim-dashboard-header"><div class="sim-h1">Routing Overview</div><div class="sim-badge" style="background:rgba(255,107,107,0.1);color:var(--accent2);border-color:rgba(255,107,107,0.2);">Saved $1,240 this month</div></div><div class="sim-cards"><div class="sim-card"><div class="sim-card-label">Requests</div><div class="sim-card-val">84k</div></div><div class="sim-card"><div class="sim-card-label">Avg Latency</div><div class="sim-card-val green">148ms</div></div><div class="sim-card"><div class="sim-card-label">Cost/1k req</div><div class="sim-card-val">$0.04</div></div></div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);margin-bottom:0.75rem;">Model Distribution</div><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.65rem"><span style="width:80px;color:var(--muted)">GPT-3.5</span><div style="height:8px;width:65%;background:rgba(126,255,245,0.3);border-radius:1px"></div><span style="color:var(--text)">65%</span></div><div style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.65rem"><span style="width:80px;color:var(--muted)">Mistral</span><div style="height:8px;width:22%;background:rgba(167,139,250,0.3);border-radius:1px"></div><span style="color:var(--text)">22%</span></div><div style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.65rem"><span style="width:80px;color:var(--muted)">GPT-4</span><div style="height:8px;width:13%;background:rgba(255,107,107,0.3);border-radius:1px"></div><span style="color:var(--text)">13%</span></div></div></div>`
+          },
+          {
+            label: "02 — Integration",
+            title: "Two Lines to Ship",
+            desc: "Drop InferRoute into any existing OpenAI-compatible integration by swapping the base URL. No SDK changes, no rewrites.",
+            features: ["OpenAI-compatible API surface", "Python, Node, Ruby SDKs", "Works with LangChain & LlamaIndex"],
+            screen: `<div class="sim-editor"><div class="sim-sidebar"><div class="sim-file active"><span class="sim-file-icon">📄</span>app.py</div><div class="sim-file"><span class="sim-file-icon">📄</span>config.py</div><div class="sim-file"><span class="sim-file-icon">📁</span>routes/</div></div><div class="sim-code"><div><span class="c-c"># Before</span></div><div><span class="c-k">import</span> <span class="c-n">openai</span></div><div><span class="c-n">client</span> = <span class="c-n">openai</span>.<span class="c-n">OpenAI</span>()</div><br><div><span class="c-c"># After — that's it</span></div><div><span class="c-k">import</span> <span class="c-n">openai</span></div><div><span class="c-n">client</span> = <span class="c-n">openai</span>.<span class="c-n">OpenAI</span>(</div><div>&nbsp;&nbsp;<span class="c-n">base_url</span>=<span class="c-s">"https://api.inferroute.dev"</span>,</div><div>&nbsp;&nbsp;<span class="c-n">api_key</span>=<span class="c-s">"ir_..."</span></div><div>)</div><br><div><span class="c-c"># All your existing calls work unchanged</span></div><div><span class="c-n">response</span> = <span class="c-n">client</span>.<span class="c-n">chat</span>.<span class="c-n">completions</span>.<span class="c-n">create</span>(...)</div></div></div>`
+          }
+        ]
+      },
+      {
+        name: "Nudge",
+        slides: [
+          {
+            label: "01 — Core Feature",
+            title: "Your Habit Stack",
+            desc: "Nudge's home screen shows your entire habit stack at a glance — streaks, today's completions, and a nudge from your accountability partner when you're slipping.",
+            features: ["Daily habit check-ins with haptic feedback", "Streak tracking with freeze mechanics", "Partner nudge notifications"],
+            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">nudge — Today</div></div><div class="sim-body" style="background:linear-gradient(160deg,#06050f 0%,#0a0814 100%)"><div style="text-align:center;padding:1rem 0;font-family:var(--font-mono);font-size:0.7rem;color:var(--muted)">Wednesday, Mar 12</div><div style="display:flex;flex-direction:column;gap:0.75rem"><div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:0.875rem;border-radius:4px"><div style="display:flex;align-items:center;gap:0.75rem"><div style="width:28px;height:28px;border-radius:50%;background:rgba(126,255,245,0.15);display:flex;align-items:center;justify-content:center;font-size:0.85rem">🏃</div><div><div style="font-size:0.82rem;font-weight:600">Morning Run</div><div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted)">🔥 47 day streak</div></div></div><div style="width:22px;height:22px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:#000;">✓</div></div><div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:0.875rem;border-radius:4px"><div style="display:flex;align-items:center;gap:0.75rem"><div style="width:28px;height:28px;border-radius:50%;background:rgba(167,139,250,0.15);display:flex;align-items:center;justify-content:center;font-size:0.85rem">📖</div><div><div style="font-size:0.82rem;font-weight:600">Read 30 mins</div><div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted)">🔥 12 day streak</div></div></div><div style="width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);"></div></div><div style="background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.2);padding:0.75rem;border-radius:4px;font-family:var(--font-mono);font-size:0.68rem;color:var(--accent2)">👋 Jordan says: "Don't break that read streak!"</div></div></div>`
+          },
+          {
+            label: "02 — Social",
+            title: "Accountability Pairs",
+            desc: "Every user is paired with an accountability partner. You see each other's streaks in real time and can send nudges — gentle pokes that show up as notifications.",
+            features: ["Partner matching algorithm", "Real-time streak visibility", "Reaction and nudge system"],
+            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">nudge — Partners</div></div><div class="sim-body" style="background:linear-gradient(160deg,#06050f 0%,#0a0814 100%)"><div style="font-size:0.9rem;font-weight:700;margin-bottom:1rem;">Your Partner</div><div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:1rem;border-radius:6px;margin-bottom:1rem"><div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(167,139,250,0.4),rgba(126,255,245,0.4));"></div><div><div style="font-weight:600;font-size:0.85rem;">Jordan K.</div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--accent);">● Active now</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-family:var(--font-mono);font-size:0.65rem"><div style="background:rgba(126,255,245,0.06);padding:0.5rem;border-radius:3px"><div style="color:var(--muted)">Run streak</div><div style="color:var(--text);font-weight:700;font-size:0.9rem;margin-top:2px">🔥 23</div></div><div style="background:rgba(126,255,245,0.06);padding:0.5rem;border-radius:3px"><div style="color:var(--muted)">Read streak</div><div style="color:var(--text);font-weight:700;font-size:0.9rem;margin-top:2px">🔥 8</div></div></div></div><button style="width:100%;background:var(--accent);color:#000;border:none;padding:0.75rem;font-family:var(--font-mono);font-size:0.75rem;font-weight:500;border-radius:3px;cursor:default;">Send a Nudge 👋</button></div>`
+          }
+        ]
+      },
+      {
+        name: "DepTree",
+        slides: [
+          {
+            label: "01 — CLI",
+            title: "Scan Your Codebase",
+            desc: "Run deptree analyze in any Node.js project. It maps every import, builds a dependency graph, and surfaces circular dependencies instantly.",
+            features: ["Supports ESM and CJS", "Detects cycles across module boundaries", "JSON output for CI pipeline integration"],
+            screen: `<div class="sim-terminal"><div class="t-dim">~/projects/my-monorepo</div><div><span class="t-green">$</span> <span class="t-white">npx deptree analyze ./packages</span></div><div class="t-dim">─────────────────────────────────</div><div><span class="t-purple">⠸</span> <span class="t-white">Scanning modules...</span></div><div><span class="t-green">✓</span> <span class="t-white">847 modules indexed</span></div><div><span class="t-green">✓</span> <span class="t-white">Graph built in 0.8s</span></div><div class="t-dim">─────────────────────────────────</div><div><span style="color:#ff6b6b;">⚠</span> <span class="t-white">12 circular dependencies found:</span></div><div class="t-dim">&nbsp;&nbsp;→ auth/index → utils/token → auth/session</div><div class="t-dim">&nbsp;&nbsp;→ api/router → middleware → api/context</div><div class="t-dim">&nbsp;&nbsp;→ ... and 10 more</div><div class="t-dim">─────────────────────────────────</div><div><span class="t-green">✓</span> <span class="t-white">Report saved to ./deptree-report.html</span></div><div><span class="t-green">$</span> <span class="typing-cursor"></span></div></div>`
+          },
+          {
+            label: "02 — Report",
+            title: "Visual Graph Output",
+            desc: "The HTML report renders an interactive force-directed graph. Click any node to highlight its dependency chain and understand the blast radius of a change.",
+            features: ["Interactive D3.js force graph", "Click-to-highlight dependency chains", "Export SVG for architecture docs"],
+            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">deptree-report.html</div></div><div class="sim-body" style="background:#050709;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden"><svg width="100%" height="220" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><line x1="200" y1="110" x2="120" y2="60" stroke="rgba(126,255,245,0.3)" stroke-width="1"/><line x1="200" y1="110" x2="280" y2="60" stroke="rgba(126,255,245,0.3)" stroke-width="1"/><line x1="200" y1="110" x2="100" y2="160" stroke="rgba(126,255,245,0.3)" stroke-width="1"/><line x1="200" y1="110" x2="300" y2="160" stroke="rgba(126,255,245,0.3)" stroke-width="1"/><line x1="120" y1="60" x2="60" y2="30" stroke="rgba(126,255,245,0.2)" stroke-width="1"/><line x1="280" y1="60" x2="340" y2="30" stroke="rgba(126,255,245,0.2)" stroke-width="1"/><line x1="100" y1="160" x2="300" y2="160" stroke="rgba(255,107,107,0.5)" stroke-width="1.5" stroke-dasharray="4"/><circle cx="200" cy="110" r="12" fill="rgba(126,255,245,0.2)" stroke="rgba(126,255,245,0.6)" stroke-width="1.5"/><circle cx="120" cy="60" r="8" fill="rgba(126,255,245,0.1)" stroke="rgba(126,255,245,0.4)" stroke-width="1"/><circle cx="280" cy="60" r="8" fill="rgba(126,255,245,0.1)" stroke="rgba(126,255,245,0.4)" stroke-width="1"/><circle cx="100" cy="160" r="8" fill="rgba(255,107,107,0.2)" stroke="rgba(255,107,107,0.6)" stroke-width="1"/><circle cx="300" cy="160" r="8" fill="rgba(255,107,107,0.2)" stroke="rgba(255,107,107,0.6)" stroke-width="1"/><circle cx="60" cy="30" r="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><circle cx="340" cy="30" r="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><text x="200" y="114" text-anchor="middle" fill="rgba(126,255,245,0.9)" font-size="6" font-family="monospace">api/router</text></svg><div style="font-family:var(--font-mono);font-size:0.62rem;color:rgba(255,107,107,0.8);">● Circular dependency detected</div></div>`
+          }
+        ]
+      },
+      {
+        name: "Cognify",
+        slides: [
+          {
+            label: "01 — Setup",
+            title: "Connect Your Knowledge",
+            desc: "Cognify ingests your Notion workspace or Confluence instance, chunks the content, embeds it, and stores it in a vector DB — all in under 5 minutes.",
+            features: ["Notion & Confluence OAuth connectors", "Smart chunking respects document structure", "pgvector for storage, no external DB needed"],
+            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">cognify.app/setup</div></div><div class="sim-landing"><div class="sim-hero-label">Knowledge Sources</div><div class="sim-hero-h1">Connect & Index</div><div style="display:flex;flex-direction:column;gap:0.75rem;margin:1rem 0"><div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(126,255,245,0.2);padding:0.75rem;border-radius:4px"><div style="display:flex;align-items:center;gap:0.75rem"><span>📝</span><div><div style="font-size:0.82rem;font-weight:600">Notion Workspace</div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--accent)">✓ Connected · 842 pages</div></div></div><div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--accent)">Indexed</div></div><div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:0.75rem;border-radius:4px"><div style="display:flex;align-items:center;gap:0.75rem"><span>📘</span><div><div style="font-size:0.82rem;font-weight:600">Confluence</div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--muted)">Not connected</div></div></div><div class="sim-btn" style="font-size:0.62rem;padding:0.35rem 0.75rem;">Connect</div></div></div></div>`
+          },
+          {
+            label: "02 — Product",
+            title: "Ask Anything",
+            desc: "The chat interface lets your team ask natural language questions and get answers cited directly from your internal docs. No hallucinations — every answer is grounded.",
+            features: ["Source citations for every answer", "Confidence scores per response", "Fallback: 'I don't know' when info isn't found"],
+            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">cognify.app/chat</div></div><div class="sim-body" style="display:flex;flex-direction:column;gap:0.75rem"><div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:0.75rem;border-radius:4px;align-self:flex-end;max-width:80%;font-family:var(--font-mono);font-size:0.72rem">What's our refund policy for annual plans?</div><div style="background:rgba(126,255,245,0.06);border:1px solid rgba(126,255,245,0.15);padding:0.75rem;border-radius:4px;max-width:90%"><div style="font-family:var(--font-mono);font-size:0.72rem;line-height:1.7;margin-bottom:0.5rem">Annual plan refunds are pro-rated for the unused months, minus a 10% processing fee. Requests must be submitted within 30 days of billing.</div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--accent)">📄 Source: Notion › Legal › Refund Policy (95% confidence)</div></div><div style="display:flex;gap:0.5rem;margin-top:0.5rem"><div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:0.6rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);">Ask a follow-up...</div><div style="background:var(--accent);color:#000;padding:0.6rem 0.75rem;font-family:var(--font-mono);font-size:0.65rem;font-weight:600;">↑</div></div></div>`
+          }
+        ]
+      }
+    ];
+
+    // ── Tour State ──
+    let currentProject = 0;
+    let currentSlide = 0;
+
+    function openTour(projectIdx) {
+      currentProject = projectIdx;
+      currentSlide = 0;
+      renderTour();
+      document.getElementById('tour-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTour() {
+      document.getElementById('tour-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function renderTour() {
+      const project = projects[currentProject];
+      const slides = project.slides;
+      const slide = slides[currentSlide];
+
+      document.getElementById('tour-project-name').textContent = project.name;
+      document.getElementById('slide-label').textContent = slide.label;
+      document.getElementById('slide-title').textContent = slide.title;
+      document.getElementById('slide-desc').textContent = slide.desc;
+
+      // Features
+      const featuresEl = document.getElementById('slide-features');
+      featuresEl.innerHTML = slide.features.map(f => `<div class="tour-feature">${f}</div>`).join('');
+
+      // Slides
+      const slideshow = document.getElementById('tour-slideshow');
+      slideshow.innerHTML = slides.map((s, i) => `
+        <div class="tour-slide ${i === currentSlide ? 'active' : ''}">
+          <div class="sim-screen">${s.screen}</div>
+        </div>
+      `).join('');
+
+      // Dots
+      const dotsEl = document.getElementById('tour-dots');
+      dotsEl.innerHTML = slides.map((_, i) => `<div class="tour-dot ${i === currentSlide ? 'active' : ''}" data-idx="${i}"></div>`).join('');
+      dotsEl.querySelectorAll('.tour-dot').forEach(dot => {
+        dot.addEventListener('click', () => { currentSlide = parseInt(dot.dataset.idx); renderTour(); });
+      });
+
+      document.getElementById('slide-current').textContent = currentSlide + 1;
+      document.getElementById('slide-total').textContent = slides.length;
+
+      document.getElementById('tour-prev').disabled = currentSlide === 0;
+      document.getElementById('tour-next').disabled = currentSlide === slides.length - 1;
+    }
+
+    // Project card clicks
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('click', () => openTour(parseInt(card.dataset.project)));
+    });
+
+    document.getElementById('tour-close').addEventListener('click', closeTour);
+    document.getElementById('tour-prev').addEventListener('click', () => { if (currentSlide > 0) { currentSlide--; renderTour(); } });
+    document.getElementById('tour-next').addEventListener('click', () => {
+      if (currentSlide < projects[currentProject].slides.length - 1) { currentSlide++; renderTour(); }
+    });
+
+    // Close on backdrop click
+    document.getElementById('tour-modal').addEventListener('click', e => {
+      if (e.target === document.getElementById('tour-modal')) closeTour();
+    });
+
+    // Keyboard nav
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('tour-modal').classList.contains('active')) return;
+      if (e.key === 'Escape') closeTour();
+      if (e.key === 'ArrowRight' && currentSlide < projects[currentProject].slides.length - 1) { currentSlide++; renderTour(); }
+      if (e.key === 'ArrowLeft' && currentSlide > 0) { currentSlide--; renderTour(); }
+    });
+  </script>
+</body>
+</html>
