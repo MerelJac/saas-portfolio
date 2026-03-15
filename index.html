@@ -19,7 +19,7 @@
       --muted: #606472;
       --accent: #FF69B4;
       --accent2: #ff6b6b;
-      --accent3: #a78bfa;
+      --accent3: #32CD32;
       --font-display: 'Syne', sans-serif;
       --font-mono: 'DM Mono', monospace;
       --font-serif: 'Instrument Serif', serif;
@@ -508,7 +508,7 @@
       background: linear-gradient(to top, #06080d, transparent);
     }
     .api-line-green { color: #7efff5; }
-    .api-line-purple { color: #a78bfa; }
+    .api-line-purple { color: #32CD32; }
     .api-line-orange { color: #ff9966; }
     .typing-cursor {
       display: inline-block;
@@ -1006,11 +1006,12 @@
         <span class="stack-tag">Prisma</span>
         <span class="stack-tag">Microsoft</span>
         <span class="stack-tag">Tailwind</span>
-        <span class="stack-tag">Stripe</span>
+        <span class="stack-tag">Stripe</span> 
+        <span class="stack-tag">Render</span>
         <span class="stack-tag">AWS</span>
         <span class="stack-tag">Docker</span>
         <span class="stack-tag">Redis</span>
-        <span class="stack-tag">Supabase</span>
+        <span class="stack-tag">Digital Ocean</span>
         <span class="stack-tag">Python</span>
         <span class="stack-tag">AL Lang</span>
       </div>
@@ -1190,33 +1191,63 @@
       </div>
 
       <!-- Card 4 -->
+    <!-- Card 4 -->
       <div class="project-card" data-project="3">
-        <div class="project-accent-line"></div>
-        <div class="project-visual">
-          <div class="project-visual-bar">
+        <div class="project-accent-line" style="background:#b91c1c"></div>
+        <div class="project-visual" style="background:#f0efec;">
+          <div class="project-visual-bar" style="background:#fff;border-bottom:1px solid #e5e5e5;">
             <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            <div class="sim-url" style="font-size:0.55rem;color:#999;">campaigns · live</div>
           </div>
-          <div class="project-visual-content">
-            <div class="visual-devtool" style="width:100%;">
-              <div style="color:#a78bfa;">$ deptree analyze ./src</div>
-              <div style="color:#3a5c3a;">✓ Scanned 847 modules</div>
-              <div style="color:#ff6b6b;">⚠ 12 circular deps found</div>
-              <div style="color:#3a4a5c;">→ Generating report...</div>
-              <div style="color:#7efff5;">✓ Done in 1.2s</div>
+          <div class="project-visual-content" style="background:#f0efec;padding:0.6rem;align-items:flex-start;">
+            <div style="width:100%;background:#0f2033;border-radius:6px;padding:0.6rem;display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font-size:0.62rem;font-weight:800;color:#fff;">Campaigns</div>
+                <div style="font-size:0.48rem;color:rgba(255,255,255,0.5);margin-top:1px;">Manage influencer campaigns</div>
+              </div>
+              <div style="display:flex;gap:0.75rem;align-items:center;">
+                <div style="text-align:center;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.5);text-transform:uppercase;">TOTAL</div><div style="font-size:0.85rem;font-weight:800;color:#fff;">3</div></div>
+                <div style="text-align:center;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.5);text-transform:uppercase;">ACTIVE</div><div style="font-size:0.85rem;font-weight:800;color:#4ade80;">1</div></div>
+                <div style="background:#b91c1c;border-radius:4px;padding:3px 7px;font-size:0.48rem;font-weight:700;color:#fff;">+ New</div>
+              </div>
+            </div>
+            <div style="width:100%;margin-top:0.4rem;display:flex;flex-direction:column;gap:0.25rem;">
+              <div style="background:#fff;border-radius:4px;padding:0.35rem 0.5rem;display:flex;align-items:center;gap:0.4rem;">
+                <div style="width:3px;height:24px;border-radius:2px;background:#22c55e;flex-shrink:0;"></div>
+                <div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;">TEA</div></div>
+                <div style="background:#dcfce7;color:#166534;font-size:0.42rem;padding:1px 5px;border-radius:20px;flex-shrink:0;">Live</div>
+                <div style="font-size:0.48rem;color:#888;flex-shrink:0;">1.6K</div>
+                <div style="background:#b91c1c;color:#fff;font-size:0.42rem;font-weight:700;padding:2px 5px;border-radius:3px;flex-shrink:0;">Stats</div>
+              </div>
+              <div style="background:#fff;border-radius:4px;padding:0.35rem 0.5rem;display:flex;align-items:center;gap:0.4rem;">
+                <div style="width:3px;height:24px;border-radius:2px;background:#22c55e;flex-shrink:0;"></div>
+                <div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;">OSIW</div></div>
+                <div style="background:#f3f4f6;color:#6b7280;font-size:0.42rem;padding:1px 5px;border-radius:20px;flex-shrink:0;">Archived</div>
+                <div style="font-size:0.48rem;color:#888;flex-shrink:0;">13</div>
+                <div style="background:#b91c1c;color:#fff;font-size:0.42rem;font-weight:700;padding:2px 5px;border-radius:3px;flex-shrink:0;">Stats</div>
+              </div>
+              <div style="background:#fff;border-radius:4px;padding:0.35rem 0.5rem;display:flex;align-items:center;gap:0.4rem;">
+                <div style="width:3px;height:24px;border-radius:2px;background:#a78bfa;flex-shrink:0;"></div>
+                <div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Mental Health Matters</div></div>
+                <div style="background:#f3f4f6;color:#6b7280;font-size:0.42rem;padding:1px 5px;border-radius:20px;flex-shrink:0;">Archived</div>
+                <div style="font-size:0.48rem;color:#888;flex-shrink:0;">7.59K</div>
+                <div style="background:#b91c1c;color:#fff;font-size:0.42rem;font-weight:700;padding:2px 5px;border-radius:3px;flex-shrink:0;">Stats</div>
+              </div>
             </div>
           </div>
         </div>
         <div class="project-card-inner">
           <div class="project-meta">
-            <span class="project-year">2023</span>
+            <span class="project-year">2025</span>
             <div class="project-tags-mini">
-              <span class="project-tag-mini">CLI</span>
-              <span class="project-tag-mini">OSS</span>
+              <span class="project-tag-mini" style="color:#b91c1c;border-color:rgba(185,28,28,0.3);">SaaS</span>
+              <span class="project-tag-mini" style="color:#b91c1c;border-color:rgba(185,28,28,0.3);">API</span>
+              <span class="project-tag-mini" style="color:#b91c1c;border-color:rgba(185,28,28,0.3);">Rails</span>
             </div>
           </div>
-          <h3 class="project-title">DepTree</h3>
-          <p class="project-desc">CLI tool that visualizes and detects circular dependencies in Node.js monorepos. 2k GitHub stars.</p>
-          <div class="card-tour-hint">
+          <h3 class="project-title">Campaign Tracker</h3>
+          <p class="project-desc">Influencer campaign management SaaS that scrapes live social data from Instagram, TikTok, YouTube, and X to give real-time reach, engagement, and cost analysis.</p>
+          <div class="card-tour-hint" style="color:#b91c1c;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             Take a visual tour
           </div>
@@ -1437,22 +1468,29 @@
           }
         ]
       },
-      {
-        name: "DepTree",
+     {
+        name: "Campaign Tracker",
         slides: [
           {
-            label: "01 — CLI",
-            title: "Scan Your Codebase",
-            desc: "Run deptree analyze in any Node.js project. It maps every import, builds a dependency graph, and surfaces circular dependencies instantly.",
-            features: ["Supports ESM and CJS", "Detects cycles across module boundaries", "JSON output for CI pipeline integration"],
-            screen: `<div class="sim-terminal"><div class="t-dim">~/projects/my-monorepo</div><div><span class="t-green">$</span> <span class="t-white">npx deptree analyze ./packages</span></div><div class="t-dim">─────────────────────────────────</div><div><span class="t-purple">⠸</span> <span class="t-white">Scanning modules...</span></div><div><span class="t-green">✓</span> <span class="t-white">847 modules indexed</span></div><div><span class="t-green">✓</span> <span class="t-white">Graph built in 0.8s</span></div><div class="t-dim">─────────────────────────────────</div><div><span style="color:#ff6b6b;">⚠</span> <span class="t-white">12 circular dependencies found:</span></div><div class="t-dim">&nbsp;&nbsp;→ auth/index → utils/token → auth/session</div><div class="t-dim">&nbsp;&nbsp;→ api/router → middleware → api/context</div><div class="t-dim">&nbsp;&nbsp;→ ... and 10 more</div><div class="t-dim">─────────────────────────────────</div><div><span class="t-green">✓</span> <span class="t-white">Report saved to ./deptree-report.html</span></div><div><span class="t-green">$</span> <span class="typing-cursor"></span></div></div>`
+            label: "01 — Campaigns",
+            title: "All Your Campaigns, Live",
+            desc: "The campaigns dashboard gives you a bird's-eye view across every influencer campaign — status, creator count, posts, engagement, and last updated. Live data, no manual updates.",
+            features: ["Live/Archived/Draft status per campaign", "Aggregate stats: reach, posts, engagement", "One-click to deep-dive into any campaign"],
+            screen: `<div style="background:#f0efec;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;"><div style="background:#fff;border-bottom:1px solid #e5e5e5;padding:0.5rem 0.875rem;display:flex;align-items:center;justify-content:space-between;"><div style="font-size:0.75rem;font-weight:800;color:#111;letter-spacing:-0.01em;">CAMPAIGN TRACKER</div><div style="display:flex;gap:1rem;"><span style="font-size:0.6rem;color:#555;">Campaigns</span><span style="font-size:0.6rem;color:#555;">Creators</span></div><div style="width:22px;height:22px;border-radius:50%;background:#b91c1c;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#fff;font-weight:700;">M</div></div><div style="padding:0.75rem;"><div style="background:#0f2033;border-radius:8px;padding:0.875rem;margin-bottom:0.75rem;"><div style="display:flex;align-items:center;justify-content:space-between;"><div><div style="font-size:1rem;font-weight:800;color:#fff;">Campaigns</div><div style="font-size:0.55rem;color:rgba(255,255,255,0.45);margin-top:2px;">Manage and track all your influencer campaigns</div></div><div style="display:flex;gap:0.875rem;align-items:center;"><div style="text-align:center;border-right:1px solid rgba(255,255,255,0.1);padding-right:0.875rem;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em;">TOTAL</div><div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1;">3</div></div><div style="text-align:center;border-right:1px solid rgba(255,255,255,0.1);padding-right:0.875rem;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em;">ACTIVE</div><div style="font-size:1.1rem;font-weight:800;color:#4ade80;line-height:1;">1</div></div><div style="text-align:center;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em;">DRAFT</div><div style="font-size:1.1rem;font-weight:800;color:#facc15;line-height:1;">0</div></div></div><div style="background:#b91c1c;border-radius:5px;padding:4px 10px;font-size:0.55rem;font-weight:700;color:#fff;margin-left:0.5rem;">+ New</div></div></div><div style="background:#fff;border-radius:8px;overflow:hidden;"><div style="display:grid;grid-template-columns:2fr 0.8fr 0.6fr 0.6fr 0.8fr 0.7fr;gap:0;padding:0.4rem 0.75rem;border-bottom:1px solid #f0f0f0;"><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Campaign</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Status</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Creators</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Posts</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Engagement</span><span style="font-size:0.48rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;">Actions</span></div>${[{n:'TEACH',sub:'Teacher Strike',s:'Live',sc:'#dcfce7',tc:'#166534',bar:'#22c55e',c:1,p:2,e:'1.6 K'},{n:'OSIW',sub:'Instagram only campaign',s:'Archived',sc:'#f3f4f6',tc:'#6b7280',bar:'#22c55e',c:5,p:1,e:'13'},{n:'Mental Health Matters',sub:'',s:'Archived',sc:'#f3f4f6',tc:'#6b7280',bar:'#a78bfa',c:3,p:6,e:'7.59 K'}].map(r=>`<div style="display:grid;grid-template-columns:2fr 0.8fr 0.6fr 0.6fr 0.8fr 0.7fr;align-items:center;padding:0.5rem 0.75rem;border-bottom:1px solid #f5f5f5;gap:0;"><div style="display:flex;align-items:center;gap:0.4rem;"><div style="width:3px;height:28px;border-radius:2px;background:${r.bar};flex-shrink:0;"></div><div><div style="font-size:0.62rem;font-weight:700;color:#111;">${r.n}</div><div style="font-size:0.5rem;color:#999;">${r.sub}</div></div></div><div><span style="background:${r.sc};color:${r.tc};font-size:0.48rem;padding:2px 7px;border-radius:20px;font-weight:500;">${r.s}</span></div><div style="font-size:0.6rem;color:#333;font-weight:600;">${r.c}</div><div style="font-size:0.6rem;color:#333;font-weight:600;">${r.p}</div><div style="font-size:0.6rem;color:#333;font-weight:600;">${r.e}</div><div style="display:flex;gap:0.25rem;"><div style="border:1px solid #e5e5e5;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#333;">View</div><div style="background:#b91c1c;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#fff;font-weight:600;">Stats</div></div></div>`).join('')}</div></div></div>`
           },
           {
-            label: "02 — Report",
-            title: "Visual Graph Output",
-            desc: "The HTML report renders an interactive force-directed graph. Click any node to highlight its dependency chain and understand the blast radius of a change.",
-            features: ["Interactive D3.js force graph", "Click-to-highlight dependency chains", "Export SVG for architecture docs"],
-            screen: `<div class="sim-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><div class="sim-url">deptree-report.html</div></div><div class="sim-body" style="background:#050709;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden"><svg width="100%" height="220" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><line x1="200" y1="110" x2="120" y2="60" stroke="rgba(126,255,245,0.3)" stroke-width="1"/><line x1="200" y1="110" x2="280" y2="60" stroke="rgba(126,255,245,0.3)" stroke-width="1"/><line x1="200" y1="110" x2="100" y2="160" stroke="rgba(126,255,245,0.3)" stroke-width="1"/><line x1="200" y1="110" x2="300" y2="160" stroke="rgba(126,255,245,0.3)" stroke-width="1"/><line x1="120" y1="60" x2="60" y2="30" stroke="rgba(126,255,245,0.2)" stroke-width="1"/><line x1="280" y1="60" x2="340" y2="30" stroke="rgba(126,255,245,0.2)" stroke-width="1"/><line x1="100" y1="160" x2="300" y2="160" stroke="rgba(255,107,107,0.5)" stroke-width="1.5" stroke-dasharray="4"/><circle cx="200" cy="110" r="12" fill="rgba(126,255,245,0.2)" stroke="rgba(126,255,245,0.6)" stroke-width="1.5"/><circle cx="120" cy="60" r="8" fill="rgba(126,255,245,0.1)" stroke="rgba(126,255,245,0.4)" stroke-width="1"/><circle cx="280" cy="60" r="8" fill="rgba(126,255,245,0.1)" stroke="rgba(126,255,245,0.4)" stroke-width="1"/><circle cx="100" cy="160" r="8" fill="rgba(255,107,107,0.2)" stroke="rgba(255,107,107,0.6)" stroke-width="1"/><circle cx="300" cy="160" r="8" fill="rgba(255,107,107,0.2)" stroke="rgba(255,107,107,0.6)" stroke-width="1"/><circle cx="60" cy="30" r="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><circle cx="340" cy="30" r="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><text x="200" y="114" text-anchor="middle" fill="rgba(126,255,245,0.9)" font-size="6" font-family="monospace">api/router</text></svg><div style="font-family:var(--font-mono);font-size:0.62rem;color:rgba(255,107,107,0.8);">● Circular dependency detected</div></div>`
+            label: "02 — Analytics",
+            title: "Real-Time Reach Stats",
+            desc: "Each campaign gets a full analytics breakdown — actual vs. potential reach, per-platform performance, views, engagement, and cost analysis. All scraped live from Instagram, TikTok, and X.",
+            features: ["Actual vs. potential reach with conversion %", "Per-platform breakdown: Instagram, TikTok, X", "Cost analysis with ROI and performance chart"],
+            screen: `<div style="background:#f0efec;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem;"><div style="background:#fff;border-radius:8px;padding:0.75rem;"><div style="display:flex;align-items:flex-start;justify-content:space-between;"><div><div style="font-size:1rem;font-weight:800;color:#111;">TEACH</div><div style="font-size:0.52rem;color:#888;margin-top:2px;">1 creators · 2 posts · Created Mar 13, 2026</div><div style="font-size:0.58rem;color:#555;margin-top:4px;">Teacher Strike campagin in partnership with PPS</div></div><div style="display:flex;align-items:center;gap:0.4rem;"><div style="background:#dcfce7;color:#166534;font-size:0.52rem;padding:3px 9px;border-radius:20px;font-weight:600;">Live ▾</div><div style="font-size:0.55rem;color:#555;border:1px solid #e5e5e5;padding:3px 8px;border-radius:4px;">✏ Edit</div></div></div></div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.4rem;"><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #b91c1c;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">TOTAL REACH</div><div style="font-size:0.85rem;font-weight:800;color:#111;">20.9K</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #6366f1;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">CREATORS</div><div style="font-size:0.85rem;font-weight:800;color:#111;">1</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #a855f7;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">POSTS</div><div style="font-size:0.85rem;font-weight:800;color:#111;">2</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #ef4444;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">ENGAGEMENT</div><div style="font-size:0.85rem;font-weight:800;color:#111;">1.6K</div></div><div style="background:#fff;border-radius:6px;padding:0.5rem;border-top:3px solid #8b5cf6;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">VIEWS</div><div style="font-size:0.85rem;font-weight:800;color:#111;">19.3K</div></div></div><div style="background:#0f2033;border-radius:8px;padding:0.75rem;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;"><div style="font-size:0.6rem;font-weight:700;color:#fff;letter-spacing:0.05em;">REACH OVERVIEW</div><div style="display:flex;align-items:center;gap:0.4rem;"><div style="background:rgba(255,255,255,0.1);border-radius:20px;padding:2px 8px;font-size:0.48rem;color:#fff;">Conversion 15.4%</div></div></div><div style="margin-bottom:0.5rem;"><div style="font-size:0.45rem;color:rgba(255,255,255,0.4);margin-bottom:3px;">Actual vs Potential</div><div style="background:rgba(255,255,255,0.1);border-radius:2px;height:5px;overflow:hidden;"><div style="height:100%;width:15.4%;background:#22c55e;border-radius:2px;"></div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;"><div><div style="font-size:0.42rem;color:#a78bfa;font-weight:700;letter-spacing:0.08em;margin-bottom:2px;">● POTENTIAL REACH</div><div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1;">136K</div><div style="font-size:0.45rem;color:rgba(255,255,255,0.4);margin-bottom:0.3rem;">combined follower count</div><div style="display:flex;gap:0.3rem;"><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 6px;font-size:0.45rem;color:rgba(255,255,255,0.6);">📸 36.9K</div><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 6px;font-size:0.45rem;color:rgba(255,255,255,0.6);">🎵 98.6K</div></div></div><div><div style="font-size:0.42rem;color:#4ade80;font-weight:700;letter-spacing:0.08em;margin-bottom:2px;">● ACTUAL REACH</div><div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1;">20.9K</div><div style="font-size:0.45rem;color:rgba(255,255,255,0.4);margin-bottom:0.3rem;">views + engagement</div><div style="display:flex;gap:0.3rem;"><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 5px;font-size:0.42rem;color:rgba(255,255,255,0.6);">📸 19.7K<br/><span style="color:#4ade80;">53.4%</span></div><div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:2px 5px;font-size:0.42rem;color:rgba(255,255,255,0.6);">🎵 1.13K<br/><span style="color:#f87171;">1.1%</span></div></div></div></div></div></div>`
+          },
+          {
+            label: "03 — Creator Roster",
+            title: "Your Creator Network",
+            desc: "The creators page is your full talent database — searchable, filterable by platform, tagged as Paid or Unpaid, with live follower counts scraped from each platform.",
+            features: ["Multi-platform filter: TikTok, Instagram, YouTube, X", "Paid/Unpaid tagging and Deep Filter search", "Network Overview: total reach + top performer"],
+            screen: `<div style="background:#f0efec;width:100%;height:100%;overflow:hidden;font-family:'Syne',sans-serif;display:flex;gap:0;"><div style="flex:1;padding:0.75rem;overflow:hidden;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem;"><div style="font-size:0.9rem;font-weight:800;color:#111;">Creators <span style="font-size:0.55rem;font-weight:400;color:#888;">(10 total)</span></div></div><div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.6rem;flex-wrap:wrap;"><div style="background:#fff;border:1px solid #e5e5e5;border-radius:20px;padding:2px 8px;font-size:0.52rem;color:#888;">Search creators...</div><div style="background:#111;color:#fff;border-radius:20px;padding:2px 7px;font-size:0.52rem;font-weight:600;">All</div><span style="font-size:0.7rem;color:#888;">📱</span><span style="font-size:0.7rem;color:#888;">📸</span><span style="font-size:0.7rem;color:#888;">▶</span><span style="font-size:0.7rem;color:#888;">✕</span><div style="background:#fff;border:1px solid #e5e5e5;border-radius:20px;padding:2px 7px;font-size:0.48rem;color:#888;">🏷 Filter tags ▾</div><div style="background:#b91c1c;color:#fff;border-radius:5px;padding:3px 8px;font-size:0.5rem;font-weight:700;">+ ADD CREATOR</div></div><div style="display:flex;flex-direction:column;gap:0.3rem;">${[{i:'CP',ic:'#22c55e',n:'Courtney Park',f:'136K',c:1,t:'#Paid',pl:'📸🎵'},{i:'AR',ic:'#06b6d4',n:'Alexis Rose Hinkley',f:'529K',c:0,pl:'📸'},{i:'MT',ic:'#6366f1',n:'Megan Thuy',f:'44.1K',c:1,t:'#Unpaid',pl:'📸'},{i:'JG',ic:'#8b5cf6',n:'Juan Guerrero Maya',f:'70.1K',c:1,pl:'📸'},{i:'Y',ic:'#f59e0b',n:'Yaretua',f:'145K',c:1,pl:'📸'}].map(r=>`<div style="background:#fff;border-radius:6px;padding:0.45rem 0.6rem;display:flex;align-items:center;gap:0.5rem;"><div style="width:22px;height:22px;border-radius:50%;background:${r.ic};display:flex;align-items:center;justify-content:center;font-size:0.48rem;font-weight:700;color:#fff;flex-shrink:0;">${r.i}</div><div style="flex:1;min-width:0;"><div style="font-size:0.6rem;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.n}</div>${r.t?`<span style="font-size:0.42rem;color:#6366f1;background:#eef2ff;padding:1px 4px;border-radius:10px;">${r.t}</span>`:''}</div><div style="font-size:0.6rem;color:#888;margin-right:0.25rem;">${r.pl}</div><div style="text-align:right;flex-shrink:0;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.06em;">FOLLOWERS</div><div style="font-size:0.62rem;font-weight:700;color:#111;">${r.f}</div></div><div style="border:1px solid #e5e5e5;border-radius:4px;padding:2px 6px;font-size:0.48rem;color:#333;flex-shrink:0;">View</div></div>`).join('')}</div></div><div style="width:110px;padding:0.75rem;flex-shrink:0;display:flex;flex-direction:column;gap:0.5rem;"><div style="background:#0f2033;border-radius:8px;padding:0.6rem;"><div style="font-size:0.42rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">TOTAL REACH</div><div style="font-size:0.9rem;font-weight:800;color:#fff;line-height:1;">1.6 M</div><div style="font-size:0.48rem;color:#4ade80;margin-top:1px;">3.66 M followers</div></div><div style="background:#fff;border-radius:8px;padding:0.6rem;"><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;">POPULAR TAGS</div><div style="display:flex;gap:0.25rem;flex-wrap:wrap;"><span style="font-size:0.42rem;color:#6366f1;background:#eef2ff;padding:1px 5px;border-radius:10px;">#Paid (2)</span><span style="font-size:0.42rem;color:#6366f1;background:#eef2ff;padding:1px 5px;border-radius:10px;">#Unpaid (1)</span></div><div style="font-size:0.42rem;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.4rem;margin-bottom:0.25rem;">TOP PERFORMER</div><div style="display:flex;align-items:center;gap:0.35rem;"><div style="width:18px;height:18px;border-radius:50%;background:#06b6d4;display:flex;align-items:center;justify-content:center;font-size:0.45rem;font-weight:700;color:#fff;">F</div><div><div style="font-size:0.55rem;font-weight:700;color:#111;">Fernanda</div><div style="font-size:0.42rem;color:#888;">1.57 M followers</div></div></div></div><div style="background:#fff;border-radius:8px;padding:0.6rem;"><div style="font-size:0.55rem;font-weight:700;color:#111;">🔍 Deep Filter</div><div style="font-size:0.42rem;color:#888;margin-top:2px;">Filter by niche, platform, engagement rate...</div></div></div></div>`
           }
         ]
       },
